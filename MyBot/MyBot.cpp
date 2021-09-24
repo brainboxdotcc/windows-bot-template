@@ -16,7 +16,9 @@ int main()
     });
 
     bot.on_log([](const dpp::log_t& event) {
-        std::cout << event.message << "\n";
+        if (event.severity > dpp::ll_trace) {
+            std::cout << dpp::utility::loglevel(event.severity) << ": " << event.message << "\n";
+        }
     });
 
     bot.start(false); 
