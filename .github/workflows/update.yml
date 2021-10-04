@@ -9,6 +9,9 @@ jobs:
       fail-fast: false # Don't fail everything if one fails. We want to test each OS/Compiler individually
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Run updater
         run: pwd && ./updatedpp.sh
 
