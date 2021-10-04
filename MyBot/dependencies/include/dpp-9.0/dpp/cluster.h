@@ -223,6 +223,9 @@ class CoreExport cluster {
 	/** queue system for commands sent to Discord, and any replies */
 	request_queue* rest;
 
+	/** queue system for arbitrary HTTP requests sent by the user to sites other than Discord */
+	request_queue* raw_rest;
+
 	/** True if to use compression on shards */
 	bool compressed;
 
@@ -382,6 +385,20 @@ public:
 	 * @param _voice_state_update User function to attach to event
 	 */
 	void on_voice_state_update (std::function<void(const voice_state_update_t& _event)> _voice_state_update);
+
+	/**
+	 * @brief on voice client disconnect event
+	 *
+	 * @param _voice_state_update User function to attach to event
+	 */
+	void on_voice_client_disconnect (std::function<void(const voice_client_disconnect_t& _event)> _voice_client_disconnect);
+
+	/**
+	 * @brief on voice client speaking event
+	 *
+	 * @param _voice_state_update User function to attach to event
+	 */
+	void on_voice_client_speaking (std::function<void(const voice_client_speaking_t& _event)> _voice_client_speaking);
 
 	/**
 	 * @brief Called when a log message is to be written to the log.
@@ -838,10 +855,11 @@ public:
 
 	/**
 	 * @brief Called when new audio data is received.
-	 * @note Receiveing audio for bots is not supported or documented, so this
-	 * endpoint will be triggered at the correct times but the audio buffer will
-	 * always be null and size zero.
-	 *
+	 * Each separate user's audio from the voice channel will arrive tagged with
+	 * their user id in the event, if a user can be attributed to the received audio.
+	 * 
+	 * @note Receiveing audio for bots is not officially supported by discord.
+	 * 
 	 * @param _voice_receive User function to attach to event
 	 */
 	void on_voice_receive (std::function<void(const voice_receive_t& _event)> _voice_receive);
@@ -884,6 +902,18 @@ public:
 	 * @param filecontent File content to post for POST requests (for uploading files)
 	 */
 	void post_rest(const std::string &endpoint, const std::string &major_parameters, const std::string &parameters, http_method method, const std::string &postdata, json_encode_t callback, const std::string &filename = "", const std::string &filecontent = "");
+
+	/**
+	 * @brief Make a HTTP(S) request. For use when wanting asnyncronous access to HTTP APIs outside of Discord.
+	 *
+	 * @param url Endpoint to post to, e.g. /api/guilds
+	 * @param method Method, e.g. GET, POST
+	 * @param callback Function to call when the HTTP call completes. No processing is done on the returned data.
+	 * @param postdata POST data
+	 * @param mimetype MIME type of POST data
+	 * @param headers Headers to send with the request
+	 */
+	void request(const std::string &url, http_method method, http_completion_event callback, const std::string &postdata = "", const std::string &mimetype = "text/plain", const std::multimap<std::string, std::string> &headers = {});
 
 	/**
 	 * @brief Respond to a slash command
@@ -1417,12 +1447,23 @@ public:
 	void guild_get_member(snowflake guild_id, snowflake user_id, command_completion_event_t callback);
 
 	/**
+	 * @brief Search for guild members based on whether their username or nickname starts with the given string.
+	 *
+	 * @param guild_id Guild ID to search in
+	 * @param query Query string to match username(s) and nickname(s) against
+	 * @param limit max number of members to return (1-1000)
+	 */
+	void guild_search_members(snowflake guild_id, const std::string& query, uint16_t limit, command_completion_event_t callback);
+
+	/**
 	 * @brief Get all guild members
 	 *
 	 * @param guild_id Guild ID to get all members for
+	 * @param limit max number of members to return (1-1000)
+	 * @param after the highest user id in the previous page
 	 * @param callback Function to call when the API call completes.
 	 */
-	void guild_get_members(snowflake guild_id, command_completion_event_t callback);
+	void guild_get_members(snowflake guild_id, uint16_t limit, snowflake after, command_completion_event_t callback);
 
 	/**
 	 * @brief Add guild member. Needs a specific oauth2 scope, from which you get the access_token.

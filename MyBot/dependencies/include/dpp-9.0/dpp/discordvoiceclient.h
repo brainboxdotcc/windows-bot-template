@@ -50,10 +50,12 @@
 #include <dpp/wsclient.h>
 #include <dpp/dispatcher.h>
 #include <dpp/cluster.h>
+#include <dpp/discordevents.h>
 #include <queue>
 #include <thread>
 #include <deque>
 #include <mutex>
+#include <chrono>
 
 using json = nlohmann::json;
 
@@ -195,6 +197,13 @@ class CoreExport discord_voice_client : public websocket_client
 	 */
 	uint32_t timestamp;
 
+	std::chrono::high_resolution_clock::time_point last_timestamp;
+
+	/**
+	 * Maps receiving ssrc to user id
+	 */
+	std::unordered_map<uint32_t, snowflake> ssrcMap;
+
 	/** This is set to true if we have started sending audio.
 	 * When this moves from false to true, this causes the
 	 * client to send the 'talking' notification to the websocket.
@@ -329,6 +338,9 @@ public:
 	/** True when the thread is shutting down */
 	bool terminating;
 
+	/** Decode received voice packets to PCM */
+	bool decode_voice_recv;
+
 	/** Heartbeat interval for sending heartbeat keepalive */
 	uint32_t heartbeat_interval;
 
@@ -385,9 +397,8 @@ public:
 
 	/** Constructor takes shard id, max shards and token.
 	 * @param _cluster The cluster which owns this voice connection, for related logging, REST requests etc
-	 * @param _server_id The server id (guild id) to identify the voice connection as
 	 * @param _channel_id The channel id to identify the voice connection as
-	 * @param _server_id The server id to identify the voice connection as
+	 * @param _server_id The server id (guild id) to identify the voice connection as
 	 * @param _token The voice session token to use for identifying to the websocket
 	 * @param _session_id The voice session id to identify with
 	 * @param _host The voice server hostname to connect to (hostname:port format)
@@ -435,8 +446,10 @@ public:
 	 * be a multiple of 4 (2x 16 bit stero channels) with a maximum
 	 * length of 11520, which is a complete opus frame at highest
 	 * quality.
+	 * 
+	 * @return discord_voice_client& Reference to self
 	 */
-	void send_audio_raw(uint16_t* audio_data, const size_t length);
+	discord_voice_client& send_audio_raw(uint16_t* audio_data, const size_t length);
 
 	/**
 	 * @brief Send opus packets to the voice channel
@@ -454,13 +467,50 @@ public:
 	 * @param duration Generally duration is 2.5, 5, 10, 20, 40 or 60
 	 * if the timescale is 1000000 (1ms) 
 	 * 
+	 * @return discord_voice_client& Reference to self
+	 * 
 	 * @note It is your responsibility to ensure that packets of data 
 	 * sent to send_audio are correctly repacketized for streaming, 
 	 * e.g. that audio frames are not too large or contain
 	 * an incorrect format. Discord will still expect the same frequency
 	 * and bit width of audio and the same signedness.
 	 */
-	void send_audio_opus(uint8_t* opus_packet, const size_t length, uint64_t duration);
+	discord_voice_client& send_audio_opus(uint8_t* opus_packet, const size_t length, uint64_t duration);
+
+	/**
+	 * @brief Send opus packets to the voice channel
+	 * 
+	 * Some containers such as .ogg may contain OPUS
+	 * encoded data already. In this case, we don't need to encode the
+	 * frames using opus here. We can bypass the codec, only applying 
+	 * libsodium to the stream.
+	 * 
+	 * Duration is calculated internally
+	 * 
+	 * @param opus_packet Opus packets. Discord expects opus frames 
+	 * to be encoded at 48000Hz
+	 * 
+	 * @param length The length of the audio data. 
+	 * 
+	 * @return discord_voice_client& Reference to self
+	 * 
+	 * @note It is your responsibility to ensure that packets of data 
+	 * sent to send_audio are correctly repacketized for streaming, 
+	 * e.g. that audio frames are not too large or contain
+	 * an incorrect format. Discord will still expect the same frequency
+	 * and bit width of audio and the same signedness.
+	 */
+	discord_voice_client& send_audio_opus(uint8_t* opus_packet, const size_t length);
+
+	/**
+	 * @brief Send silence to the voice channel
+	 * 
+	 * @param duration How long to send silence for. With the standard
+	 * timescale this is in milliseconds. Allowed values are 2.5,
+	 * 5, 10, 20, 40 or 60 milliseconds.
+	 * @return discord_voice_client& Reference to self
+	 */
+	discord_voice_client& send_silence(const uint64_t duration);
 
 	/**
 	 * @brief Set the timescale in nanoseconds.
@@ -484,8 +534,10 @@ public:
 	 * This sends a JSON message to the voice websocket which tells discord
 	 * that the user is speaking. The library automatically calls this for you
 	 * whenever you send audio.
+	 * 
+	 * @return discord_voice_client& Reference to self
 	 */
-	void speak();
+	discord_voice_client& speak();
 
 	/**
 	 * @brief Pause sending of audio
