@@ -48,7 +48,7 @@ echo "Cleaning up..."
 rm -rf temp
 
 echo "Committing..."
-git add MyBot/dependencies
+git add -A MyBot/dependencies
 git commit -m "auto update to latest DPP master branch"
 git push
 
