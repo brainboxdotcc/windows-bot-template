@@ -20,49 +20,49 @@ mkdir temp
 cd temp
 echo "Download assets from CI..."
 gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1
-gh run download -R "brainboxdotcc/DPP" `gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }'`
+gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }')
 
 echo "Process windows x64 release"
 cd "./libdpp - Windows x64-Release" && unzip -qq *.zip
 # header files from first zip
-cp -rv */include ../../MyBot/dependencies/
+cp -rv ./*/include ../../MyBot/dependencies/
 
 # dll files
-cp -rv */bin/*.dll ../../MyBot/dependencies/64/release/bin/
+cp -rv ./*/bin/*.dll ../../MyBot/dependencies/64/release/bin/
 # lib files
-cp -rv */lib ../../MyBot/dependencies/64/release/
-cd ..
+cp -rv ./*/lib ../../MyBot/dependencies/64/release/
+cd .. || exit
 
 echo "Process windows x64 debug"
 cd "./libdpp - Windows x64-Debug" && unzip -qq *.zip
 # dll files
-cp -rv */bin/*.dll ../../MyBot/dependencies/64/debug/bin/
+cp -rv ./*/bin/*.dll ../../MyBot/dependencies/64/debug/bin/
 # lib files
-cp -rv */lib ../../MyBot/dependencies/64/debug/
-cd ..
+cp -rv ./*/lib ../../MyBot/dependencies/64/debug/
+cd .. || exit
 
 echo "Process windows x86 release"
 cd "./libdpp - Windows x86-Release" && unzip -qq *.zip
 # dll files
-cp -rv */bin/*.dll ../../MyBot/dependencies/32/release/bin/
+cp -rv ./*/bin/*.dll ../../MyBot/dependencies/32/release/bin/
 # lib files
-cp -rv */lib ../../MyBot/dependencies/32/release/
-cd ..
+cp -rv ./*/lib ../../MyBot/dependencies/32/release/
+cd .. || exit
 
 echo "Process windows x86 debug"
 cd "./libdpp - Windows x86-Debug" && unzip -qq *.zip
 # dll files
-cp -rv */bin/*.dll ../../MyBot/dependencies/32/debug/bin/
+cp -rv ./*/bin/*.dll ../../MyBot/dependencies/32/debug/bin/
 # lib files
-cp -rv */lib ../../MyBot/dependencies/32/debug/
-cd ..
+cp -rv ./*/lib ../../MyBot/dependencies/32/debug/
+cd .. || exit
 
 echo "Converting linefeeds from dos to unix"
 # dos2unix
-cd ..
+cd .. || exit
 cd MyBot/dependencies/include/dpp-9.0/dpp
 find . -exec dos2unix {} \;
-cd ../../../../..
+cd ../../../../.. || exit
 find . -name '*.cmake' -exec dos2unix -q {} \;
 
 echo "Cleaning up..."
