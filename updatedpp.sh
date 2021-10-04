@@ -6,7 +6,7 @@ echo "Download assets from CI..."
 gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1
 gh run download -R "brainboxdotcc/DPP" `gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }'`
 
-cd "./libdpp - Windows x64-Release" && unzip *.zip
+cd "./libdpp - Windows x64-Release" && unzip -qq *.zip
 # header files from first zip
 cp -rv */include ../../MyBot/dependencies/
 
@@ -16,21 +16,21 @@ cp -rv */bin/*.dll ../../MyBot/dependencies/64/release/bin/
 cp -rv */lib ../../MyBot/dependencies/64/release/
 cd ..
 
-cd "./libdpp - Windows x64-Debug" && unzip *.zip
+cd "./libdpp - Windows x64-Debug" && unzip -qq *.zip
 # dll files
 cp -rv */bin/*.dll ../../MyBot/dependencies/64/debug/bin/
 # lib files
 cp -rv */lib ../../MyBot/dependencies/64/debug/
 cd ..
 
-cd "./libdpp - Windows x86-Release" && unzip *.zip
+cd "./libdpp - Windows x86-Release" && unzip -qq *.zip
 # dll files
 cp -rv */bin/*.dll ../../MyBot/dependencies/32/release/bin/
 # lib files
 cp -rv */lib ../../MyBot/dependencies/32/release/
 cd ..
 
-cd "./libdpp - Windows x86-Debug" && unzip *.zip
+cd "./libdpp - Windows x86-Debug" && unzip -qq *.zip
 # dll files
 cp -rv */bin/*.dll ../../MyBot/dependencies/32/debug/bin/
 # lib files
@@ -50,4 +50,5 @@ rm -rf temp
 echo "Committing..."
 git add MyBot/dependencies
 git commit -m "auto update to latest DPP master branch"
+git push
 
