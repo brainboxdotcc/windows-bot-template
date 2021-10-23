@@ -22,6 +22,11 @@ echo "Download assets from CI..."
 gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1
 gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }')
 
+if [[ ! -d "./libdpp - Windows x64-Release" ]] ; then
+	echo "Download of assets failed (temporary failure) - not emitting a spurious failure, but exiting now."
+	exit 0;
+fi
+
 echo "Process windows x64 release"
 cd "./libdpp - Windows x64-Release" && unzip -qq ./*.zip
 # header files from first zip
