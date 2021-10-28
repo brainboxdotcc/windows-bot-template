@@ -508,6 +508,15 @@ public:
 	void on_button_click (std::function<void(const button_click_t& _event)> _button_click);
 
 	/**
+	 * @brief Called when an auto completed field needs suggestions to present to the user
+	 * This is triggered by discord when option choices have auto completion enabled which you have
+	 * associated with a dpp::slashcommand.
+	 *
+	 * @param _autocomplete  User function to attach to event
+	 */
+	void on_autocomplete (std::function<void(const autocomplete_t& _event)> _autocomplete);
+
+	/**
 	 * @brief Called when a select menu is clicked attached to a message.
 	 * Select menu clicks are triggered by discord when select menus are clicked which you have
 	 * associated with a message using dpp::component.
@@ -2293,7 +2302,7 @@ x	 */
 	/**
 	 * @brief Create a stage instance on a stage channel.
 	 *
-	 * @param channel_id ID of the associated channel
+	 * @param instance Stage instance to create
 	 * @param callback User function to execute when the api call completes
 	 * @note Callback contains a stage_instance object upon success. On failure, the value contained is undefined and is_error() returns true.
 	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
@@ -2312,7 +2321,7 @@ x	 */
 	/**
 	 * @brief Edit a stage instance.
 	 *
-	 * @param channel_id ID of the associated channel
+	 * @param instance Stage instance to edit
 	 * @param callback User function to execute when the api call completes
 	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
 	 */
