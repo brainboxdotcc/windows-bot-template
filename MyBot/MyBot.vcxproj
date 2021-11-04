@@ -104,7 +104,7 @@
       <AdditionalDependencies>dpp.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(ProjectDir)dependencies\32\debug\bin\*.dll $(OutDir)</Command>
+      <Command>copy /y "$(ProjectDir)dependencies\32\debug\bin\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy 32 Bit Debug DLLs to Build</Message>
@@ -128,7 +128,7 @@
       <AdditionalDependencies>dpp.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(ProjectDir)dependencies\32\release\bin\*.dll $(OutDir)</Command>
+      <Command>copy /y "$(ProjectDir)dependencies\32\release\bin\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy 32 Bit Release DLLs to Build</Message>
@@ -148,7 +148,7 @@
       <AdditionalDependencies>dpp.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(ProjectDir)dependencies\64\debug\bin\*.dll $(OutDir)</Command>
+      <Command>copy /y "$(ProjectDir)dependencies\64\debug\bin\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy 64 Bit Debug DLLs to Build</Message>
@@ -172,7 +172,7 @@
       <AdditionalDependencies>ws2_32.lib;dpp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(ProjectDir)dependencies\64\release\bin\*.dll $(OutDir)</Command>
+      <Command>copy /y "$(ProjectDir)dependencies\64\release\bin\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy 64 Bit Release DLLs to Build</Message>
