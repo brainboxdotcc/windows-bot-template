@@ -126,7 +126,9 @@ typedef std::variant<
 		connection,
 		connection_map,
 		thread,
-		thread_map
+		thread_map,
+		scheduled_event,
+		scheduled_event_map
 	> confirmable_t;
 
 /**
@@ -1432,6 +1434,86 @@ public:
 	 * @return true on successful detach of listener
 	 */
 	bool detach_thread_members_update(const event_handle _thread_members_update);
+
+	/**
+	 * @brief Called when a new scheduled event is created
+	 *
+	 * @param _guild_scheduled_event_create User function to attach to event
+	 * Event is called with the parameter type `const` dpp::guild_scheduled_event_create_t&
+	 * @return event_handle An opaque handle to the attached event, which can be used to refer to it later if needed
+	 */
+	event_handle on_guild_scheduled_event_create (std::function<void(const guild_scheduled_event_create_t& _event)> _guild_scheduled_event_create);
+	/**
+	 * @brief Detach listener from on_guild_scheduled_event_create
+	 * 
+	 * @param _guild_scheduled_event_create Handle to remove from event, previously returned by dpp::cluster::on_guild_scheduled_event_create()
+	 * @return true on successful detach of listener
+	 */
+	bool detach_guild_scheduled_event_create(const event_handle _guild_scheduled_event_create);
+
+	/**
+	 * @brief Called when a new scheduled event is updated
+	 *
+	 * @param _guild_scheduled_event_update User function to attach to event
+	 * Event is called with the parameter type `const` dpp::guild_scheduled_event_update_t&
+	 * @return event_handle An opaque handle to the attached event, which can be used to refer to it later if needed
+	 */
+	event_handle on_guild_scheduled_event_update (std::function<void(const guild_scheduled_event_update_t& _event)> _guild_scheduled_event_update);
+	/**
+	 * @brief Detach listener from on_guild_scheduled_event_update
+	 * 
+	 * @param _guild_scheduled_event_update Handle to remove from event, previously returned by dpp::cluster::on_guild_scheduled_event_update()
+	 * @return true on successful detach of listener
+	 */
+	bool detach_guild_scheduled_event_update(const event_handle _guild_scheduled_event_update);
+
+	/**
+	 * @brief Called when a new scheduled event is deleted
+	 *
+	 * @param _guild_scheduled_event_delete User function to attach to event
+	 * Event is called with the parameter type `const` dpp::guild_scheduled_event_delete_t&
+	 * @return event_handle An opaque handle to the attached event, which can be used to refer to it later if needed
+	 */
+	event_handle on_guild_scheduled_event_delete (std::function<void(const guild_scheduled_event_delete_t& _event)> _guild_scheduled_event_delete);
+	/**
+	 * @brief Detach listener from on_guild_scheduled_event_delete
+	 * 
+	 * @param _guild_scheduled_event_delete Handle to remove from event, previously returned by dpp::cluster::on_guild_scheduled_event_delete()
+	 * @return true on successful detach of listener
+	 */
+	bool detach_guild_scheduled_event_delete(const event_handle _guild_scheduled_event_delete);
+
+	/**
+	 * @brief Called when a user is added to a scheduled event
+	 *
+	 * @param _guild_scheduled_event_user_add User function to attach to event
+	 * Event is called with the parameter type `const` dpp::guild_scheduled_event_user_add_t&
+	 * @return event_handle An opaque handle to the attached event, which can be used to refer to it later if needed
+	 */
+	event_handle on_guild_scheduled_event_user_add (std::function<void(const guild_scheduled_event_user_add_t& _event)> _guild_scheduled_event_user_add);
+	/**
+	 * @brief Detach listener from on_guild_scheduled_event_user_add
+	 * 
+	 * @param _guild_scheduled_event_user_add Handle to remove from event, previously returned by dpp::cluster::on_guild_scheduled_event_user_add()
+	 * @return true on successful detach of listener
+	 */
+	bool detach_guild_scheduled_event_user_add(const event_handle _guild_scheduled_event_user_add);
+
+	/**
+	 * @brief Called when a user is removed to a scheduled event
+	 *
+	 * @param _guild_scheduled_event_user_remove User function to attach to event
+	 * Event is called with the parameter type `const` dpp::guild_scheduled_event_user_remove_t&
+	 * @return event_handle An opaque handle to the attached event, which can be used to refer to it later if needed
+	 */
+	event_handle on_guild_scheduled_event_user_remove (std::function<void(const guild_scheduled_event_user_remove_t& _event)> _guild_scheduled_event_user_remove);
+	/**
+	 * @brief Detach listener from on_guild_scheduled_event_user_remove
+	 * 
+	 * @param _guild_scheduled_event_user_remove Handle to remove from event, previously returned by dpp::cluster::on_guild_scheduled_event_user_remove()
+	 * @return true on successful detach of listener
+	 */
+	bool detach_guild_scheduled_event_user_remove(const event_handle _guild_scheduled_event_user_remove);
 
 	/**
 	 * @brief Called when packets are sent from the voice buffer.
@@ -2864,10 +2946,12 @@ public:
 	 * @param channel_id Channel in which thread to create
 	 * @param auto_archive_duration Duration after which thread auto-archives. Can be set to - 60, 1440 (for boosted guilds can also be: 4320, 10080)
 	 * @param thread_type Type of thread - GUILD_PUBLIC_THREAD, GUILD_NEWS_THREAD, GUILD_PRIVATE_THREAD
+	 * @param invitable whether non-moderators can add other non-moderators to a thread; only available when creating a private thread
+	 * @param rate_limit_per_user amount of seconds a user has to wait before sending another message (0-21600); bots, as well as users with the permission manage_messages, manage_thread, or manage_channel, are unaffected
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::thread object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
-	void thread_create(const std::string& thread_name, snowflake channel_id, uint16_t auto_archive_duration, channel_type thread_type, command_completion_event_t callback = {});
+	void thread_create(const std::string& thread_name, snowflake channel_id, uint16_t auto_archive_duration, channel_type thread_type, bool invitable, uint16_t rate_limit_per_user, command_completion_event_t callback = {});
 
 	/**
 	 * @brief Create a thread with a message (Discord: ID of a thread is same as message ID)
@@ -2877,10 +2961,11 @@ public:
 	 * @param channel_id Channel in which thread to create
 	 * @param message_id message to start thread with
 	 * @param auto_archive_duration Duration after which thread auto-archives. Can be set to - 60, 1440 (for boosted guilds can also be: 4320, 10080)
+	 * @param rate_limit_per_user amount of seconds a user has to wait before sending another message (0-21600); bots, as well as users with the permission manage_messages, manage_thread, or manage_channel, are unaffected
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::thread object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
-	void thread_create_with_message(const std::string& thread_name, snowflake channel_id, snowflake message_id, uint16_t auto_archive_duration, command_completion_event_t callback = {});
+	void thread_create_with_message(const std::string& thread_name, snowflake channel_id, snowflake message_id, uint16_t auto_archive_duration, uint16_t rate_limit_per_user, command_completion_event_t callback = {});
 
 	/**
 	 * @brief Join a thread
@@ -3103,6 +3188,64 @@ public:
 	 * On success the callback will contain a dpp::gateway object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void get_gateway_bot(command_completion_event_t callback);
+
+	/**
+	 * @brief Get all scheduled events for a guild
+	 *
+	 * @param guild_id Guild to get events for
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::scheduled_event_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_events_get(snowflake guild_id, command_completion_event_t callback);
+
+	/**
+	 * @brief Get users RSVP'd to an event
+	 *
+	 * @param guild_id Guild to get user list for
+	 * @param event_id Guild to get user list for
+	 * @param limit Maximum number of results to return
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::user_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_event_users_get(snowflake guild_id, snowflake event_id, command_completion_event_t callback, uint8_t limit = 100);
+
+	/**
+	 * @brief Create a scheduled event on a guild
+	 *
+	 * @param event Event to create (guild ID must be populated)
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::scheduled_event_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_event_create(const scheduled_event& event, command_completion_event_t callback = {});
+
+	/**
+	 * @brief Delete a scheduled event from a guild
+	 *
+	 * @param event_id Event ID to delete
+	 * @param guild_id Guild ID of event to delete
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_event_delete(snowflake event_id, snowflake guild_id, command_completion_event_t callback = {});
+
+	/**
+	 * @brief Edit/modify a scheduled event on a guild
+	 *
+	 * @param event Event to create (event ID and guild ID must be populated)
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::scheduled_event_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_event_edit(const scheduled_event& event, command_completion_event_t callback = {});
+
+	/**
+	 * @brief Get a scheduled event for a guild
+	 *
+	 * @param guild_id Guild to get event for
+	 * @param event_id Event ID to get
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::scheduled_event object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_event_get(snowflake guild_id, snowflake event_id, command_completion_event_t callback);
 
 
 };
