@@ -280,7 +280,7 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 * @param t Type of reply to send
 	 * @param m Message object to send. Not all fields are supported by Discord.
 	 * @param callback User function to execute when the api call completes.
-	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void reply(interaction_response_type t, const message & m, command_completion_event_t callback = {}) const;
 
@@ -290,7 +290,7 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 * @param t Type of reply to send
 	 * @param mt The string value to send, for simple text only messages
 	 * @param callback User function to execute when the api call completes.
-	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void reply(interaction_response_type t, const std::string & mt, command_completion_event_t callback = {}) const;
 
@@ -307,7 +307,7 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 *
 	 * @param m Message object to send. Not all fields are supported by Discord.
 	 * @param callback User function to execute when the api call completes.
-	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void edit_response(const message & m, command_completion_event_t callback = {}) const;
 
@@ -316,7 +316,7 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 *
 	 * @param mt The string value to send, for simple text only messages
 	 * @param callback User function to execute when the api call completes.
-	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void edit_response(const std::string & mt, command_completion_event_t callback = {}) const;
 
@@ -324,7 +324,7 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 * @brief Delete the original response for this interaction
 	 *
 	 * @param callback User function to execute when the api call completes.
-	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void delete_original_response(command_completion_event_t callback = {});
 
@@ -332,7 +332,7 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 * @brief Set the bot to 'thinking' state
 	 *
 	 * @param callback User function to execute when the api call completes.
-	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void thinking(command_completion_event_t callback = {}) const;
 
@@ -1141,24 +1141,27 @@ struct DPP_EXPORT message_create_t : public event_dispatch_t {
 	/**
 	 * @brief Reply to the message recieved in the event.
 	 * @param m Text to send
+	 * @param mention_replied_user mentions (pings) the author of message replied to, if true
 	 * @param callback User function to execute once the API call completes.
 	 * @note confirmation_callback_t::value contains a message object on success. On failure, value is undefined and confirmation_callback_t::is_error() is true.
 	 */
-	void reply(const std::string& m, command_completion_event_t callback = {}) const;
+	void reply(const std::string& m, bool mention_replied_user = false, command_completion_event_t callback = {}) const;
 	/**
 	 * @brief Reply to the message recieved in the event.
 	 * @param msg Message to send as a reply.
+	 * @param mention_replied_user mentions (pings) the author of message replied to, if true
 	 * @param callback User function to execute once the API call completes.
 	 * @note confirmation_callback_t::value contains a message object on success. On failure, value is undefined and confirmation_callback_t::is_error() is true.
 	 */
-	void reply(message& msg, command_completion_event_t callback = {}) const;
+	void reply(message& msg, bool mention_replied_user = false, command_completion_event_t callback = {}) const;
 	/**
 	 * @brief Reply to the message recieved in the event.
 	 * @param msg Message to send as a reply.
+	 * @param mention_replied_user mentions (pings) the author of message replied to, if true
 	 * @param callback User function to execute once the API call completes.
 	 * @note confirmation_callback_t::value contains a message object on success. On failure, value is undefined and confirmation_callback_t::is_error() is true.
 	 */
-	void reply(message&& msg, command_completion_event_t callback = {}) const;
+	void reply(message&& msg, bool mention_replied_user = false, command_completion_event_t callback = {}) const;
 };
 
 /** @brief Guild ban add */
@@ -1776,93 +1779,6 @@ public:
 	 * @param event Event parameters
 	 */
 	std::vector<std::function<void(const guild_scheduled_event_user_remove_t& event)>> guild_scheduled_event_user_remove;
-};
-
-/**
- * @brief The dpp::exception class derives from std::exception and supports some other
- * ways of passing in error details such as via std::string.
- */
-class exception : public std::exception
-{
-	/**
-	 * @brief Exception message
-	 */
-	std::string msg;
-
-public:
-
-	using std::exception::exception;
-
-	/**
-	 * @brief Construct a new exception object
-	 */
-	exception() = default;
-
-	/**
-	 * @brief Construct a new exception object
-	 * 
-	 * @param what reason message
-	 */
-	explicit exception(const char* what) : msg(what) { }
-
-	/**
-	 * @brief Construct a new exception object
-	 * 
-	 * @param what reason message
-	 * @param len length of reason message
-	 */
-	exception(const char* what, size_t len) : msg(what, len) { }
-
-	/**
-	 * @brief Construct a new exception object
-	 * 
-	 * @param what reason message
-	 */
-	explicit exception(const std::string& what) : msg(what) { }
-	
-	/**
-	 * @brief Construct a new exception object
-	 * 
-	 * @param what reason message
-	 */
-	explicit exception(std::string&& what) : msg(std::move(what)) { }
-
-	/**
-	 * @brief Construct a new exception object (copy constructor)
-	 */
-	exception(const exception&) = default;
-
-	/**
-	 * @brief Construct a new exception object (move constructor)
-	 */
-	exception(exception&&) = default;
-
-	/**
-	 * @brief Destroy the exception object
-	 */
-	~exception() override = default;
-
-	/**
-	 * @brief Copy assignment operator
-	 * 
-	 * @return exception& reference to self
-	 */
-	exception & operator = (const exception &) = default;
-
-	/**
-	 * @brief Move assignment operator
-	 * 
-	 * @return exception& reference to self
-	 */
-	exception & operator = (exception&&) = default;
-
-	/**
-	 * @brief Get exception message
-	 * 
-	 * @return const char* error message
-	 */
-	[[nodiscard]] const char* what() const noexcept override { return msg.c_str(); };
-
 };
 
 };
