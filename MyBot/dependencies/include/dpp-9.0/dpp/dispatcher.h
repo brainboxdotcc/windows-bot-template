@@ -751,6 +751,29 @@ struct DPP_EXPORT guild_create_t : public event_dispatch_t {
 	 * @brief guild that was created
 	 */
 	guild* created;
+	/**
+	 * @brief List of presences of all users on the guild.
+	 * 
+	 * This is only filled if you have the GUILD_PRESENCES
+	 * privileged intent.
+	 */
+	presence_map presences;
+	/**
+	 * @brief List of scheduled events in the guild
+	 */
+	scheduled_event_map scheduled_events;
+	/**
+	 * @brief List of stage instances in the guild
+	 */
+	stage_instance_map stage_instances;
+	/**
+	 * @brief List of threads in the guild
+	 */
+	thread_map threads;
+	/**
+	 * @brief List of stickers in the guild
+	 */
+	sticker_map stickers;
 };
 
 /** @brief Create channel */
