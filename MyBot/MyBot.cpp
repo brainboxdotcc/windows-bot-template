@@ -13,8 +13,8 @@ int main()
         });
 
         bot.on_message_create([&bot](const dpp::message_create_t& event) {
-            if (event.msg->content == "!ping") {
-                bot.message_create(dpp::message(event.msg->channel_id, "Pong!"));
+            if (event.msg.content == "!ping") {
+                bot.message_create(dpp::message(event.msg.channel_id, "Pong!"));
             }
         });
 
