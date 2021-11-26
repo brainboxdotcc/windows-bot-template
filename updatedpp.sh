@@ -74,7 +74,13 @@ echo "Cleaning up..."
 rm -rf temp
 
 echo "Committing..."
+git checkout main
+git pull
 git add -A MyBot/dependencies
 git commit -m "auto update to latest DPP master branch"
 git push
-
+git checkout vs2022
+git pull
+git merge master
+git push
+git checkout main
