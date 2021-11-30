@@ -81,6 +81,6 @@ git commit -m "auto update to latest DPP master branch"
 git push
 git checkout vs2022
 git pull
-git merge master
+git merge main
 git push
 git checkout main
