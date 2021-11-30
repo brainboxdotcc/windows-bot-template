@@ -36,16 +36,33 @@ namespace dpp {
 	typedef uint64_t snowflake;
 
 	/** @brief The managed class is the base class for various types that can
-	 * be stored in a cache that are identified by a dpp::snowflake id
+	 * be stored in a cache that are identified by a dpp::snowflake id.
 	 */
 	class DPP_EXPORT managed {
 	public:
-		/** Unique ID of object */
+		/**
+		 * @brief Unique ID of object set by Discord.
+		 * This value contains a timestamp, worker ID, internal server ID, and an incrementing value.
+		 * Only the timestamp is relavent to us as useful metadata.
+		 */
 		snowflake id;
-		/** Constructor, initialises id to 0 */
-		managed(const snowflake = 0);
-		/** Default destructor */
+		/**
+		 * @brief Constructor, initialises ID
+		 * @param nid ID to set
+		 */
+		managed(const snowflake nid = 0);
+		/**
+		 * @brief Destroy the managed object
+		 */
 		virtual ~managed() = default;
+
+		/**
+		 * @brief Get the creation time of this object according to Discord.
+		 * 
+		 * @return double creation time inferred from the snowflake ID.
+		 * The minimum possible value is the first second of 2015.
+		 */
+		double get_creation_time() const;
 	};
 
 	/** @brief Supported image types for profile pictures */
@@ -74,6 +91,23 @@ namespace dpp {
 		ll_critical
 	};
 
+	/**
+	 * @brief Timestamp formats for dpp::utility::timestamp()
+	 * 
+	 * @note These values are the actual character values specified by the Discord API
+	 * and should not be changed unless the Discord API changes the specification!
+	 * They have been sorted into numerical order of their ASCII value to keep C++ happy.
+	 */
+	enum time_format : uint8_t {
+		tf_long_date		=	'D',		/// "20 April 2021" - Long Date
+		tf_long_datetime	=	'F',		/// "Tuesday, 20 April 2021 16:20" - Long Date/Time
+		tf_relative_time	=	'R',		/// "2 months ago" - Relative Time		
+		tf_long_time		=	'T',		/// "16:20:30" - Long Time
+		tf_short_date		=	'd',		/// "20/04/2021" - Short Date
+		tf_short_datetime	=	'f',		/// "20 April 2021 16:20" - Short Date/Time
+		tf_short_time		=	't',		/// "16:20" - Short Time
+	};
+
 	/** @brief Utility helper functions, generally for logging */
 	namespace utility {
 
@@ -94,6 +128,15 @@ namespace dpp {
 		 * @param callback The callback to call on completion.
 		 */
 		void DPP_EXPORT exec(const std::string& cmd, std::vector<std::string> parameters = {}, cmd_result_t callback = {});
+
+		/**
+		 * @brief Return a mentionable timestamp (used in a discord embed)
+		 * 
+		 * @param ts Time stamp to convert
+		 * @param tf Format of timestamp using dpp::utility::time_format
+		 * @return std::string 
+		 */
+		std::string DPP_EXPORT timestamp(time_t ts, time_format tf);
 
 		/**
 		 * @brief Returns urrent date and time
@@ -323,6 +366,7 @@ namespace dpp {
 #include <dpp/webhook.h>
 #include <dpp/presence.h>
 #include <dpp/intents.h>
+#include <dpp/message.h>
 #include <dpp/slashcommand.h>
 #include <dpp/stage_instance.h>
 #include <dpp/auditlog.h>
