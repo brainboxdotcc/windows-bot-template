@@ -3248,7 +3248,7 @@ public:
 	 * @param duration Duration in seconds to run the collector for
 	 * @param event Event to attach to, e.g. cluster::on_message_create
 	 */
-	collector(class cluster* cl, uint64_t duration, event_router_t<T> & event) : triggered(false) {
+	collector(class cluster* cl, uint64_t duration, event_router_t<T> & event) : owner(cl), triggered(false) {
 		using namespace std::placeholders;
 		std::function<void(const T&)> f = [this](const T& event) {
 			const C* v = filter(event);
@@ -3280,6 +3280,19 @@ public:
 	 * saved to a list (e.g. a dpp::message out of a dpp::message_create_t) and
 	 * return it as the return value. Returning a value of nullptr causes no
 	 * object to be stored.
+	 * 
+	 * Here is an example of how to filter messages which have specific text in them.
+	 * This should be used with the specialised type dpp::message_collector
+	 * 
+	 * ```cpp
+	 * virtual const dpp::message* filter(const dpp::message_create_t& m) {
+    	 *     if (m.msg.content.find("something i want") != std::string::npos) {
+	 *         return &m.msg;
+	 *     } else {
+	 *         return nullptr;
+	 *     }
+	 * }
+	 * ```
 	 * 
 	 * @param element The event data to filter
 	 * @return const C* Returned object or nullptr
