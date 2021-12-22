@@ -180,6 +180,14 @@ public:
 	std::string build_json() const;
 
 	/**
+	 * @brief Returns true if the user is in time-out (communication disabled)
+	 * 
+	 * @return true user is in time-out
+	 * @return false user is not in time-out
+	 */
+	bool is_communication_disabled() const;
+
+	/**
 	 * @brief Returns true if the user is deafened
 	 * 
 	 * @return true user is deafened
@@ -214,10 +222,10 @@ public:
 	/**
 	 * @brief Returns the members's per guild avatar if they have one, otherwise returns an empty string
 	 * 
-	 * @param size The size of the avatar in pixels. If not specified, the default sized avatar is returned.
-	 * @return std::string avatar or empty string
+	 * @param size The size of the avatar in pixels. It can be any power of two between 16 and 4096. If not specified, the default sized avatar is returned.
+	 * @return std::string avatar url or empty string
 	 */
-	std::string get_avatar_url(uint32_t size = 0) const;
+	std::string get_avatar_url(uint16_t size = 0) const;
 
 	/**
 	 * @brief Set the nickname 
@@ -537,6 +545,38 @@ public:
 	 * @return True if the user specified is in a vc, false if they aren't
 	 */
 	bool connect_member_voice(snowflake user_id, bool self_mute = false, bool self_deaf = false);
+
+    /**
+	 * @brief Get the banner url of the guild if it have one, otherwise returns an empty string
+	 *
+	 * @param size The size of the banner in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized banner is returned.
+	 * @return std::string banner url or empty string
+	 */
+    std::string get_banner_url(uint16_t size = 0) const;
+
+    /**
+	 * @brief Get the discovery splash url of the guild if it have one, otherwise returns an empty string
+	 *
+	 * @param size The size of the discovery splash in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized discovery splash is returned.
+	 * @return std::string discovery splash url or empty string
+	 */
+    std::string get_discovery_splash_url(uint16_t size = 0) const;
+
+    /**
+	 * @brief Get the icon url of the guild if it have one, otherwise returns an empty string
+	 *
+	 * @param size The size of the icon in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized icon is returned.
+	 * @return std::string icon url or empty string
+	 */
+    std::string get_icon_url(uint16_t size = 0) const;
+
+    /**
+	 * @brief Get the splash url of the guild if it have one, otherwise returns an empty string
+	 *
+	 * @param size The size of the splash in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized splash is returned.
+	 * @return std::string splash url or empty string
+	 */
+    std::string get_splash_url(uint16_t size = 0) const;
 
 	/**
 	 * @brief Set the name of the guild in the object
