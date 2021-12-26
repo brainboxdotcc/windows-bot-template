@@ -101,11 +101,9 @@ enum activity_type : uint8_t {
 	/// "Listening to..."
 	at_listening	=	2,
 	/// "Watching..."
-	at_watching	=	3,
-	/// "Emoji..."
-	at_custom	=	4,
+	at_custom	=	3,
 	/// "Competing in..."
-	at_competing	=	5
+	at_competing	=	4
 };
 
 /**
