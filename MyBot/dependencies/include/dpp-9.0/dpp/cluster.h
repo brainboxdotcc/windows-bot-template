@@ -1587,7 +1587,7 @@ public:
 	 * @param channel_id Channel ID to retrieve messages for
 	 * @param around Messages should be retrieved around this ID if this is set to non-zero
 	 * @param before Messages before this ID should be retrieved if this is set to non-zero
-	 * @param after Messages before this ID should be retrieved if this is set to non-zero
+	 * @param after Messages after this ID should be retrieved if this is set to non-zero
 	 * @param limit This number of messages maximum should be returned.
 	 * If the number passed for `limit` is less than 100, then this will be executed in one REST call. If you
 	 * specify a limit greater than 100, then there will be one REST call per 100 messages.
@@ -1774,7 +1774,9 @@ public:
 	 * @brief Bulk delete messages from a channel. The callback function is called when the message has been edited
 	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
 	 *
-	 * @param message_ids List of message IDs to delete (maximum of 100 message IDs)
+	 * @note If any message provided older than 2 weeks or any duplicate message ID, it will fail.
+	 *
+	 * @param message_ids List of message IDs to delete (at least 2 and at most 100 message IDs)
 	 * @param channel_id Channel to delete from
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
