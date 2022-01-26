@@ -139,9 +139,6 @@ public:
 	 * e.g. "Waiting in lobby"
 	 */
 	std::string state;
-	/** What the player is currently doing
-	 */
-	std::string details;
 	/** URL.
 	 * Only applicable for certain sites such a YouTube
 	 * Alias: details
