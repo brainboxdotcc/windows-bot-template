@@ -113,129 +113,17 @@ enum activity_type : uint8_t {
  */
 enum activity_flags {
 	/// In an instance
-	af_instance	= 1 << 0,
+	af_instance	= 0b00000001,
 	/// Joining
-	af_join		= 1 << 1,
+	af_join		= 0b00000010,
 	/// Spectating
-	af_spectate	= 1 << 2,
+	af_spectate	= 0b00000100,
 	/// Sending join request
-	af_join_request	= 1 << 3,
+	af_join_request	= 0b00001000,
 	/// Synchronising
-	af_sync		= 1 << 4,
+	af_sync		= 0b00010000,
 	/// Playing
-	af_play		= 1 << 5,
-	/// Party privacy friends
-	af_party_privacy_friends = 1 << 6,
-	/// Party privacy voice channel
-	af_party_privacy_voice_channel = 1 << 7,
-	/// Embedded
-	af_embedded = 1 << 8
-};
-
-/**
- * @brief An activity button is a custom button shown in the rich presence. Can be to join a game or whatever
- */
-struct DPP_EXPORT activity_button {
-public:
-	/** The text shown on the button (1-32 characters)
-	 */
-	std::string label;
-	/** The url opened when clicking the button (1-512 characters). It's may be empty
-	 *
-	 * @note Bots cannot access the activity button URLs.
-	 */
-	std::string url;
-
-	activity_button() = default;
-};
-
-/**
- * @brief The emoji used for a custom status
- */
-struct DPP_EXPORT activity_emoji {
-public:
-	/** The name of the emoji
-	 */
-	std::string name;
-	/** The ID of the emoji
-	 */
-	snowflake id;
-	/** Whether the emoji is animated
-	 */
-	bool is_animated;
-
-	/**
-	 * @brief Format to name if unicode, name:id if has id or a:name:id if animated
-	 *
-	 * @return Formatted name for reactions
-	 */
-	std::string format() const;
-
-	/**
-	 * @brief Get the mention/ping for the emoji
-	 *
-	 * @return std::string mention
-	 */
-	std::string get_mention() const;
-
-	activity_emoji();
-};
-
-/**
- * @brief An activity asset are the images and the hover text displayed in the rich presence
- */
-struct DPP_EXPORT activity_assets {
-public:
-	/** The large asset image which usually contain snowflake ID or prefixed image ID
-	 */
-	std::string large_image;
-	/** Text displayed when hovering over the large image of the activity
-	 */
-	std::string large_text;
-	/** The small asset image which usually contain snowflake ID or prefixed image ID
-	 */
-	std::string small_image;
-	/** Text displayed when hovering over the small image of the activity
-	 */
-	std::string small_text;
-
-	activity_assets() = default;
-};
-
-/**
- * @brief Secrets for Rich Presence joining and spectating
- */
-struct DPP_EXPORT activity_secrets {
-public:
-	/** The secret for joining a party
-	 */
-	std::string join;
-	/** The secret for spectating a game
-	 */
-	std::string spectate;
-	/** The secret for a specific instanced match
-	 */
-	std::string match;
-
-	activity_secrets() = default;
-};
-
-/**
- * @brief Information for the current party of the player
- */
-struct DPP_EXPORT activity_party {
-public:
-	/** The ID of the party
-	 */
-	snowflake id;
-	/** The party's current size. Used to show the party's current size
-	 */
-	int32_t current_size;
-	/** The party's maximum size. Used to show the party's maximum size
-	 */
-	int32_t maximum_size;
-
-	activity_party() = default;
+	af_play		= 0b00100000
 };
 
 /**
@@ -251,29 +139,11 @@ public:
 	 * e.g. "Waiting in lobby"
 	 */
 	std::string state;
-	/** What the player is currently doing
-	 */
-	std::string details;
-	/** Images for the presence and their hover texts
-	 */
-	activity_assets assets;
 	/** URL.
 	 * Only applicable for certain sites such a YouTube
 	 * Alias: details
 	 */
 	std::string url;
-	/** The custom buttons shown in the Rich Presence (max 2)
-	 */
-	std::vector<activity_button> buttons;
-	/** The emoji used for the custom status
-	 */
-	activity_emoji emoji;
-	/** Information of the current party if there is one
-	 */
-	activity_party party;
-	/** Secrets for rich presence joining and spectating
-	 */
-	activity_secrets secrets;
 	/** Activity type
 	 */
 	activity_type type;
@@ -289,28 +159,9 @@ public:
 	/** Creating application (e.g. a linked account on the user's client)
 	 */
 	snowflake application_id;
-	/** Flags bitmask from dpp::activity_flags
+	/** Flags bitmask from activity_flags
 	 */
 	uint8_t flags;
-	/** Whether or not the activity is an instanced game session
-	 */
-	bool is_instance;
-
-	/**
-	 * @brief Get the assets large image url if they have one, otherwise returns an empty string
-	 *
-	 * @param size The size of the image in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized image is returned.
-	 * @return image url or empty string
-	 */
-	std::string get_large_asset_url(uint16_t size = 0) const;
-
-	/**
-	 * @brief Get the assets small image url if they have one, otherwise returns an empty string
-	 *
-	 * @param size The size of the image in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized image is returned.
-	 * @return image url or empty string
-	 */
-	std::string get_small_asset_url(uint16_t size = 0) const;
 
 	activity() = default;
 
@@ -336,7 +187,7 @@ public:
 	/** Guild ID. Apparently, Discord supports this internally but the client doesnt... */
 	snowflake       guild_id;
 
-	/** Flags bitmask containing dpp::presence_flags */
+	/** Flags bitmask containing presence_flags */
 	uint8_t		flags;
 
 	/** List of activities */
