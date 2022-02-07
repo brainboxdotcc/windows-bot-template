@@ -360,11 +360,6 @@ struct DPP_EXPORT interaction_create_t : public event_dispatch_t {
 	 * @brief command interaction
 	 */
 	interaction command;
-
-	/**
-	 * @brief Destory this object
-	 */
-	virtual ~interaction_create_t() = default;
 };
 
 /**
