@@ -19,8 +19,8 @@ echo "Fetching latest DPP"
 mkdir temp
 cd temp || exit
 echo "Download assets from CI..."
-gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1
-gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }')
+gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'dev$'\t' | grep ^completed | head -n1
+gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'dev$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }')
 
 if [[ ! -d "./libdpp - Windows x64-Release-vs2019" ]] ; then
 	echo "Download of assets failed (temporary failure) - not emitting a spurious failure, but exiting now."
@@ -65,7 +65,7 @@ cd .. || exit
 echo "Converting linefeeds from dos to unix"
 # dos2unix
 cd .. || exit
-cd MyBot/dependencies/include/dpp-9.0/dpp || exit
+cd MyBot/dependencies/include/dpp-10.0/dpp || exit
 find . -exec dos2unix {} \;
 cd ../../../../.. || exit
 find . -name '*.cmake' -exec dos2unix -q {} \;

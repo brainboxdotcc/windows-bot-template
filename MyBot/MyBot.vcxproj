@@ -72,23 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>dependencies\include\dpp-9.0;$(IncludePath)</IncludePath>
-    <LibraryPath>dependencies\32\debug\lib\dpp-9.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>dependencies\include\dpp-10.0;$(IncludePath)</IncludePath>
+    <LibraryPath>dependencies\32\debug\lib\dpp-10.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>dependencies\include\dpp-9.0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>dependencies\32\release\lib\dpp-9.0;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>dependencies\include\dpp-10.0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>dependencies\32\release\lib\dpp-10.0;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>dependencies\include\dpp-9.0;$(IncludePath)</IncludePath>
-    <LibraryPath>dependencies\64\debug\lib\dpp-9.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>dependencies\include\dpp-10.0;$(IncludePath)</IncludePath>
+    <LibraryPath>dependencies\64\debug\lib\dpp-10.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>dependencies\include\dpp-9.0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>dependencies\64\release\lib\dpp-9.0;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>dependencies\include\dpp-10.0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>dependencies\64\release\lib\dpp-10.0;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -182,47 +182,47 @@
     <ClCompile Include="MyBot.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\auditlog.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\ban.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\cache.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\channel.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\cluster.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\commandhandler.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\discord.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\discordclient.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\discordevents.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\discordvoiceclient.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\dispatcher.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\dpp.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\dtemplate.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\emoji.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\etf.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\event.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\export.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\guild.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\httplib.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\integration.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\intents.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\invite.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\json_fwd.hpp" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\message.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\presence.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\prune.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\queues.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\role.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\slashcommand.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\socket.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\sslclient.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\stage_instance.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\stringops.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\sysdep.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\user.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\version.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\voiceregion.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\voicestate.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\webhook.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\win32_safe_warnings.h" />
-    <ClInclude Include="dependencies\include\dpp-9.0\dpp\wsclient.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\auditlog.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\ban.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cache.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\channel.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\commandhandler.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discord.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordclient.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordevents.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordvoiceclient.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dispatcher.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dpp.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dtemplate.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\emoji.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\etf.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\event.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\export.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\guild.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\httplib.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\integration.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\intents.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\invite.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_fwd.hpp" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\message.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\presence.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\prune.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\queues.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\role.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\slashcommand.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\socket.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sslclient.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\stage_instance.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\stringops.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sysdep.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\user.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\version.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\voiceregion.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\voicestate.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\webhook.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\win32_safe_warnings.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\wsclient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
