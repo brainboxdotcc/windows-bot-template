@@ -81,7 +81,7 @@ git commit -m "auto update to latest DPP master branch"
 git push
 git checkout vs2022
 git pull
-git merge main --squash --no-commit
+git merge main -f --squash --no-commit
 git commit -am "automatic merge from main to vs2022"
 git push
 git checkout main
