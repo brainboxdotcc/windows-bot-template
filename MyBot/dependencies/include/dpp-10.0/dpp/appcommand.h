@@ -20,8 +20,13 @@
  ************************************************************************************/
 #pragma once
 #include <dpp/export.h>
+#include <dpp/snowflake.h>
+#include <dpp/managed.h>
+#include <dpp/message.h>
+#include <dpp/channel.h>
+#include <dpp/role.h>
+#include <dpp/user.h>
 #include <variant>
-#include <dpp/discord.h>
 #include <dpp/json_fwd.hpp>
 
 namespace dpp {
@@ -31,9 +36,10 @@ namespace dpp {
  * This value represents that maximum. interaction_response::add_autocomplete_choice does not allow
  * adding more than this number of elements to the vector.
  */
-const size_t AUTOCOMPLETE_MAX_CHOICES = 25;
+#ifndef AUTOCOMPLETE_MAX_CHOICES
+	#define AUTOCOMPLETE_MAX_CHOICES 25
+#endif
 
-enum channel_type;
 /**
  * @brief Represents command option types.
  * These are the possible parameter value types.
@@ -51,14 +57,16 @@ enum command_option_type : uint8_t {
 	co_boolean = 5,
 	/** A user snowflake id */
 	co_user = 6,
-	/** A channel snowflake id */
+	/** A channel snowflake id. Includes all channel types and categories */
 	co_channel = 7,
 	/** A role snowflake id */
 	co_role = 8,
-	/** A mentionable */
+	/** A mentionable. Includes users and roles */
 	co_mentionable = 9,
 	/** Any double between -2^53 and 2^53 */
-	co_number = 10
+	co_number = 10,
+	/** File attachment type */
+	co_attachment = 11,
 };
 
 /**
@@ -93,6 +101,14 @@ struct DPP_EXPORT command_option_choice {
 	 * @param v value to initialise with
 	 */
 	command_option_choice(const std::string &n, command_value v);
+
+	/**
+	 * @brief Fill object properties from JSON
+	 *
+	 * @param j JSON to fill from
+	 * @return command_option_choice& Reference to self
+	 */
+	command_option_choice& fill_from_json(nlohmann::json* j);
 };
 
 /**
@@ -196,6 +212,14 @@ struct DPP_EXPORT command_option {
 	 * @throw dpp::exception You attempted to enable auto complete on a command_option that has choices added to it
 	 */
 	command_option& set_auto_complete(bool autocomp);
+
+	/**
+	 * @brief Fill object properties from JSON. Fills options recursively.
+	 *
+	 * @param j JSON to fill from
+	 * @return command_option& Reference to self
+	 */
+	command_option& fill_from_json(nlohmann::json* j);
 };
 
 /**
@@ -220,7 +244,7 @@ enum interaction_response_type {
 	ir_deferred_update_message = 6,			//!< for components, ACK an interaction and edit the original message later; the user does not see a loading state
 	ir_update_message = 7,				//!< for components, edit the message the component was attached to
 	ir_autocomplete_reply = 8,			//!< Reply to autocomplete interaction. Be sure to do this within 500ms of the interaction!
-	ir_modal_dialog = 9,				//!< A modal dialog box - Experimental
+	ir_modal_dialog = 9,				//!< A modal dialog box
 };
 
 /**
@@ -305,8 +329,6 @@ struct DPP_EXPORT interaction_response {
 
 /**
  * @brief Represents a modal dialog box response to an interaction.
- * 
- * @note This is currently experimental
  * 
  * A dialog box is a modal popup which appears to the user instead of a message. One or more
  * components are displayed on a form (the same component structure as within a dpp::message).
@@ -412,6 +434,10 @@ struct DPP_EXPORT command_resolved {
 	 */
 	std::map<dpp::snowflake, dpp::guild_member> members;
 	/**
+	 * @brief Resolved total guild member permissions in the channel, including overwrites
+	 */
+	std::map<dpp::snowflake, uint64_t> member_permissions;
+	/**
 	 * @brief Resolved roles
 	 */
 	std::map<dpp::snowflake, dpp::role> roles;
@@ -419,10 +445,14 @@ struct DPP_EXPORT command_resolved {
 	 * @brief Resolved channels
 	 */
 	std::map<dpp::snowflake, dpp::channel> channels;
-    /**
-     * @brief Resolved messages
-     */
-    std::map<dpp::snowflake, dpp::message> messages;
+	/**
+	 * @brief Resolved messages
+	 */
+	std::map<dpp::snowflake, dpp::message> messages;
+	/**
+	 * @brief Resolved attachments
+	 */
+	std::map<dpp::snowflake, dpp::attachment> attachments;
 };
 
 /**
@@ -455,7 +485,7 @@ enum interaction_type {
 	it_application_command = 2,	//!< application command (slash command)
 	it_component_button = 3,	//!< button click (component interaction)
 	it_autocomplete = 4,		//!< Autocomplete interaction
-	it_modal_submit = 5,		//!< Modal form submission (experimental)
+	it_modal_submit = 5,		//!< Modal form submission
 };
 
 /**
@@ -568,6 +598,7 @@ public:
 	command_resolved resolved;				    //!< Resolved user/role etc
 	std::string locale;                                         //!< User's locale (language)
 	std::string guild_locale;                                   //!< Guild's locale (language) - for guild interactions only
+	cache_policy_t cache_policy;                                //!< Cache policy from cluster
 
 	/**
 	 * @brief Fill object properties from JSON
@@ -621,6 +652,28 @@ public:
 	snowflake id;                  //!< the ID of the role or user
 	command_permission_type type;  //!< the type of permission
 	bool permission;               //!< true to allow, false, to disallow
+
+	/**
+	 * @brief Construct a new command permission object
+	 */
+	command_permission() = default;
+
+	/**
+	 * @brief Construct a new command permission object
+	 *
+	 * @param id The ID of the role or user
+	 * @param t The permission type
+	 * @param permission True to allow, false, to disallow
+	 */
+	command_permission(snowflake id, const command_permission_type t, bool permission);
+
+	/**
+	 * @brief Fill object properties from JSON
+	 *
+	 * @param j JSON to fill from
+	 * @return command_permission& Reference to self
+	 */
+	command_permission &fill_from_json(nlohmann::json *j);
 };
 
 /**
@@ -642,6 +695,19 @@ public:
 	snowflake application_id;                     //!< the id of the application the command belongs to
 	snowflake guild_id;                           //!< the id of the guild
 	std::vector<command_permission> permissions;  //!< the permissions for the command in the guild
+
+	/**
+	 * @brief Construct a new guild command permissions object
+	 */
+	guild_command_permissions();
+
+	/**
+	 * @brief Fill object properties from JSON
+	 *
+	 * @param j JSON to fill from
+	 * @return guild_command_permissions& Reference to self
+	 */
+	guild_command_permissions &fill_from_json(nlohmann::json *j);
 };
 
 /**
@@ -803,5 +869,10 @@ void to_json(nlohmann::json& j, const slashcommand& cmd);
  * @brief A group of application slash commands
  */
 typedef std::unordered_map<snowflake, slashcommand> slashcommand_map;
+
+/**
+ * @brief A group of guild command permissions
+ */
+typedef std::unordered_map<snowflake, guild_command_permissions> guild_command_permissions_map;
 
 };
