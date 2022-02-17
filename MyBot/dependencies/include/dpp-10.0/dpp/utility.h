@@ -29,12 +29,12 @@
 #include <functional>
 
 /**
- * @brief The main namespace for D++ functions. classes and types
+ * @brief The main namespace for D++ functions, classes and types
  */
 namespace dpp {
 
 	/**
-	 * @brief Utility helper functions, generally for logging
+	 * @brief Utility helper functions, generally for logging, running programs, time/date manipulation, etc
 	 */
 	namespace utility {
 
@@ -89,18 +89,18 @@ namespace dpp {
 		void DPP_EXPORT exec(const std::string& cmd, std::vector<std::string> parameters = {}, cmd_result_t callback = {});
 
 		/**
-		 * @brief Return a mentionable timestamp (used in a discord embed)
+		 * @brief Return a mentionable timestamp (used in a message). These timestamps will display the given timestamp in the user's timezone and locale.
 		 * 
 		 * @param ts Time stamp to convert
 		 * @param tf Format of timestamp using dpp::utility::time_format
-		 * @return std::string 
+		 * @return std::string The formatted timestamp
 		 */
-		std::string DPP_EXPORT timestamp(time_t ts, time_format tf);
+		std::string DPP_EXPORT timestamp(time_t ts, time_format tf = tf_short_datetime);
 
 		/**
 		 * @brief Returns current date and time
 		 * 
-		 * @return std::string Current date and time
+		 * @return std::string Current date and time in "Y-m-d H:M:S" format
 		 */
 		std::string DPP_EXPORT current_date_time();
 		/**
@@ -124,8 +124,20 @@ namespace dpp {
 
 			/**
 			 * @brief Construct a new iconhash object
+			 * @param _first Leftmost portion of the hash value
+			 * @param _second Rightmost portion of the hash value
 			 */
-			iconhash();
+			iconhash(uint64_t _first = 0, uint64_t _second = 0);
+
+			/**
+			 * @brief Construct a new iconhash object
+			 */
+			iconhash(const iconhash&);
+
+			/**
+			 * @brief Destroy the iconhash object
+			 */
+			~iconhash();
 
 			/**
 			 * @brief Construct a new iconhash object
@@ -147,6 +159,14 @@ namespace dpp {
 			 * string is not exactly 32 characters long.
 			 */
 			iconhash& operator=(const std::string &assignment);
+
+			/**
+			 * @brief Check if one iconhash is equal to another
+			 * 
+			 * @param other other iconhash to compare
+			 * @return True if the iconhash objects match
+			 */
+			bool operator==(const iconhash& other) const;
 
 			/**
 			 * @brief Change value of iconhash object
@@ -216,25 +236,32 @@ namespace dpp {
 			uptime(time_t diff);
 
 			/**
+			 * @brief Construct a new uptime object
+			 * 
+			 * @param diff A time_t to initialise the object from
+			 */
+			uptime(double diff);
+
+			/**
 			 * @brief Get uptime as string
 			 * 
 			 * @return std::string Uptime as string
 			 */
-			std::string to_string();
+			std::string to_string() const;
 
 			/**
 			 * @brief Get uptime as seconds
 			 * 
 			 * @return uint64_t Uptime as seconds
 			 */
-			uint64_t to_secs();
+			uint64_t to_secs() const;
 
 			/**
 			 * @brief Get uptime as milliseconds
 			 * 
 			 * @return uint64_t Uptime as milliseconds
 			 */
-			uint64_t to_msecs();
+			uint64_t to_msecs() const;
 		};
 
 		/**
@@ -245,7 +272,7 @@ namespace dpp {
 		 * @param blue blue value, between 0 and 1 inclusive
 		 * @return uint32_t returned integer colour value
 		 */
-		uint32_t rgb(float red, float green, float blue);
+		uint32_t DPP_EXPORT rgb(float red, float green, float blue);
 
 		/**
 		 * @brief Convert ints to RGB for sending in embeds
@@ -255,7 +282,7 @@ namespace dpp {
 		 * @param blue blue value, between 0 and 255 inclusive
 		 * @return uint32_t returned integer colour value
 		 */
-		uint32_t rgb(int red, int green, int blue);
+		uint32_t DPP_EXPORT rgb(int red, int green, int blue);
 
 		/**
 		 * @brief Output hex values of a section of memory for debugging
@@ -328,11 +355,63 @@ namespace dpp {
 		 * @brief Create a bot invite
 		 * 
 		 * @param bot_id Bot ID
-		 * @param permissions Permissions of the bot to invite
+		 * @param permissions Permission bitmask of the bot to invite
 		 * @param scopes Scopes to use
 		 * @return Invite URL
 		 */
 		std::string DPP_EXPORT bot_invite_url(const snowflake bot_id, const uint64_t permissions = 0, const std::vector<std::string>& scopes = {"bot", "applications.commands"});
-	};
 
+		/**
+		 * @brief Escapes Discord's markdown sequences in a string
+		 * 
+		 * @param text Text to escape
+		 * @param escape_code_blocks If set to false, then code blocks are not escaped.
+		 * This means that you can still use a code block, and the text within will be left as-is.
+		 * If set to true, code blocks will also be escaped so that ` symbol may be used as a normal
+		 * character.
+		 * @return std::string The text with the markdown special characters escaped with a backslash
+		 */
+		std::string DPP_EXPORT markdown_escape(const std::string& text, bool escape_code_blocks = false);
+
+		/**
+		 * @brief Encodes a url parameter similar to [php urlencode()](https://www.php.net/manual/en/function.urlencode.php)
+		 * 
+		 * @param value String to encode
+		 * @return std::string URL encoded string
+		 */
+		std::string DPP_EXPORT url_encode(const std::string &value);
+
+		/**
+		 * @brief Returns the library's version string
+		 * 
+		 * @return std::string version
+		 */
+		std::string DPP_EXPORT version();
+
+		/**
+		 * @brief Build a URL parameter string e.g. "?a=b&c=d&e=f" from a map of key/value pairs.
+		 * Entries with empty key names or values are omitted.
+		 * 
+		 * @param parameters parameters to create a url query string for
+		 * @return std::string A correctly encoded url query string
+		 */
+		std::string DPP_EXPORT make_url_parameters(const std::map<std::string, std::string>& parameters);
+
+		/**
+		 * @brief Build a URL parameter string e.g. "?a=b&c=d&e=f" from a map of key/value pairs.
+		 * Entries with empty key names or zero values are omitted.
+		 * 
+		 * @param parameters parameters to create a url query string for
+		 * @return std::string A correctly encoded url query string
+		 */
+		std::string DPP_EXPORT make_url_parameters(const std::map<std::string, uint64_t>& parameters);
+
+		/**
+		 * @brief Set the name of the current thread for debugging and statistical reporting
+		 * 
+		 * @param name New name to set
+		 */
+		void DPP_EXPORT set_thread_name(const std::string& name);
+
+	};
 };

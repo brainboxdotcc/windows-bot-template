@@ -30,6 +30,7 @@
 #include <sstream>
 #include <iostream>
 
+namespace dpp {
 /**
  * @brief Convert a string to lowercase using tolower()
  * 
@@ -100,7 +101,7 @@ inline std::string trim(std::string s)
  * @param value Value
  * @return std::string number with commas added 
  */
-template<class T> std::string Comma(T value)
+template<class T> std::string comma(T value)
 {
 	std::stringstream ss;
 	ss.imbue(std::locale(""));
@@ -143,17 +144,69 @@ template <typename T> T from_string(const std::string &s)
 	return t;
 }
 
+/**
+ * @brief Specialised conversion of uint64_t from string
+ * 
+ * @tparam int64_t 
+ * @param s string to convert 
+ * @return uint64_t return value
+ */
 template <uint64_t> uint64_t from_string(const std::string &s)
 {
 	return std::stoull(s, 0, 10);
 }
 
+/**
+ * @brief Specialised conversion of uint32_t from string
+ * 
+ * @tparam uint32_t 
+ * @param s string to convert
+ * @return uint32_t return value
+ */
 template <uint32_t> uint32_t from_string(const std::string &s)
 {
 	return std::stoul(s, 0, 10);
 }
 
+/**
+ * @brief Specialised conversion of int from string
+ * 
+ * @tparam int 
+ * @param s string to convert
+ * @return int return value
+ */
 template <int> int from_string(const std::string &s)
 {
 	return std::stoi(s, 0, 10);
 }
+
+/**
+ * @brief Convert a numeric value to hex
+ * 
+ * @tparam T numeric type
+ * @param i numeric value
+ * @return std::string value in hex, the length will be 2* the raw size of the type
+ */
+template <typename T> std::string to_hex(T i)
+{
+  std::stringstream stream;
+  stream << std::setfill('0') << std::setw(sizeof(T)*2) << std::hex << i;
+  return stream.str();
+}
+
+/**
+ * @brief Format a numeric type as a string with leading zeroes
+ * 
+ * @tparam T numeric type
+ * @param i numeric value
+ * @param width width of type including the leading zeroes
+ * @return std::string resultant string with leading zeroes
+ */
+template <typename T> std::string leading_zeroes(T i, size_t width)
+{
+  std::stringstream stream;
+  stream << std::setfill('0') << std::setw(width) << std::dec << i;
+  return stream.str();
+}
+
+};

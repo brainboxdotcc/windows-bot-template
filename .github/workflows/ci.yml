@@ -1,0 +1,25 @@
+name: Windows Template CI
+on: [push, pull_request]
+
+jobs:
+  windows: # Windows x64 and x86 build matrix
+    strategy:
+      fail-fast: false # Don't cancel other matrix jobs if one fails
+      matrix:
+        cfg:
+        - { name: x64,  arch: x64, config: Release, os: 'windows-2019' }
+        - { name: x64,  arch: x64, config: Debug, os: 'windows-2019' }
+        - { name: x86,  arch: x86, config: Release, os: 'windows-2019' }
+        - { name: x86,  arch: x86, config: Debug, os: 'windows-2019' }
+
+    name: "Windows ${{matrix.cfg.name}}-${{matrix.cfg.config}}"
+    runs-on: ${{matrix.cfg.os}}
+    steps:
+      - name: Checkout windows-bot-template
+        uses: actions/checkout@v2
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Build Project
+        run: msbuild /p:Configuration=${{matrix.cfg.config}} /p:Platform="${{matrix.cfg.arch}}"

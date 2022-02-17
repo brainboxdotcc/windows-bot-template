@@ -27,7 +27,8 @@
 #include <dpp/guild.h>
 #include <optional>
 #include <variant>
-#include <dpp/json_fwd.hpp>
+#include <dpp/nlohmann/json_fwd.hpp>
+#include <dpp/json_interface.h>
 
 namespace dpp {
 
@@ -74,7 +75,7 @@ enum component_style : uint8_t {
 /**
  * @brief An option for a select component
  */
-struct DPP_EXPORT select_option {
+struct DPP_EXPORT select_option : public json_interface<select_option> {
 	/**
 	 * @brief Label for option
 	 */
@@ -125,6 +126,11 @@ struct DPP_EXPORT select_option {
 	 * @brief Construct a new select option object
 	 */
 	select_option();
+
+	/**
+	 * @brief Destructs the select option object.
+	 */
+	virtual ~select_option() = default;
 
 	/**
 	 * @brief Construct a new select option object
@@ -184,6 +190,12 @@ struct DPP_EXPORT select_option {
 	 * @return select_option& reference to self for chaining
 	 */
 	select_option& set_animated(bool anim);
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	select_option& fill_from_json(nlohmann::json* j);
 };
 
 /**
@@ -197,12 +209,8 @@ struct DPP_EXPORT select_option {
  * then insert one or more additional components into it
  * using component::add_component(), so that the parent
  * object is an action row and the child objects are buttons.
- *
- * @note At present this only works for whitelisted
- * guilds. The beta is **closed**. When this feature is
- * released, then the functionality will work correctly.
  */
-class DPP_EXPORT component {
+class DPP_EXPORT component : public json_interface<component> {
 public:
 	/** Component type, either a button or action row
 	 */
@@ -236,7 +244,7 @@ public:
 	 */
 	std::string url;
 
-	/** Placeholder text for select menus and text inputs (max 100 characters)
+	/** Placeholder text for select menus and text inputs (max 150 characters)
 	 */
 	std::string placeholder;
 
@@ -270,7 +278,8 @@ public:
 	 */
 	bool required;
 
-	/** Current value (only filled or valid when populated from an on_form_submit event)
+	/** Value of the modal (filled or valid when populated from an
+	 * on_form_submit event, or from the set_value function)
 	 */
 	std::variant<std::monostate, std::string, int64_t, double> value;
 
@@ -306,7 +315,7 @@ public:
 
 	/** Destructor
 	 */
-	~component() = default;
+	virtual ~component() = default;
 
 	/**
 	 * @brief Set the type of the component. Button components
@@ -339,6 +348,16 @@ public:
 	 * @return component& Reference to self
 	 */
 	component& set_label(const std::string &label);
+
+	/**
+	 * @brief Set the default value of the text input component.
+	 * For action rows, this field is ignored. Setting the
+	 * value will auto-set the type to dpp::cot_text.
+	 *
+	 * @param val Value text to set. It will be truncated to the maximum length of 4000 UTF-8 characters.
+	 * @return component& Reference to self
+	 */
+	component& set_default_value(const std::string &val);
 
 	/**
 	 * @brief Set the url for dpp::cos_link types.
@@ -383,9 +402,20 @@ public:
 	component& set_disabled(bool disable);
 
 	/**
+	 * @brief Set if this component is required.
+	 * Defaults to false on all created components.
+	 *
+	 * @param require True to require this, false to make it optional.
+	 * @return component& Reference to self
+	 */
+	component& set_required(bool require);
+
+	/**
 	 * @brief Set the placeholder
 	 * 
-	 * @param placeholder placeholder string. It will be truncated to the maximum length of 100 UTF-8 characters.
+	 * @param placeholder placeholder string. It will be truncated to the
+	 * maximum length of 150 UTF-8 characters for select menus, and 100 UTF-8
+	 * characters for modals.
 	 * @return component& Reference to self
 	 */
 	component& set_placeholder(const std::string &placeholder);
@@ -609,7 +639,7 @@ struct DPP_EXPORT embed {
 
 	 /** Set the footer of the embed. Returns the embed itself so these method calls may be "chained"
 	  * @param text string to set as footer text. It will be truncated to the maximum length of 2048 UTF-8 characters.
-	  * @param icon_url url to set as footer icon url
+	  * @param icon_url an url to set as footer icon url
 	  * @return A reference to self
 	  */
 	embed& set_footer(const std::string& text, const std::string& icon_url);
@@ -758,8 +788,8 @@ struct DPP_EXPORT attachment {
 	 * @param callback A callback which is called when the download completes.
 	 * @note The content of the file will be in the http_info.body parameter of the
 	 * callback parameter.
-	 * @throw dpp::exception If there is no owner associated with this attachment that
-	 * itself has an owning cluster, this method will throw a dpp::exception when called.
+	 * @throw dpp::logic_exception If there is no owner associated with this attachment that
+	 * itself has an owning cluster, this method will throw a dpp::logic_exception when called.
 	 */
 	void download(http_completion_event callback) const;
 };
@@ -786,7 +816,7 @@ enum sticker_format : uint8_t {
 /**
  * @brief Represents stickers received in messages
  */
-struct DPP_EXPORT sticker : public managed {
+struct DPP_EXPORT sticker : public managed, public json_interface<sticker> {
 	/** Optional: for standard stickers, id of the pack the sticker is from
 	 */
 	snowflake	pack_id;
@@ -827,6 +857,8 @@ struct DPP_EXPORT sticker : public managed {
 	 */
 	sticker();
 
+	virtual ~sticker() = default;
+
 	/** Read class values from json object
 	 * @param j A json object to read from
 	 * @return A reference to self
@@ -837,7 +869,15 @@ struct DPP_EXPORT sticker : public managed {
 	 * @param with_id True if the ID is to be set in the JSON structure
 	 * @return The JSON text of the invite
 	 */
-	std::string build_json(bool with_id = true) const;
+	virtual std::string build_json(bool with_id = true) const;
+
+	/**
+	 * @brief Get the sticker url
+	 *
+	 * @param accept_lottie Whether to allow that [lottie](https://airbnb.io/lottie/#/) (json format) can be returned or not
+	 * @return std::string The sticker url or an empty string when its a lottie and accept_lottie is false
+	 */
+	std::string get_url(bool accept_lottie = true) const;
 
 	/**
 	 * @brief Set the filename
@@ -860,7 +900,7 @@ struct DPP_EXPORT sticker : public managed {
 /**
  * @brief Represents a sticker pack (the built in groups of stickers that all nitro users get to use)
  */
-struct DPP_EXPORT sticker_pack : public managed {
+struct DPP_EXPORT sticker_pack : public managed, public json_interface<sticker_pack> {
 	/// the stickers in the pack
 	std::map<snowflake, sticker> stickers;
 	/// name of the sticker pack
@@ -879,6 +919,8 @@ struct DPP_EXPORT sticker_pack : public managed {
 	 */
 	sticker_pack();
 
+	virtual ~sticker_pack() = default;
+
 	/** Read class values from json object
 	 * @param j A json object to read from
 	 * @return A reference to self
@@ -889,7 +931,7 @@ struct DPP_EXPORT sticker_pack : public managed {
 	 * @param with_id True if the ID is to be set in the JSON structure
 	 * @return The JSON text of the invite
 	 */
-	std::string build_json(bool with_id = true) const;
+	virtual std::string build_json(bool with_id = true) const;
 
 };
 
@@ -913,6 +955,42 @@ enum message_flags {
 	m_ephemeral = 1 << 6,
 	/// this message is an Interaction Response and the bot is "thinking"
 	m_loading = 1 << 7
+};
+
+/**
+ * @brief Represents possible values for the dpp::embed type field.
+ * These are loosely defined by the API docs and do not influence how the client renders embeds.
+ * The only type a bot can send is dpp::embed_type::emt_rich.
+ */
+namespace embed_type {
+	/**
+	 * @brief Rich text
+	 */
+	const std::string emt_rich = "rich";
+	/**
+	 * @brief Image
+	 */
+	const std::string emt_image = "image";
+	/**
+	 * @brief Video link
+	 */
+	const std::string emt_video = "video";
+	/**
+	 * @brief Animated gif
+	 */
+	const std::string emt_gifv = "gifv";
+	/**
+	 * @brief Article
+	 */
+	const std::string emt_article = "article";
+	/**
+	 * @brief Link URL
+	 */
+	const std::string emt_link = "link";
+	/**
+	 * @brief Auto moderation filter
+	 */
+	const std::string emt_automod = "auto_moderation_message";
 };
 
 /**
@@ -954,17 +1032,19 @@ enum message_type {
 	/// Discovery grace period warning 2
 	mt_guild_discovery_grace_period_final_warning	= 17,
 	/// Thread Created 
-	mt_thread_created			= 18,
+	mt_thread_created				= 18,
 	/// Reply
 	mt_reply					= 19,
 	/// Application command
 	mt_application_command				= 20,
 	/// Thread starter message
-	mt_thread_starter_message	= 21,
+	mt_thread_starter_message			= 21,
 	/// Invite reminder
 	mt_guild_invite_reminder			= 22,
 	/// Context Menu Command
-	mt_context_menu_command 	= 23
+	mt_context_menu_command 			= 23,
+	/// Auto moderation action
+	mt_auto_moderation_action			= 24,
 };
 
 /**
@@ -974,7 +1054,7 @@ enum cache_policy_setting_t {
 	/**
 	 * @brief request aggressively on seeing new guilds, and also store missing data from messages.
 	 * This is the default behaviour and the least memory-efficient option. Memory usage will increase
-	 * over time, initiailly quite rapidly, and then linearly over time. It is the least cpu-intensive
+	 * over time, initially quite rapidly, and then linearly over time. It is the least cpu-intensive
 	 * setting.
 	 */
 	cp_aggressive = 0,
@@ -1092,13 +1172,13 @@ struct DPP_EXPORT message : public managed {
 	 * @brief Reference to an interaction
 	 */
 	struct message_interaction_struct{
-		// id of the interaction
+		/// id of the interaction
 		snowflake id;
-		// type of interaction
+		/// type of interaction
 		uint8_t type;
-		// name of the application command
+		/// name of the application command
 		std::string name;
-		// the user who invoked the interaction
+		/// the user who invoked the interaction
 		user usr;
 	} interaction;
 
@@ -1107,19 +1187,19 @@ struct DPP_EXPORT message : public managed {
 	 */
 	struct allowed_ref {
 		/**
-		 * @brief Set to true to parse user mentions in the text
+		 * @brief Set to true to parse user mentions in the text. Default is false
 		 */
 		bool parse_users;
 		/**
-		 * @brief Set to true to at-everyone and at-here mentions in the text
+		 * @brief Set to true to at-everyone and at-here mentions in the text. Default is false
 		 */
 		bool parse_everyone;
 		/**
-		 * @brief Set to true to parse role mentions in the text
+		 * @brief Set to true to parse role mentions in the text. Default is false
 		 */
 		bool parse_roles;
 		/**
-		 * @brief Set to true to mention the user who sent the message this one is replying to
+		 * @brief Set to true to mention the user who sent the message this one is replying to. Default is false
 		 */
 		bool replied_user;
 		/**
@@ -1153,7 +1233,7 @@ struct DPP_EXPORT message : public managed {
 	/**
 	 * @brief Destroy the message object
 	 */
-	~message();
+	virtual ~message();
 
 	/**
 	 * @brief Construct a new message object with a channel and content
@@ -1217,7 +1297,7 @@ struct DPP_EXPORT message : public managed {
 	 * This will exclude some fields that are not valid in interactions at this time.
 	 * @return The JSON text of the message
 	 */
-	std::string build_json(bool with_id = false, bool is_interaction_response = false) const;
+	virtual std::string build_json(bool with_id = false, bool is_interaction_response = false) const;
 
 	/**
 	 * @brief Returns true if the message was crossposted to other servers
@@ -1312,6 +1392,7 @@ struct DPP_EXPORT message : public managed {
 	 * 
 	 * @param fn filename
 	 * @return message& reference to self
+	 * @deprecated Use message::add_file instead
 	 */
 	message& set_filename(const std::string &fn);
 
@@ -1320,6 +1401,7 @@ struct DPP_EXPORT message : public managed {
 	 * 
 	 * @param fc raw file content contained in std::string
 	 * @return message& reference to self
+	 * @deprecated Use message::add_file instead
 	 */
 	message& set_file_content(const std::string &fc);
 
@@ -1339,6 +1421,29 @@ struct DPP_EXPORT message : public managed {
 	 * @return message& reference to self
 	 */
 	message& set_content(const std::string &c);
+	
+	/**
+	 * @brief Set the channel id
+	 * 
+	 * @param _channel_id channel id
+	 * @return message& reference to self
+	 */
+	message& set_channel_id(snowflake _channel_id);
+
+	/**
+	 * @brief Set the channel id
+	 * 
+	 * @param _guild_id channel id
+	 * @return message& reference to self
+	 */
+	message& set_guild_id(snowflake _guild_id);
+
+	/**
+	 * @brief Returns true if the message is from a DM
+	 * 
+	 * @return true if message is a DM
+	 */
+	bool is_dm() const;
 };
 
 /** A group of messages */

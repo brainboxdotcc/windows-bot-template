@@ -24,7 +24,8 @@
 #include <dpp/managed.h>
 #include <dpp/user.h>
 #include <dpp/guild.h>
-#include <dpp/json_fwd.hpp>
+#include <dpp/nlohmann/json_fwd.hpp>
+#include <dpp/json_interface.h>
 
 namespace dpp {
 
@@ -93,12 +94,12 @@ struct DPP_EXPORT event_member {
 /**
  * @brief A scheduled event
  */
-struct DPP_EXPORT scheduled_event : public managed {
+struct DPP_EXPORT scheduled_event : public managed, public json_interface<scheduled_event> {
 	snowflake		guild_id;		//!< the guild id which the scheduled event belongs to
 	snowflake		channel_id;		//!< the channel id in which the scheduled event will be hosted, or null if scheduled entity type is EXTERNAL (may be empty)
 	snowflake		creator_id;		//!< Optional: the id of the user that created the scheduled event
 	std::string		name;			//!< the name of the scheduled event
-	std::string		description;		//!< Optional: the description of the scheduled event
+	std::string		description;		//!< Optional: the description of the scheduled event (1-1000 characters)
 	std::string		image;			//!< the image of the scheduled event (may be empty)
 	time_t			scheduled_start_time;	//!< the time the scheduled event will start
 	time_t			scheduled_end_time;	//!< the time the scheduled event will end, or null if the event does not have a scheduled time to end (may be empty)
@@ -206,7 +207,7 @@ struct DPP_EXPORT scheduled_event : public managed {
 	 *
 	 * @return std::string Dumped json of this object
 	 */
-	std::string const build_json(bool with_id = false) const;
+	virtual std::string build_json(bool with_id = false) const;
 };
 
 /**

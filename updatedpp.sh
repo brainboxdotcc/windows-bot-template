@@ -19,8 +19,8 @@ echo "Fetching latest DPP"
 mkdir temp
 cd temp || exit
 echo "Download assets from CI..."
-gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1
-gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | head -n1 | awk '{ printf $(NF-2) }')
+gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | grep -v pull_request | head -n1
+gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | grep -v pull_request | head -n1 | awk '{ printf $(NF-2) }')
 
 if [[ ! -d "./libdpp - Windows x64-Release-vs2019" ]] ; then
 	echo "Download of assets failed (temporary failure) - not emitting a spurious failure, but exiting now."

@@ -24,8 +24,10 @@
 #include <dpp/managed.h>
 #include <dpp/utility.h>
 #include <dpp/voicestate.h>
+#include <dpp/permissions.h>
 #include <string>
 #include <unordered_map>
+#include <dpp/json_interface.h>
 
 namespace dpp {
 
@@ -75,7 +77,9 @@ enum guild_flags : uint32_t {
 	g_partnered =				0b00000000000000000000000010000000,
 	/** Community features enabled */
 	g_community =				0b00000000000000000000000100000000,
-	/** Guild has commerce features enabled */
+	/** Guild has commerce features enabled
+	 * @deprecated Removed by Discord
+	 */
 	g_commerce =				0b00000000000000000000001000000000,
 	/** Guild has news features enabled */
 	g_news =				0b00000000000000000000010000000000,
@@ -124,7 +128,20 @@ enum guild_flags : uint32_t {
 };
 
 /**
- * @brief Various flags that can be used to indicate the status of a guild member
+ * @brief Additional boolean flag values for guild, as guild_flags is full
+ */
+enum guild_flags_extra : uint8_t {
+	/** Guild has premium progress bar enabled */
+	g_premium_progress_bar_enabled =	0b00000001,
+	/** Guild can have an animated banner (doesn't mean it actually has one though) */
+	g_animated_banner =			0b00000010,
+	/** Guild has auto moderation */
+	g_auto_moderation =			0b00000100,
+};
+
+/**
+ * @brief Various flags that can be used to indicate the status of a guild member.
+ * @note Use set_mute and set_deaf member functions and do not toggle the bits yourself.
  */
 enum guild_member_flags : uint8_t {
 	/** Member deafened in voice channels */
@@ -135,6 +152,8 @@ enum guild_member_flags : uint8_t {
 	gm_pending =		0b00100,
 	/** Member has animated guild-specific avatar */
 	gm_animated_avatar = 	0b01000,
+	/** gm_deaf or gm_mute has been toggled */
+	gm_voice_action = 			0b10000,
 };
 
 /**
@@ -145,24 +164,22 @@ class DPP_EXPORT guild_member {
 public:
 	/** Nickname, or empty string if they don't have a nickname on this guild */
 	std::string nickname;
+	/** List of roles this user has on this guild */
+	std::vector<snowflake> roles;
 	/** Guild id */
 	snowflake guild_id;
 	/** User id */
 	snowflake user_id;
-	/** List of roles this user has on this guild */
-	std::vector<snowflake> roles;
+	/** User avatar (per-server avatar is a nitro only feature) */
+	utility::iconhash avatar;
+	/** timestamp of when the time out will be removed; until then, they cannot interact with the guild */
+	time_t communication_disabled_until;
 	/** Date and time the user joined the guild */
 	time_t joined_at;
 	/** Boosting since */
 	time_t premium_since;
 	/** A set of flags built from the bitmask defined by dpp::guild_member_flags */
 	uint8_t flags;
-	/** User avatar (per-server avatar is a nitro only feature) */
-	utility::iconhash avatar;
-	/** timestamp of when the time out will be removed; until then, they cannot interact with the guild.
-	 * Set it to a non-zero time in the history if you want to remove the timeout
-	 */
-	time_t communication_disabled_until;
 
 	/** Default constructor */
 	guild_member();
@@ -178,9 +195,10 @@ public:
 	/**
 	 * @brief Build json string for the member object
 	 * 
+	 * @param with_id Add ID to output
 	 * @return std::string json string
 	 */
-	std::string build_json() const;
+	std::string build_json(bool with_id = false) const;
 
 	/**
 	 * @brief Returns true if the user is in time-out (communication disabled)
@@ -280,17 +298,14 @@ public:
  * @brief Defines a channel on a server's welcome screen
  */
 struct welcome_channel_t {
-	/// the channel's id
-	snowflake channel_id = 0;
-
 	/// the description shown for the channel
 	std::string description;
-
-	/// the emoji id, if the emoji is custom
-	snowflake emoji_id = 0;
-
 	/// the emoji name if custom, the unicode character if standard, or null if no emoji is set
 	std::string emoji_name;
+	/// the channel's id
+	snowflake channel_id = 0;
+	/// the emoji id, if the emoji is custom
+	snowflake emoji_id = 0;
 };
 
 
@@ -368,18 +383,12 @@ typedef std::unordered_map<snowflake, guild_member> members_container;
 /**
  * @brief Represents a guild on Discord (AKA a server)
  */
-class DPP_EXPORT guild : public managed {
+class DPP_EXPORT guild : public managed, public json_interface<guild>  {
 public:
-	/** Shard ID of the guild */
-	uint16_t shard_id;
-
-	/** Flags bitmask as defined by values within dpp::guild_flags */
-	uint32_t flags;
-
 	/** Guild name */
 	std::string name;
 
-	/** Server description for communities */
+	/** Server description */
 	std::string description;
 
 	/**
@@ -390,6 +399,34 @@ public:
 	 */
 	std::string vanity_url_code;
 
+	/** Roles defined on this server */
+	std::vector<snowflake> roles;
+
+	/** List of channels on this server */
+	std::vector<snowflake> channels;
+
+	/** List of threads on this server */
+	std::vector<snowflake> threads;
+
+	/** List of emojis
+	*/
+	std::vector<snowflake> emojis;
+
+	/** List of members in voice channels in the guild.
+	 */
+	std::map<snowflake, voicestate> voice_members;
+
+	/** List of guild members. Note that when you first receive the
+	 * guild create event, this may be empty or near empty.
+	 * This depends upon your dpp::intents and the size of your bot.
+	 * It will be filled by guild member chunk requests.
+	 */
+	members_container members;
+
+	/** Welcome screen
+	 */
+	welcome_screen_t welcome_screen;
+
 	/** Guild icon hash */
 	utility::iconhash icon;
 
@@ -399,29 +436,14 @@ public:
 	/** Guild discovery splash hash */
 	utility::iconhash discovery_splash;
 
+	/** Server banner hash */
+	utility::iconhash banner;
+
 	/** Snowflake id of guild owner */
 	snowflake owner_id;
 
 	/** Snowflake ID of AFK voice channel or 0 */
 	snowflake afk_channel_id;
-
-	/** Voice AFK timeout before moving users to AFK channel */
-	uint8_t afk_timeout;
-
-	/** Snowflake ID of widget channel, or 0 */
-	snowflake widget_channel_id;
-
-	/** Verification level of server */
-	verification_level_t verification_level;
-
-	/** Setting for how notifications are to be delivered to users */
-	uint8_t default_message_notifications;
-
-	/** Whether or not explicit content filtering is enable and what setting it is */
-	guild_explicit_content_t explicit_content_filter;
-
-	/** If multi factor authentication is required for moderators or not */
-	mfa_level_t mfa_level;
 
 	/** ID of creating application, if any, or 0 */
 	snowflake application_id;
@@ -432,51 +454,17 @@ public:
 	/** ID of rules channel for communities */
 	snowflake rules_channel_id;
 
-	/** Approximate member count. May be sent as zero */
-	uint32_t member_count;
-
-	/** Server banner hash */
-	utility::iconhash banner;
-
-	/** Boost level */
-	uint8_t premium_tier;
-
-	/** Number of boosters */
-	uint16_t premium_subscription_count;
-
 	/** Public updates channel id or 0 */
 	snowflake public_updates_channel_id;
 
-	/** Maximum users in a video channel, or 0 */
-	uint16_t max_video_channel_users;
+	/** Snowflake ID of widget channel, or 0 */
+	snowflake widget_channel_id;
 
-	/** Roles defined on this server */
-	std::vector<snowflake> roles;
+	/** Approximate member count. May be sent as zero */
+	uint32_t member_count;
 
-	/** List of channels on this server */
-	std::vector<snowflake> channels;
-
-	/** List of threads on this server */
-	std::vector<snowflake> threads;
-
-	/** List of guild members. Note that when you first receive the
-	 * guild create event, this may be empty or near empty.
-	 * This depends upon your dpp::intents and the size of your bot.
-	 * It will be filled by guild member chunk requests.
-	 */
-	members_container members;
-
-	/** List of members in voice channels in the guild.
-	 */
-	std::map<snowflake, voicestate> voice_members;
-
-        /** List of emojis
-	 */
-	std::vector<snowflake> emojis;
-
-	/** Welcome screen
-	 */
-	welcome_screen_t welcome_screen;
+	/** Flags bitmask as defined by values within dpp::guild_flags */
+	uint32_t flags;
 
 	/**
 	 * @brief the maximum number of presences for the guild.
@@ -489,10 +477,42 @@ public:
 	 */
 	uint32_t max_members;
 
+	/** Shard ID of the guild */
+	uint16_t shard_id;
+
+	/** Number of boosters */
+	uint16_t premium_subscription_count;
+
+	/** Maximum users in a video channel, or 0 */
+	uint16_t max_video_channel_users;
+
+	/** Voice AFK timeout before moving users to AFK channel */
+	uint8_t afk_timeout;
+
+	/** Setting for how notifications are to be delivered to users */
+	uint8_t default_message_notifications;
+
+	/** Boost level */
+	uint8_t premium_tier;
+
+	/** Verification level of server */
+	verification_level_t verification_level;
+
+	/** Whether or not explicit content filtering is enable and what setting it is */
+	guild_explicit_content_t explicit_content_filter;
+
+	/** If multi factor authentication is required for moderators or not */
+	mfa_level_t mfa_level;
+
 	/**
 	 * @brief Guild NSFW level
 	 */
 	guild_nsfw_level_t nsfw_level;
+
+	/**
+	 * @brief Additional flags
+	 */
+	uint8_t flags_extra;
 
 	/** Default constructor, zeroes all values */
 	guild();
@@ -501,6 +521,12 @@ public:
 	 * @brief Destroy the guild object
 	 */
 	virtual ~guild() = default;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	 guild& fill_from_json(nlohmann::json* j);
 
 	/** Read class values from json object
 	 * @param shard originating shard
@@ -516,25 +542,58 @@ public:
 	std::string build_json(bool with_id = false) const;
 
 	/**
-	 * @brief Get the base permissions for a member on this guild,
-	 * before permission overwrites are applied.
+	 * @brief Compute the base permissions for a member on this guild,
+	 * before channel overwrites are applied.
+	 * This method takes into consideration the following cases:
+	 *   - Guild owner
+	 *   - Guild roles including \@everyone
 	 *
-	 * @param member member to get permissions for
-	 * @return uint64_t permissions bitmask
+	 * @param user User to get permissions for
+	 * @return permission permissions bitmask
+	 * @note Requires role cache to be enabled (it's enabled by default).
+	 *
+	 * @note The method will search for the guild member in the cache by the users id.
+	 * If the guild member is not in cache, the method will always return 0.
 	 */
-	uint64_t base_permissions(const class user* member) const;
+	permission base_permissions(const class user* user) const;
 
 	/**
-	 * @brief Get the permission overwrites for a member
-	 * merged into a bitmask.
+	 * @brief Compute the base permissions for a member on this guild,
+	 * before channel overwrites are applied.
+	 * This method takes into consideration the following cases:
+	 *   - Guild owner
+	 *   - Guild roles including \@everyone
+	 *
+	 * @param member member to get permissions for
+	 * @return permission permissions bitmask
+	 * @note Requires role cache to be enabled (it's enabled by default).
+	 */
+	permission base_permissions(const guild_member &member) const;
+
+	/**
+	 * @brief Compute the permission overwrites for a member in a channel, including base permissions.
 	 *
 	 * @param base_permissions base permissions before overwrites,
 	 * from channel::base_permissions
-	 * @param member Member to fetch permissions for
-	 * @param channel Channel to fetch permissions against
-	 * @return uint64_t Merged permissions bitmask of overwrites.
+	 * @param user User to resolve the permissions for
+	 * @param channel Channel to compute permission overwrites for
+	 * @return permission Merged permissions bitmask of overwrites.
+	 * @note Requires role cache to be enabled (it's enabled by default).
+	 *
+	 * @note The method will search for the guild member in the cache by the users id.
+	 * If the guild member is not in cache, the method will always return 0.
 	 */
-	uint64_t permission_overwrites(const uint64_t base_permissions, const user*  member, const channel* channel) const;
+	permission permission_overwrites(const uint64_t base_permissions, const user* user, const channel* channel) const;
+
+	/**
+	 * @brief Compute the permission overwrites for a member in a channel, including base permissions.
+	 *
+	 * @param member Member to resolve the permissions for
+	 * @param channel Channel to compute permission overwrites for
+	 * @return permission Merged permissions bitmask of overwrites.
+	 * @note Requires role cache to be enabled (it's enabled by default).
+	 */
+	permission permission_overwrites(const guild_member &member, const channel &channel) const;
 
 	/**
 	 * @brief Rehash members map
@@ -551,37 +610,37 @@ public:
 	 */
 	bool connect_member_voice(snowflake user_id, bool self_mute = false, bool self_deaf = false);
 
-    /**
+	/**
 	 * @brief Get the banner url of the guild if it have one, otherwise returns an empty string
 	 *
 	 * @param size The size of the banner in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized banner is returned.
 	 * @return std::string banner url or empty string
 	 */
-    std::string get_banner_url(uint16_t size = 0) const;
+	std::string get_banner_url(uint16_t size = 0) const;
 
-    /**
+	/**
 	 * @brief Get the discovery splash url of the guild if it have one, otherwise returns an empty string
 	 *
 	 * @param size The size of the discovery splash in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized discovery splash is returned.
 	 * @return std::string discovery splash url or empty string
 	 */
-    std::string get_discovery_splash_url(uint16_t size = 0) const;
+	std::string get_discovery_splash_url(uint16_t size = 0) const;
 
-    /**
+	/**
 	 * @brief Get the icon url of the guild if it have one, otherwise returns an empty string
 	 *
 	 * @param size The size of the icon in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized icon is returned.
 	 * @return std::string icon url or empty string
 	 */
-    std::string get_icon_url(uint16_t size = 0) const;
+	std::string get_icon_url(uint16_t size = 0) const;
 
-    /**
+	/**
 	 * @brief Get the splash url of the guild if it have one, otherwise returns an empty string
 	 *
 	 * @param size The size of the splash in pixels. It can be any power of two between 16 and 4096. if not specified, the default sized splash is returned.
 	 * @return std::string splash url or empty string
 	 */
-    std::string get_splash_url(uint16_t size = 0) const;
+	std::string get_splash_url(uint16_t size = 0) const;
 
 	/**
 	 * @brief Set the name of the guild in the object
@@ -611,19 +670,19 @@ public:
 	bool widget_enabled() const;
 
 	/**
-	 * @brief Guild has an invite splash
-	 * @return bool has an invite splash
+	 * @brief Guild has access to set an invite splash background
+	 * @return bool can have an invite splash
 	 */
 	bool has_invite_splash() const;
 
 	/**
-	 * @brief Guild has VIP voice regions
-	 * @return bool has vip regions
+	 * @brief Guild has access to set 384kbps bitrate in voice
+	 * @return bool can have VIP voice regions
 	 */
 	bool has_vip_regions() const;
 
 	/**
-	 * @brief Guild can have a vanity url
+	 * @brief Guild has access to set a vanity URL
 	 * @return bool can have vanity url
 	 */
 	bool has_vanity_url() const;
@@ -647,14 +706,15 @@ public:
 	bool is_community() const;
 
 	/**
-	 * @brief Guild has commerce channels
-	 * @return bool has commerce guilds
+	 * @brief Guild has access to use commerce features
+	 * @return bool has commerce features enabled
+	 * @deprecated Removed by Discord
 	 */
 	bool has_commerce() const;
 
 	/**
-	 * @brief Guild has news channels
-	 * @return bool has news channels
+	 * @brief Guild has access to create news channels
+	 * @return bool has news channels features enabled
 	 */
 	bool has_news() const;
 
@@ -671,14 +731,26 @@ public:
 	bool is_featureable() const;
 
 	/**
-	 * @brief Guild can have an animated icon
+	 * @brief Guild has access to set an animated guild banner image
+	 * @return bool can have animated banner image
+	 */
+	bool has_animated_banner() const;
+
+	/**
+	 * @brief Guild has auto moderation features
+	 * @return bool has auto moderation features
+	 */
+	bool has_auto_moderation() const;
+
+	/**
+	 * @brief Guild has access to set an animated guild icon
 	 * @return bool can have animated icon
 	 */
 	bool has_animated_icon() const;
 
 	/**
-	 * @brief Guild has a banner image
-	 * @return bool has banner image
+	 * @brief Guild has access to set a guild banner image
+	 * @return bool can have banner image
 	 */
 	bool has_banner() const;
 
@@ -689,7 +761,7 @@ public:
 	bool is_welcome_screen_enabled() const;
 
 	/**
-	 * @brief Guild has membership screening
+	 * @brief Guild has enabled membership screening
 	 * @return bool has membership screening
 	 */
 	bool has_member_verification_gate() const;
@@ -707,10 +779,10 @@ public:
 	bool has_animated_icon_hash() const;
 
 	/**
-	 * @brief Guild banner is animated gif
+	 * @brief Guild banner is actually an animated gif
 	 * @return bool is animated gif
 	 */
-	bool has_animated_banner_icon_hash() const;
+	bool has_animated_banner_hash() const;
 
 
 	/**
@@ -760,6 +832,12 @@ public:
 	 * @return bool has channel banners
 	 */
 	bool has_channel_banners() const;
+
+	/**
+	 * @brief True if the premium progress bar is enabled
+	 * @return bool has progress bar enabled
+	 */
+	bool has_premium_progress_bar_enabled() const;
 };
 
 /** A container of guilds */
@@ -771,13 +849,14 @@ typedef std::unordered_map<snowflake, guild> guild_map;
 class DPP_EXPORT guild_widget {
 public:
 	/**
-	 * @brief True if enabled
-	 */
-	bool enabled;
-	/**
 	 * @brief Channel widget points to
 	 */
 	snowflake channel_id;
+
+	/**
+	 * @brief True if enabled
+	 */
+	bool enabled;
 
 	/**
 	 * @brief Construct a new guild widget object
@@ -795,9 +874,10 @@ public:
 	/**
 	 * @brief Build json for a guild widget
 	 *
+	 * @param with_id Add ID to output
 	 * @return std::string guild widget stringified json
 	 */
-	std::string build_json() const;
+	std::string build_json(bool with_id = false) const;
 };
 
 /**

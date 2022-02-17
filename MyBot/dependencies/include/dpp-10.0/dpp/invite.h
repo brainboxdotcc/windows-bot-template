@@ -21,16 +21,17 @@
 #pragma once
 #include <dpp/export.h>
 #include <dpp/snowflake.h>
-#include <dpp/json_fwd.hpp>
+#include <dpp/nlohmann/json_fwd.hpp>
 #include <dpp/stage_instance.h>
 #include <unordered_map>
+#include <dpp/json_interface.h>
 
 namespace dpp {
 
 /**
  * @brief Represents an invite to a discord guild or channel
  */
-class DPP_EXPORT invite {
+class DPP_EXPORT invite : public json_interface<invite> {
 public:
 	/** Invite code
 	 */
@@ -77,6 +78,7 @@ public:
 	 */
 	uint32_t uses;
 	/** The stage instance data if there is a public stage instance in the stage channel this invite is for
+	 * @deprecated Deprecated
 	 */
 	stage_instance stage;
 
@@ -95,9 +97,10 @@ public:
 	invite& fill_from_json(nlohmann::json* j);
 
 	/** Build JSON from this object.
+	 * @param with_id Include ID in JSON
 	 * @return The JSON text of the invite
 	 */
-	std::string build_json() const;
+	virtual std::string build_json(bool with_id = false) const;
 
 };
 
