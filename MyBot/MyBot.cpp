@@ -16,29 +16,25 @@ int main()
         /* Create bot cluster */
         dpp::cluster bot(BOT_TOKEN);
 
-        /* The interaction create event is fired when someone issues your commands */
+        /* Handle slash command */
         bot.on_interaction_create([&bot](const dpp::interaction_create_t& event) {
             if (event.command.get_command_name() == "ping") {
-                /* Reply to ping command */
                 event.reply("Pong!");
             }
         });
 
+        /* Register slash command here in on_ready */
         bot.on_ready([&bot](const dpp::ready_t& event) {
-            /* Register the command */
-            bot.guild_command_create(
-                dpp::slashcommand()
-                .set_name("ping")
-                .set_description("Ping pong!")
-                .set_application_id(bot.me.id),
-                MY_GUILD_ID
-            );
-
+            /* Wrap command registration in run_once to make sure it doesnt run on every full reconnection */
+            if (dpp::run_once<struct register_bot_commands>()) {
+                bot.guild_command_create(dpp::slashcommand("Ping", "Ping pong!", bot.me.id), MY_GUILD_ID);
+            }
         });
 
-        /* Simple logger */
+        /* Output simple log messages to stdout */
         bot.on_log(dpp::utility::cout_logger());
 
+        /* Start the bot */
         bot.start(false);
     }
     catch (const std::exception& e) {
