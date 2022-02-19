@@ -18,10 +18,9 @@ int main()
 
         /* The interaction create event is fired when someone issues your commands */
         bot.on_interaction_create([&bot](const dpp::interaction_create_t& event) {
-            dpp::command_interaction cmd_data = std::get<dpp::command_interaction>(event.command.data);
-            if (cmd_data.name == "ping") {
+            if (event.command.get_command_name() == "ping") {
                 /* Reply to ping command */
-                event.reply(dpp::ir_channel_message_with_source, "Pong!");
+                event.reply("Pong!");
             }
         });
 
@@ -38,11 +37,7 @@ int main()
         });
 
         /* Simple logger */
-        bot.on_log([](const dpp::log_t& event) {
-            if (event.severity > dpp::ll_trace) {
-                std::cout << dpp::utility::loglevel(event.severity) << ": " << event.message << "\n";
-            }
-        });
+        bot.on_log(dpp::utility::cout_logger());
 
         bot.start(false);
     }
