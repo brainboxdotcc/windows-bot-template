@@ -12,34 +12,29 @@ const dpp::snowflake MY_GUILD_ID  =  825407338755653642;
 
 int main()
 {
-    try {
-        /* Create bot cluster */
-        dpp::cluster bot(BOT_TOKEN);
+    /* Create bot cluster */
+    dpp::cluster bot(BOT_TOKEN);
 
-        /* Handle slash command */
-        bot.on_interaction_create([&bot](const dpp::interaction_create_t& event) {
-            if (event.command.get_command_name() == "ping") {
-                event.reply("Pong!");
-            }
-        });
+    /* Handle slash command */
+    bot.on_interaction_create([](const dpp::interaction_create_t& event) {
+         if (event.command.get_command_name() == "ping") {
+            event.reply("Pong!");
+        }
+    });
 
-        /* Register slash command here in on_ready */
-        bot.on_ready([&bot](const dpp::ready_t& event) {
-            /* Wrap command registration in run_once to make sure it doesnt run on every full reconnection */
-            if (dpp::run_once<struct register_bot_commands>()) {
-                bot.guild_command_create(dpp::slashcommand("Ping", "Ping pong!", bot.me.id), MY_GUILD_ID);
-            }
-        });
+    /* Register slash command here in on_ready */
+    bot.on_ready([&bot](const dpp::ready_t& event) {
+        /* Wrap command registration in run_once to make sure it doesnt run on every full reconnection */
+        if (dpp::run_once<struct register_bot_commands>()) {
+            bot.guild_command_create(dpp::slashcommand("Ping", "Ping pong!", bot.me.id), MY_GUILD_ID);
+        }
+    });
 
-        /* Output simple log messages to stdout */
-        bot.on_log(dpp::utility::cout_logger());
+    /* Output simple log messages to stdout */
+    bot.on_log(dpp::utility::cout_logger());
 
-        /* Start the bot */
-        bot.start(false);
-    }
-    catch (const std::exception& e) {
-        std::cout << "Error: " << e.what() << "\n";
-    }
+    /* Start the bot */
+    bot.start(false);
 
     return 0;
 }
