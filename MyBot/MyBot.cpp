@@ -1,5 +1,4 @@
 #include <dpp/dpp.h>
-#include <iostream>
 
 /* Be sure to place your token in the line below.
  * Follow steps here to get a token: https://dpp.dev/creating-a-bot-application.html
