@@ -285,6 +285,8 @@ extern DPP_EXPORT event_handle __next_handle;
  */
 template<class T> class event_router_t {
 private:
+	friend class cluster;
+
 	/**
 	 * @brief Thread safety mutex
 	 */
@@ -301,6 +303,19 @@ private:
 	 * some condition that is required for this event to trigger correctly.
 	 */
 	std::function<void()> warning;
+
+protected:
+
+	/**
+	 * @brief Set the warning callback object used to check that this
+	 * event is capable of running properly
+	 * 
+	 * @param warning_function A checking function to call
+	 */
+	void set_warning_callback(std::function<void()> warning_function) {
+		warning = warning_function;
+	}
+
 public:
 	/**
 	 * @brief Construct a new event_router_t object.
@@ -315,6 +330,9 @@ public:
 	 * @param event Class to pass as parameter to all listeners.
 	 */
 	void call(const T& event) const {
+		if (warning) {
+			warning();
+		}
 		std::shared_lock l(lock);
 		std::for_each(dispatch_container.begin(), dispatch_container.end(), [&](auto &ev) {
 			if (!event.is_cancelled()) {
@@ -322,10 +340,6 @@ public:
 			}
 		});
 	};
-
-	void set_warning_callback(std::function<void()> warning_function) {
-		warning = warning_function;
-	}
 
 	/**
 	 * @brief Returns true if the container of listeners is empty,
