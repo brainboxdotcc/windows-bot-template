@@ -58,22 +58,41 @@ typedef std::map<uint32_t, class discord_client*> shard_list;
 struct DPP_EXPORT gateway {
 	/// Gateway websocket url
 	std::string url;
+
 	/// Number of suggested shards to start
 	uint32_t shards;
+
 	/// Total number of sessions that can be started
 	uint32_t session_start_total;
+
 	/// How many sessions are left
 	uint32_t session_start_remaining;
+
 	/// How many seconds until the session start quota resets
 	uint32_t session_start_reset_after;
+
 	/// How many sessions can be started at the same time
 	uint32_t session_start_max_concurrency;
+
 	/**
 	 * @brief Construct a new gateway object
 	 *
 	 * @param j JSON data to construct from
 	 */
 	gateway(nlohmann::json* j);
+
+	/**
+	 * @brief Construct a new gateway object
+	 */
+	gateway();
+
+	/**
+	 * @brief Fill this object from json
+	 * 
+	 * @param j json to fill from
+	 * @return gateway& reference to self
+	 */
+	gateway& fill_from_json(nlohmann::json* j);
 };
 
 /**
@@ -1671,7 +1690,7 @@ public:
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::message_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
-	void messages_get(snowflake channel_id, snowflake around, snowflake before, snowflake after, uint32_t limit, command_completion_event_t callback);
+	void messages_get(snowflake channel_id, snowflake around, snowflake before, snowflake after, uint64_t limit, command_completion_event_t callback);
 
 	/**
 	 * @brief Send a message to a channel. The callback function is called when the message has been sent
