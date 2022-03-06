@@ -21,8 +21,9 @@
 #pragma once
 #include <dpp/export.h>
 #include <dpp/managed.h>
-#include <dpp/json_fwd.hpp>
+#include <dpp/nlohmann/json_fwd.hpp>
 #include <dpp/guild.h>
+#include <dpp/json_interface.h>
 
 namespace dpp {
 
@@ -89,7 +90,7 @@ enum role_permissions : uint64_t {
  * ID as the guild's ID. This is the base permission set applied to all users where no other role or override
  * applies, and is the starting value of the bit mask looped through to calculate channel permissions.
  */
-class DPP_EXPORT role : public managed {
+class DPP_EXPORT role : public managed, public json_interface<role>  {
 public:
 	/**
 	 * @brief Role name
@@ -216,7 +217,7 @@ public:
 	 * @param with_id true if the ID is to be included in the json text
 	 * @return The json of the role
 	 */
-	std::string build_json(bool with_id = false) const;
+	virtual std::string build_json(bool with_id = false) const;
 
 	/**
 	 * @brief Get the mention/ping for the role
