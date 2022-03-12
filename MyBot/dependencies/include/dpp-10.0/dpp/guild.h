@@ -146,22 +146,22 @@ class DPP_EXPORT guild_member {
 public:
 	/** Nickname, or empty string if they don't have a nickname on this guild */
 	std::string nickname;
-	/** List of roles this user has on this guild */
-	std::vector<snowflake> roles;
 	/** Guild id */
 	snowflake guild_id;
 	/** User id */
 	snowflake user_id;
-	/** User avatar (per-server avatar is a nitro only feature) */
-	utility::iconhash avatar;
-	/** timestamp of when the time out will be removed; until then, they cannot interact with the guild */
-	time_t communication_disabled_until;
+	/** List of roles this user has on this guild */
+	std::vector<snowflake> roles;
 	/** Date and time the user joined the guild */
 	time_t joined_at;
 	/** Boosting since */
 	time_t premium_since;
 	/** A set of flags built from the bitmask defined by dpp::guild_member_flags */
 	uint8_t flags;
+	/** User avatar (per-server avatar is a nitro only feature) */
+	utility::iconhash avatar;
+	/** timestamp of when the time out will be removed; until then, they cannot interact with the guild */
+	time_t communication_disabled_until;
 
 	/** Default constructor */
 	guild_member();
@@ -280,14 +280,17 @@ public:
  * @brief Defines a channel on a server's welcome screen
  */
 struct welcome_channel_t {
-	/// the description shown for the channel
-	std::string description;
-	/// the emoji name if custom, the unicode character if standard, or null if no emoji is set
-	std::string emoji_name;
 	/// the channel's id
 	snowflake channel_id = 0;
+
+	/// the description shown for the channel
+	std::string description;
+
 	/// the emoji id, if the emoji is custom
 	snowflake emoji_id = 0;
+
+	/// the emoji name if custom, the unicode character if standard, or null if no emoji is set
+	std::string emoji_name;
 };
 
 
@@ -367,6 +370,12 @@ typedef std::unordered_map<snowflake, guild_member> members_container;
  */
 class DPP_EXPORT guild : public managed, public json_interface<guild>  {
 public:
+	/** Shard ID of the guild */
+	uint16_t shard_id;
+
+	/** Flags bitmask as defined by values within dpp::guild_flags */
+	uint32_t flags;
+
 	/** Guild name */
 	std::string name;
 
@@ -381,34 +390,6 @@ public:
 	 */
 	std::string vanity_url_code;
 
-	/** Roles defined on this server */
-	std::vector<snowflake> roles;
-
-	/** List of channels on this server */
-	std::vector<snowflake> channels;
-
-	/** List of threads on this server */
-	std::vector<snowflake> threads;
-
-	/** List of emojis
-	*/
-	std::vector<snowflake> emojis;
-
-	/** List of members in voice channels in the guild.
-	 */
-	std::map<snowflake, voicestate> voice_members;
-
-	/** List of guild members. Note that when you first receive the
-	 * guild create event, this may be empty or near empty.
-	 * This depends upon your dpp::intents and the size of your bot.
-	 * It will be filled by guild member chunk requests.
-	 */
-	members_container members;
-
-	/** Welcome screen
-	 */
-	welcome_screen_t welcome_screen;
-
 	/** Guild icon hash */
 	utility::iconhash icon;
 
@@ -418,14 +399,29 @@ public:
 	/** Guild discovery splash hash */
 	utility::iconhash discovery_splash;
 
-	/** Server banner hash */
-	utility::iconhash banner;
-
 	/** Snowflake id of guild owner */
 	snowflake owner_id;
 
 	/** Snowflake ID of AFK voice channel or 0 */
 	snowflake afk_channel_id;
+
+	/** Voice AFK timeout before moving users to AFK channel */
+	uint8_t afk_timeout;
+
+	/** Snowflake ID of widget channel, or 0 */
+	snowflake widget_channel_id;
+
+	/** Verification level of server */
+	verification_level_t verification_level;
+
+	/** Setting for how notifications are to be delivered to users */
+	uint8_t default_message_notifications;
+
+	/** Whether or not explicit content filtering is enable and what setting it is */
+	guild_explicit_content_t explicit_content_filter;
+
+	/** If multi factor authentication is required for moderators or not */
+	mfa_level_t mfa_level;
 
 	/** ID of creating application, if any, or 0 */
 	snowflake application_id;
@@ -436,17 +432,51 @@ public:
 	/** ID of rules channel for communities */
 	snowflake rules_channel_id;
 
-	/** Public updates channel id or 0 */
-	snowflake public_updates_channel_id;
-
-	/** Snowflake ID of widget channel, or 0 */
-	snowflake widget_channel_id;
-
 	/** Approximate member count. May be sent as zero */
 	uint32_t member_count;
 
-	/** Flags bitmask as defined by values within dpp::guild_flags */
-	uint32_t flags;
+	/** Server banner hash */
+	utility::iconhash banner;
+
+	/** Boost level */
+	uint8_t premium_tier;
+
+	/** Number of boosters */
+	uint16_t premium_subscription_count;
+
+	/** Public updates channel id or 0 */
+	snowflake public_updates_channel_id;
+
+	/** Maximum users in a video channel, or 0 */
+	uint16_t max_video_channel_users;
+
+	/** Roles defined on this server */
+	std::vector<snowflake> roles;
+
+	/** List of channels on this server */
+	std::vector<snowflake> channels;
+
+	/** List of threads on this server */
+	std::vector<snowflake> threads;
+
+	/** List of guild members. Note that when you first receive the
+	 * guild create event, this may be empty or near empty.
+	 * This depends upon your dpp::intents and the size of your bot.
+	 * It will be filled by guild member chunk requests.
+	 */
+	members_container members;
+
+	/** List of members in voice channels in the guild.
+	 */
+	std::map<snowflake, voicestate> voice_members;
+
+        /** List of emojis
+	 */
+	std::vector<snowflake> emojis;
+
+	/** Welcome screen
+	 */
+	welcome_screen_t welcome_screen;
 
 	/**
 	 * @brief the maximum number of presences for the guild.
@@ -458,33 +488,6 @@ public:
 	 * @brief the maximum number of members for the guild
 	 */
 	uint32_t max_members;
-
-	/** Shard ID of the guild */
-	uint16_t shard_id;
-
-	/** Number of boosters */
-	uint16_t premium_subscription_count;
-
-	/** Maximum users in a video channel, or 0 */
-	uint16_t max_video_channel_users;
-
-	/** Voice AFK timeout before moving users to AFK channel */
-	uint8_t afk_timeout;
-
-	/** Setting for how notifications are to be delivered to users */
-	uint8_t default_message_notifications;
-
-	/** Boost level */
-	uint8_t premium_tier;
-
-	/** Verification level of server */
-	verification_level_t verification_level;
-
-	/** Whether or not explicit content filtering is enable and what setting it is */
-	guild_explicit_content_t explicit_content_filter;
-
-	/** If multi factor authentication is required for moderators or not */
-	mfa_level_t mfa_level;
 
 	/**
 	 * @brief Guild NSFW level
@@ -774,14 +777,13 @@ typedef std::unordered_map<snowflake, guild> guild_map;
 class DPP_EXPORT guild_widget {
 public:
 	/**
-	 * @brief Channel widget points to
-	 */
-	snowflake channel_id;
-
-	/**
 	 * @brief True if enabled
 	 */
 	bool enabled;
+	/**
+	 * @brief Channel widget points to
+	 */
+	snowflake channel_id;
 
 	/**
 	 * @brief Construct a new guild widget object
