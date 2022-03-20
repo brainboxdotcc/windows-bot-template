@@ -333,7 +333,7 @@ inline confirmation interaction_response_create_sync(snowflake interaction_id, c
  *
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-original-interaction-response
  * @param token Token for the interaction webhook
- * @param r Message to send
+ * @param m Message to send
  * @return confirmation returned object on completion
  * \memberof dpp::cluster
  * @see dpp::cluster::interaction_response_edit
@@ -1309,7 +1309,7 @@ inline invite invite_get_sync(const std::string &invitecode) {
  * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
  * Avoid direct use of this function inside an event handler.
  */
-inline message message_create_sync(const message &m) {
+inline message message_create_sync(const struct message &m) {
 	return dpp::sync<message>(this, &cluster::message_create, m);
 }
 
@@ -1346,7 +1346,7 @@ inline message message_crosspost_sync(snowflake message_id, snowflake channel_id
  * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
  * Avoid direct use of this function inside an event handler.
  */
-inline confirmation message_delete_bulk_sync(const std::vector<snowflake>& message_ids, snowflake channel_id) {
+inline confirmation message_delete_bulk_sync(const std::vector<snowflake> &message_ids, snowflake channel_id) {
 	return dpp::sync<confirmation>(this, &cluster::message_delete_bulk, message_ids, channel_id);
 }
 
@@ -1380,7 +1380,7 @@ inline confirmation message_delete_sync(snowflake message_id, snowflake channel_
  * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
  * Avoid direct use of this function inside an event handler.
  */
-inline message message_edit_sync(const message &m) {
+inline message message_edit_sync(const struct message &m) {
 	return dpp::sync<message>(this, &cluster::message_edit, m);
 }
 
@@ -1993,7 +1993,7 @@ inline thread_map threads_get_joined_private_archived_sync(snowflake channel_id,
  * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
  * Avoid direct use of this function inside an event handler.
  */
-inline thread_map threads_get_private_archived_sync(snowflake channel_id, time_t before_timestamp, uint16_t limit) {
+inline thread_map threads_get_private_archived_sync(snowflake channel_id,  time_t before_timestamp, uint16_t limit) {
 	return dpp::sync<thread_map>(this, &cluster::threads_get_private_archived, channel_id, before_timestamp, limit);
 }
 
@@ -2188,9 +2188,9 @@ inline user_identified current_user_get_sync() {
  * @see https://discord.com/developers/docs/resources/guild#modify-current-user-voice-state 
  * @param guild_id Guild to set voice state on
  * @param channel_id Stage channel to set voice state on
+ * @return confirmation returned object on completion
  * @param suppress True if the user's audio should be suppressed, false if it should not
  * @param request_to_speak_timestamp The time at which we requested to speak, or 0 to clear the request. The time set here must be the current time or in the future.
- * @return confirmation returned object on completion
  * @throw std::logic_exception You attempted to set a request_to_speak_timestamp in the past which is not the value of 0.
  * \memberof dpp::cluster
  * @see dpp::cluster::current_user_set_voice_state
@@ -2219,8 +2219,8 @@ inline confirmation current_user_set_voice_state_sync(snowflake guild_id, snowfl
  * @param user_id The user to set the voice state of
  * @param guild_id Guild to set voice state on
  * @param channel_id Stage channel to set voice state on
- * @param suppress True if the user's audio should be suppressed, false if it should not
  * @return confirmation returned object on completion
+ * @param suppress True if the user's audio should be suppressed, false if it should not
  * \memberof dpp::cluster
  * @see dpp::cluster::user_set_voice_state
  * @throw dpp::rest_exception upon failure to execute REST function
@@ -2430,7 +2430,7 @@ inline webhook edit_webhook_sync(const class webhook& wh) {
  * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
  * Avoid direct use of this function inside an event handler.
  */
-inline message edit_webhook_message_sync(const class webhook &wh, const struct message& m) {
+inline message edit_webhook_message_sync(const class webhook &wh, const struct message &m) {
 	return dpp::sync<message>(this, &cluster::edit_webhook_message, wh, m);
 }
 
@@ -2464,7 +2464,7 @@ inline webhook edit_webhook_with_token_sync(const class webhook& wh) {
  * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
  * Avoid direct use of this function inside an event handler.
  */
-inline message execute_webhook_sync(const class webhook &wh, const struct message& m, bool wait = false, snowflake thread_id = 0) {
+inline message execute_webhook_sync(const class webhook &wh, const struct message &m, bool wait = false, snowflake thread_id = 0) {
 	return dpp::sync<message>(this, &cluster::execute_webhook, wh, m, wait, thread_id);
 }
 
