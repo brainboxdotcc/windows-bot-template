@@ -2307,12 +2307,27 @@ public:
 	 * Fires a `Guild Member Remove` Gateway event.
 	 * @see https://discord.com/developers/docs/resources/guild#remove-guild-member
 	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
+	 * @deprecated Replaced by dpp::cluster::guild_member_kick
 	 * @param guild_id Guild ID to kick member from
 	 * @param user_id User ID to kick
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void guild_member_delete(snowflake guild_id, snowflake user_id, command_completion_event_t callback = utility::log_error());
+
+	/**
+	 * @brief Remove (kick) a guild member
+	 *  
+	 * Remove a member from a guild. Requires `KICK_MEMBERS` permission.
+	 * Fires a `Guild Member Remove` Gateway event.
+	 * @see https://discord.com/developers/docs/resources/guild#remove-guild-member
+	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
+	 * @param guild_id Guild ID to kick member from
+	 * @param user_id User ID to kick
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_member_kick(snowflake guild_id, snowflake user_id, command_completion_event_t callback = utility::log_error());
 
 	/**
 	 * @brief Add guild ban
@@ -3421,7 +3436,7 @@ public:
 		/* Attach event */
 		listener_handle = ev(listener);
 		/* Create timer */
-		th = cl->start_timer([this](dpp::timer timer_handle) {
+		th = cl->start_timer([this]() {
 			/* Timer has finished, detach it from event.
 			 * Only allowed to tick once.
 			 */
@@ -3492,7 +3507,7 @@ public:
 				stored.push_back(*v);
 			}
 		};
-		tl = new dpp::timed_listener<event_router_t<T>, std::function<void(const T&)>>(cl, duration, event, f, [this](dpp::timer timer_handle) {
+		tl = new dpp::timed_listener<event_router_t<T>, std::function<void(const T&)>>(cl, duration, event, f, [this]() {
 			if (!triggered) {
 				triggered = true;
 				completed(stored);
