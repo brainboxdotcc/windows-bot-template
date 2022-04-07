@@ -32,61 +32,36 @@
 namespace dpp {
 
 /** @brief Flag integers as received from and sent to discord */
-enum channel_type {
-	GUILD_TEXT		= 0,	//!< a text channel within a server
+enum channel_type : uint8_t {
+	CHANNEL_TEXT		= 0,	//!< a text channel within a server
 	DM			= 1,	//!< a direct message between users
-	GUILD_VOICE		= 2,	//!< a voice channel within a server
+	CHANNEL_VOICE		= 2,	//!< a voice channel within a server
 	GROUP_DM		= 3,	//!< a direct message between multiple users
-	GUILD_CATEGORY		= 4,	//!< an organizational category that contains up to 50 channels
-	GUILD_NEWS		= 5,	//!< a channel that users can follow and crosspost into their own server
+	CHANNEL_CATEGORY	= 4,	//!< an organizational category that contains up to 50 channels
+	CHANNEL_NEWS		= 5,	//!< a channel that users can follow and crosspost into their own server
 	/**
 	 * @brief a channel in which game developers can sell their game on Discord
 	 * @deprecated store channels are deprecated by Discord
 	 */
-	GUILD_STORE		= 6,
-	GUILD_NEWS_THREAD	= 10,	//!< a temporary sub-channel within a GUILD_NEWS channel
-	GUILD_PUBLIC_THREAD	= 11,	//!< a temporary sub-channel within a GUILD_TEXT channel
-	GUILD_PRIVATE_THREAD	= 12,	//!< a temporary sub-channel within a GUILD_TEXT channel that is only viewable by those invited and those with the MANAGE_THREADS permission
-	GUILD_STAGE		= 13,	//!< a "stage" channel, like a voice channel with one authorised speaker
-	GUILD_DIRECTORY = 14    //!< the channel in a [hub](https://support.discord.com/hc/en-us/articles/4406046651927-Discord-Student-Hubs-FAQ) containing the listed servers
+	CHANNEL_STORE		= 6,
+	CHANNEL_NEWS_THREAD	= 10,	//!< a temporary sub-channel within a GUILD_NEWS channel
+	CHANNEL_PUBLIC_THREAD	= 11,	//!< a temporary sub-channel within a GUILD_TEXT channel
+	CHANNEL_PRIVATE_THREAD	= 12,	//!< a temporary sub-channel within a GUILD_TEXT channel that is only viewable by those invited and those with the MANAGE_THREADS permission
+	CHANNEL_STAGE		= 13,	//!< a "stage" channel, like a voice channel with one authorised speaker
+	CHANNEL_DIRECTORY	= 14,   //!< the channel in a [hub](https://support.discord.com/hc/en-us/articles/4406046651927-Discord-Student-Hubs-FAQ) containing the listed servers
+	CHANNEL_FORUM		= 15	//!< forum channel, coming soon(tm)
 };
-/** @brief Our flags as stored in the object */
-enum channel_flags : uint16_t {
-	/**
-	 * @brief video quality mode 720p
-	 * This is a dummy value as it does nothing, in comparison to
-	 * c_video_quality_720p which actually sets the bit!
-	 */
-	c_video_quality_auto =	0b0000000000000000,
+
+/** @brief Our flags as stored in the object
+ * @note The bottom four bits of this flag are reserved to contain the channel_type values
+ * listed above as provided by Discord. If discord add another value > 15, we will have to
+ * shuffle these values upwards by one bit.
+ */
+enum channel_flags : uint8_t {
 	/// NSFW Gated Channel
-	c_nsfw =		0b0000000000000001,
-	/// Text channel
-	c_text =		0b0000000000000010,
-	/// Direct Message
-	c_dm =			0b0000000000000100,
-	/// Voice channel
-	c_voice =		0b0000000000001000,
-	/// Group
-	c_group =		0b0000000000010000,
-	/// Category
-	c_category =		0b0000000000100000,
-	/// News channel
-	c_news =		0b0000000001000000,
-	/**
-	 * @brief a channel in which game developers can sell their game on Discord
-	 * @deprecated store channels are deprecated by Discord
-	 */
-	c_store =		0b0000000010000000,
-	/// Stage channel
-	c_stage =		0b0000000011000000,
-	/// News thread
-	c_news_thread =		0b0000000011100000,
-	/// Public thread
-	c_public_thread = 	0b0000000011110000,
-	/// Private thread
-	c_private_thread =	0b0000000011111000,
+	c_nsfw =		0b00010000,
 	/// Video quality forced to 720p
-	c_video_quality_720p =	0b0000000100000000,
+	c_video_quality_720p =	0b00100000,
 };
 
 /**
@@ -212,9 +187,6 @@ public:
 	 */
 	uint64_t permissions;
 
-	/** Flags bitmap */
-	uint16_t flags;
-	
 	/** Sorting position, lower number means higher up the list */
 	uint16_t position;
 
@@ -224,6 +196,9 @@ public:
 	/** amount of seconds a user has to wait before sending another message (0-21600); bots, as well as users with the permission manage_messages or manage_channel, are unaffected*/
 	uint16_t rate_limit_per_user;
 
+	/** Flags bitmap */
+	uint8_t flags;
+	
 	/** Maximum user limit for voice channels (0-99) */
 	uint8_t user_limit;
 
@@ -451,6 +426,14 @@ public:
 	 * @return true if a category
 	 */
 	bool is_category() const;
+
+	/**
+	 * @brief Returns true if the channel is a forum
+	 * @note This feature is not implemented by Discord yet and the name is subject to possible change!
+	 * 
+	 * @return true if a category
+	 */
+	bool is_forum() const;
 
 	/**
 	 * @brief Returns true if the channel is a news channel
