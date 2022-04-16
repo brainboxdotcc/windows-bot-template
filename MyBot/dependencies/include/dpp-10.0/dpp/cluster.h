@@ -48,6 +48,29 @@ using  json = nlohmann::json;
 
 namespace dpp {
 
+#ifdef _WIN32
+	#ifdef _DEBUG
+		extern "C" DPP_EXPORT void you_are_using_a_debug_build_of_dpp_on_a_release_project();
+	#else
+		extern "C" DPP_EXPORT void you_are_using_a_release_build_of_dpp_on_a_debug_project();
+	#endif
+#endif
+
+struct DPP_EXPORT version_checker {
+	version_checker() {
+		#ifdef _WIN32
+			#ifdef _DEBUG
+				you_are_using_a_debug_build_of_dpp_on_a_release_project();
+			#else
+				you_are_using_a_release_build_of_dpp_on_a_debug_project();
+			#endif
+		#endif
+	}
+};
+
+static version_checker dpp_vc;
+
+
 /**
  * @brief A list of shards
  */
@@ -331,7 +354,7 @@ private:
 	 * @brief A function to be called whenever the method is called, to check
 	 * some condition that is required for this event to trigger correctly.
 	 */
-	std::function<void()> warning;
+	std::function<void(const T&)> warning;
 
 protected:
 
@@ -341,7 +364,7 @@ protected:
 	 * 
 	 * @param warning_function A checking function to call
 	 */
-	void set_warning_callback(std::function<void()> warning_function) {
+	void set_warning_callback(std::function<void(const T&)> warning_function) {
 		warning = warning_function;
 	}
 
@@ -360,7 +383,7 @@ public:
 	 */
 	void call(const T& event) const {
 		if (warning) {
-			warning();
+			warning(event);
 		}
 		std::shared_lock l(lock);
 		std::for_each(dispatch_container.begin(), dispatch_container.end(), [&](auto &ev) {
@@ -418,9 +441,6 @@ public:
 	 * detach the listener from the event later if necessary.
 	 */
 	event_handle attach(std::function<void(const T&)> func) {
-		if (warning) {
-			warning();
-		}
 		std::unique_lock l(lock);
 		event_handle h = __next_handle++;
 		dispatch_container.emplace(h, func);
