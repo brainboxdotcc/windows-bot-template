@@ -125,7 +125,17 @@ enum audit_type {
 	/// Thread update
 	ae_thread_update		=	111,
 	/// Thread delete
-	ae_thread_delete		=	112
+	ae_thread_delete		=	112,
+	// Application command permissions update
+	ae_appcommand_permission_update	=	121,
+	/// Auto moderation rule creation
+	ae_automod_rule_create		=	140,
+	/// Auto moderation rule update
+	ae_automod_rule_update		=	141,
+	/// Auto moderation rule deletion
+	ae_automod_rule_delete		=	142,
+	/// Auto moderation block message
+	ae_automod_block_message	=	143,
 };
 
 /**
