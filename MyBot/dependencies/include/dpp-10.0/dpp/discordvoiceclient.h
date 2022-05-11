@@ -214,7 +214,6 @@ class DPP_EXPORT discord_voice_client : public websocket_client
 		 * are parked and sorted in this queue.
 		 */
 		std::priority_queue<voice_payload> parked_payloads;
-#ifdef HAVE_VOICE
 		/**
 		 * @brief libopus decoder
 		 *
@@ -223,7 +222,6 @@ class DPP_EXPORT discord_voice_client : public websocket_client
 		 * uses the decoder.
 		 */
 		std::shared_ptr<OpusDecoder> decoder;
-#endif
 	};
 	/**
 	 * @brief Thread used to deliver incoming voice data to handlers.
@@ -326,7 +324,7 @@ class DPP_EXPORT discord_voice_client : public websocket_client
 	/**
 	 * @brief Maps receiving ssrc to user id
 	 */
-	std::unordered_map<uint32_t, snowflake> ssrcMap;
+	std::unordered_map<uint32_t, snowflake> ssrc_map;
 
 	/**
 	 * @brief This is set to true if we have started sending audio.
