@@ -20,7 +20,6 @@
  ************************************************************************************/
 #pragma once
 #include <dpp/export.h>
-#include <type_traits>
 
 namespace dpp {
 
@@ -80,30 +79,12 @@ using role_permissions = permissions;
 /**
  * @brief Represents a permission bitmask (refer to enum dpp::permissions) which are hold in an uint64_t
  */
-class permission {
+class DPP_EXPORT permission {
 protected:
 	/**
 	 * @brief The permission bitmask value
 	 */
 	uint64_t value;
-
-	/**
-	 * @brief Internal function called by remove() to apply iterative changes
-	 * @param p flags to add
-	 */
-	void add_one(uint64_t p);
-
-	/**
-	 * @brief Internal function called by remove() to apply iterative changes
-	 * @param p flags to set
-	 */
-	void set_one(uint64_t p);
-
-	/**
-	 * @brief Internal function called by remove() to apply iterative changes
-	 * @param p flags to remove
-	 */
-	void remove_one(uint64_t p);
 
 public:
 	/**
@@ -138,44 +119,74 @@ public:
 	/**
 	 * @brief Check if it has a permission flag set. It uses the Bitwise AND operator
 	 * @param p The permission flag from dpp::permissions
+	 *
+	 * **Example:**
+	 *
+	 * ```cpp
+	 * bool is_mod = permission.has(dpp::p_kick_members | dpp::p_ban_members);
+	 * // Returns true if the permission bitmask contains p_kick_members and p_ban_members
+	 * ```
+	 *
 	 * @return True if it has the permission
 	 */
 	bool has(uint64_t p) const;
 
 	/**
 	 * @brief Add a permission with the Bitwise OR operation
-	 * @tparam Args one or more uint64_t permission bits
-	 * @param args The permissions (from dpp::permissions) to set
+	 * @tparam T one or more uint64_t permission bits
+	 * @param values The permissions (from dpp::permissions) to add
+	 *
+	 * **Example:**
+	 *
+	 * ```cpp
+	 * permission.add(dpp::p_view_channel, dpp::p_send_messages);
+	 * // Adds p_view_channel and p_send_messages to the permission bitmask
+	 * ```
+	 *
 	 * @return permission& reference to self for chaining
 	 */
-	template <typename... Args> permission& add(Args&&... args) {
-		[[maybe_unused]]
-		int dummy[] = { 0, ((void) add_one(std::forward<Args>(args)),0)... };
+	template <typename... T>
+	permission& add(T... values) {
+		(value |= (0 | ... | values));
 		return *this;
 	}
 
 	/**
 	 * @brief Assign a permission. This will reset the bitmask to the new value.
-	 * @tparam Args one or more uint64_t permission bits
-	 * @param args The permissions (from dpp::permissions) to set
+	 * @tparam T one or more uint64_t permission bits
+	 * @param values The permissions (from dpp::permissions) to set
+	 *
+	 * **Example:**
+	 *
+	 * ```cpp
+	 * permission.set(dpp::p_view_channel, dpp::p_send_messages);
+	 * ```
+	 *
 	 * @return permission& reference to self for chaining
 	 */
-	template <typename... Args> permission& set(Args&&... args) {
-		this->set_one(0);
-		[[maybe_unused]]
-		int dummy[] = { 0, ((void) add_one(std::forward<Args>(args)),0)... };
+	template <typename... T>
+	permission& set(T... values) {
+		(value = (0 | ... | values));
 		return *this;
 	}
 
 	/**
 	 * @brief Remove a permission with the Bitwise NOT operation
-	 * @tparam Args one or more uint64_t permission bits
-	 * @param args The permissions (from dpp::permissions) to remove
+	 * @tparam T one or more uint64_t permission bits
+	 * @param values The permissions (from dpp::permissions) to remove
+	 *
+	 * **Example:**
+	 *
+	 * ```cpp
+	 * permission.remove(dpp::p_view_channel, dpp::p_send_messages);
+	 * // Removes p_view_channel and p_send_messages permission
+	 * ```
+	 *
 	 * @return permission& reference to self for chaining
 	 */
-	template <typename... Args> permission& remove(Args&&... args) {
-		[[maybe_unused]]
-		int dummy[] = { 0, ((void) remove_one(std::forward<Args>(args)),0)... };
+	template <typename... T>
+	permission& remove(T... values) {
+		(value &= ~(0 | ... | values));
 		return *this;
 	}
 };
