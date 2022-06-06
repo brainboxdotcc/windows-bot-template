@@ -493,6 +493,34 @@ public:
 	snowflake channel_id;
 
 	/**
+	 * @brief The audio type to be sent. The default type is recorded audio.
+	 *
+	 * If the audio is recorded, the sending of audio packets is throttled.
+	 * Otherwise, if the audio is live, the sending is not throttled.
+	 *
+	 * Discord voice engine is expecting audio data as if they were from
+	 * some audio device, e.g. microphone, where the data become available
+	 * as they get captured from the audio device.
+	 *
+	 * In case of recorded audio, unlike from a device, the audio data are
+	 * usually instantly available in large chunks. Throttling is needed to
+	 * simulate audio data coming from an audio device. In case of live audio,
+	 * the throttling is by nature, so no extra throttling is needed.
+	 *
+	 * Using live audio mode for recorded audio can cause Discord to skip
+	 * audio data because Discord does not expect to receive, say, 3 minutes'
+	 * worth of audio data in 1 second.
+	 *
+	 * Use discord_voice_client::set_send_audio_type to change this value as
+	 * it ensures thread safety.
+	 */
+	enum send_audio_type_t
+	{
+	    satype_recorded_audio,
+	    satype_live_audio,
+	} send_audio_type = satype_recorded_audio;
+
+	/**
 	 * @brief Sets the gain for the specified user.
 	 *
 	 * Similar to the User Volume slider, controls the listening volume per user.
@@ -680,32 +708,11 @@ public:
 	discord_voice_client& send_silence(const uint64_t duration);
 
 	/**
-	 * @brief The audio type to be sent. The default type is recorded audio.
+	 * @brief Sets the audio type that will be sent with send_audio_* methods.
 	 *
-	 * If the audio is recorded, the sending of audio packets is throttled.
-	 * Otherwise, if the audio is live, the sending is not throttled.
-	 *
-	 * Discord voice engine is expecting audio data as if they were from
-	 * some audio device, e.g. microphone, where the data become available
-	 * as they get captured from the audio device.
-	 *
-	 * In case of recorded audio, unlike from a device, the audio data are
-	 * usually instantly available in large chunks. Throttling is needed to
-	 * simulate audio data coming from an audio device. In case of live audio,
-	 * the throttling is by nature, so no extra throttling is needed.
-	 *
-	 * Using live audio mode for recorded audio can cause Discord to skip
-	 * audio data because Discord does not expect to receive, say, 3 minutes'
-	 * worth of audio data in 1 second.
-	 *
-	 * Since this field is read from the SSL connection write loop, the field
-	 * should be set while no audio is being sent.
+	 * @see send_audio_type_t
 	 */
-	enum
-	{
-	    satype_recorded_audio,
-	    satype_live_audio,
-	} send_audio_type = satype_recorded_audio;
+	discord_voice_client& set_send_audio_type(send_audio_type_t type);
 
 	/**
 	 * @brief Set the timescale in nanoseconds.
