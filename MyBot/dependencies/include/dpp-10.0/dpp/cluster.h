@@ -2087,8 +2087,7 @@ public:
 	 * Modify the positions of a set of channel objects for the guild.
 	 * Requires `MANAGE_CHANNELS` permission. Fires multiple `Channel Update Gateway` events.
 	 * Only channels to be modified are required.
-	 * 
-	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
+	 *
 	 * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions
 	 * @param c Channel to change the position for
 	 * @param callback Function to call when the API call completes.
@@ -2486,19 +2485,18 @@ public:
 
 	/**
 	 * @brief Add guild ban
-	 * 
+	 *
 	 * Create a guild ban, and optionally delete previous messages sent by the banned user.
 	 * Requires the `BAN_MEMBERS` permission. Fires a `Guild Ban Add` Gateway event.
 	 * @see https://discord.com/developers/docs/resources/guild#create-guild-ban
 	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
 	 * @param guild_id Guild ID to add ban to
 	 * @param user_id User ID to ban
-	 * @param delete_message_days How many days of their user's messages to also delete
-	 * @param reason Reason for ban
+	 * @param delete_message_days How many days of their user's messages to also delete (0-7). Defaults to 0
 	 * @param callback Function to call when the API call completes.
-	 * On success the callback will contain a dpp::ban object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
-	void guild_ban_add(snowflake guild_id, snowflake user_id, uint32_t delete_message_days, const std::string &reason, command_completion_event_t callback = utility::log_error());
+	void guild_ban_add(snowflake guild_id, snowflake user_id, uint32_t delete_message_days = 0, command_completion_event_t callback = utility::log_error());
 
 	/**
 	 * @brief Delete guild ban
@@ -2966,10 +2964,12 @@ public:
 	 * @param m Message to send
 	 * @param wait waits for server confirmation of message send before response, and returns the created message body
 	 * @param thread_id Send a message to the specified thread within a webhook's channel. The thread will automatically be unarchived
+	 * @param thread_name Name of thread to create (requires the webhook channel to be a forum channel)
 	 * @param callback Function to call when the API call completes.
+	 * @note If the webhook channel is a forum channel, you must provide either `thread_id` or `thread_name`. If `thread_id` is provided, the message will send in that thread. If `thread_name` is provided, a thread with that name will be created in the forum channel.
 	 * On success the callback will contain a dpp::message object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
-	void execute_webhook(const class webhook &wh, const struct message &m, bool wait = false, snowflake thread_id = 0, command_completion_event_t callback = utility::log_error());
+	void execute_webhook(const class webhook &wh, const struct message &m, bool wait = false, snowflake thread_id = 0, const std::string& thread_name = "", command_completion_event_t callback = utility::log_error());
 
 	/**
 	 * @brief Get webhook message
