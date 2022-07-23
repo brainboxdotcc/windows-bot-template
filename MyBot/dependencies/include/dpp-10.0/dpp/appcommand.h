@@ -27,7 +27,7 @@
 #include <dpp/role.h>
 #include <dpp/user.h>
 #include <variant>
-#include INCLUDE_NLOHMANN
+#include <dpp/nlohmann/json_fwd.hpp>
 #include <dpp/json_interface.h>
 
 namespace dpp {
@@ -218,6 +218,22 @@ struct DPP_EXPORT command_option : public json_interface<command_option>  {
 	 * @return command_option& return a reference to sef for chaining of calls
 	 */
 	command_option& set_max_value(command_option_range max_v);
+
+	/**
+	 * @brief Set the minimum string length of the option. 
+	 * Only valid if the type is co_string
+	 * @param min_v Minimum value
+	 * @return command_option& return a reference to sef for chaining of calls
+	 */
+	command_option& set_min_length(command_option_range min_v);
+
+	/**
+	 * @brief Set the maximum string length of the option. 
+	 * Only valid if the type is co_string
+	 * @param max_v Maximum value
+	 * @return command_option& return a reference to sef for chaining of calls
+	 */
+	command_option& set_max_length(command_option_range max_v);
 
 	/**
 	 * @brief Add a sub-command option
