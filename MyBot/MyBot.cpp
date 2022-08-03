@@ -1,3 +1,4 @@
+#include "MyBot.h"
 #include <dpp/dpp.h>
 
 /* Be sure to place your token in the line below.
