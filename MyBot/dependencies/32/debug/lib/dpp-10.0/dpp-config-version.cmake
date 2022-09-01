@@ -9,19 +9,19 @@
 # The variable CVF_VERSION must be set before calling configure_file().
 
 
-set(PACKAGE_VERSION "10.0.17")
+set(PACKAGE_VERSION "10.0.18")
 
 if(PACKAGE_VERSION VERSION_LESS PACKAGE_FIND_VERSION)
   set(PACKAGE_VERSION_COMPATIBLE FALSE)
 else()
 
-  if("10.0.17" MATCHES "^([0-9]+)\\.")
+  if("10.0.18" MATCHES "^([0-9]+)\\.")
     set(CVF_VERSION_MAJOR "${CMAKE_MATCH_1}")
     if(NOT CVF_VERSION_MAJOR VERSION_EQUAL 0)
       string(REGEX REPLACE "^0+" "" CVF_VERSION_MAJOR "${CVF_VERSION_MAJOR}")
     endif()
   else()
-    set(CVF_VERSION_MAJOR "10.0.17")
+    set(CVF_VERSION_MAJOR "10.0.18")
   endif()
 
   if(PACKAGE_FIND_VERSION_RANGE)
