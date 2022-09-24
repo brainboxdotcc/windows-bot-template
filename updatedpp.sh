@@ -22,13 +22,13 @@ echo "Download assets from CI..."
 gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | grep -v pull_request | head -n1
 gh run download -R "brainboxdotcc/DPP" $(gh run list -w "D++ CI" -R "brainboxdotcc/DPP" | grep $'\t'master$'\t' | grep ^completed | grep -v pull_request | head -n1 | awk '{ printf $(NF-2) }')
 
-if [[ ! -d "./libdpp - Windows x64-Release-vs2019" ]] ; then
+if [[ ! -d "./libdpp - Windows x64-Release-vs2022" ]] ; then
 	echo "Download of assets failed (temporary failure) - not emitting a spurious failure, but exiting now."
 	exit 0;
 fi
 
 echo "Process windows x64 release"
-cd "./libdpp - Windows x64-Release-vs2019" && unzip -qq ./*.zip
+cd "./libdpp - Windows x64-Release-vs2022" && unzip -qq ./*.zip
 # header files from first zip
 cp -rv ./*/include ../../MyBot/dependencies/
 
@@ -39,7 +39,7 @@ cp -rv ./*/lib ../../MyBot/dependencies/64/release/
 cd .. || exit
 
 echo "Process windows x64 debug"
-cd "./libdpp - Windows x64-Debug-vs2019" && unzip -qq ./*.zip
+cd "./libdpp - Windows x64-Debug-vs2022" && unzip -qq ./*.zip
 # dll files
 cp -rv ./*/bin/*.dll ../../MyBot/dependencies/64/debug/bin/
 # lib files
@@ -47,7 +47,7 @@ cp -rv ./*/lib ../../MyBot/dependencies/64/debug/
 cd .. || exit
 
 echo "Process windows x86 release"
-cd "./libdpp - Windows x86-Release-vs2019" && unzip -qq ./*.zip
+cd "./libdpp - Windows x86-Release-vs2022" && unzip -qq ./*.zip
 # dll files
 cp -rv ./*/bin/*.dll ../../MyBot/dependencies/32/release/bin/
 # lib files
@@ -55,7 +55,7 @@ cp -rv ./*/lib ../../MyBot/dependencies/32/release/
 cd .. || exit
 
 echo "Process windows x86 debug"
-cd "./libdpp - Windows x86-Debug-vs2019" && unzip -qq ./*.zip
+cd "./libdpp - Windows x86-Debug-vs2022" && unzip -qq ./*.zip
 # dll files
 cp -rv ./*/bin/*.dll ../../MyBot/dependencies/32/debug/bin/
 # lib files
