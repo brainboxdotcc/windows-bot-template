@@ -1,5 +1,4 @@
 name: Windows Template CI
-on: [push, pull_request]
 on:
   schedule:
     - cron: '0 11,23 * * *'
