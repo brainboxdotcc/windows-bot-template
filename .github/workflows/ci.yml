@@ -23,6 +23,10 @@ jobs:
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+        with:
+          vs-version: '[17.0,17.99]'
+          msbuild-architecture: x64
+          vs-prerelease: false
 
       - name: Build Project
         run: msbuild /p:DPP_CI=1 /p:DPP_WIN_TEMPLATE=1 /p:Configuration=${{matrix.cfg.config}} /p:Platform="${{matrix.cfg.arch}}"
