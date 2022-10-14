@@ -1,5 +1,9 @@
 name: Windows Template CI
 on: [push, pull_request]
+on:
+  schedule:
+    - cron: '0 11,23 * * *'
+  workflow_dispatch:
 
 jobs:
   windows: # Windows x64 and x86 build matrix
