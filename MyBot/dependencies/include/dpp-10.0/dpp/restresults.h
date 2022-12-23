@@ -132,6 +132,9 @@ struct DPP_EXPORT confirmation {
  *
  */
 typedef std::variant<
+		application_role_connection,
+		application_role_connection_metadata,
+		application_role_connection_metadata_map,
 		confirmation,
 		message,
 		message_map,
