@@ -59,6 +59,7 @@ endif()
 add_library(dpp::dpp SHARED IMPORTED)
 
 set_target_properties(dpp::dpp PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include/dpp-10.0"
   INTERFACE_LINK_LIBRARIES "D:/a/DPP/DPP/main/library/../win32/lib/libssl.lib;D:/a/DPP/DPP/main/library/../win32/lib/libcrypto.lib;D:/a/DPP/DPP/main/library/../win32/lib/zlib.lib;D:/a/DPP/DPP/main/library/../win32/lib/libsodium.lib;D:/a/DPP/DPP/main/library/../win32/lib/opus.lib;D:/a/DPP/DPP/main/library/../win32/lib/libssl.lib;D:/a/DPP/DPP/main/library/../win32/lib/libcrypto.lib;D:/a/DPP/DPP/main/library/../win32/lib/libsodium.lib;D:/a/DPP/DPP/main/library/../win32/lib/opus.lib;D:/a/DPP/DPP/main/library/../win32/lib/zlib.lib;D:/a/DPP/DPP/main/library/../win32/lib/libsodium.lib;D:/a/DPP/DPP/main/library/../win32/lib/opus.lib"
 )
 
