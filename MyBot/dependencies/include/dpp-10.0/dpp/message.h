@@ -980,7 +980,7 @@ enum message_flags : uint16_t {
 	/// this message failed to mention some roles and add their members to the thread
 	m_thread_mention_failed = 1 << 8,
 	/// this message will not trigger push and desktop notifications
-	m_suppress_notifications = 1 << 9,
+	m_suppress_notifications = 1 << 12,
 };
 
 /**
@@ -1166,7 +1166,7 @@ struct DPP_EXPORT message : public managed {
 	std::vector<channel> mention_channels;
 	/** any attached files */
 	std::vector<attachment> attachments;
-	/** zero or more dpp::embed objects */
+	/** Up to 10 dpp::embed objects */
 	std::vector<embed> embeds;
 	/** Optional: reactions to the message */
 	std::vector<reaction> reactions;
