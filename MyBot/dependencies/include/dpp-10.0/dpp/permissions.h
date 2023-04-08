@@ -82,41 +82,38 @@ enum permissions : uint64_t {
 using role_permissions = permissions;
 
 /**
- * @brief Represents a permission bitmask (refer to enum dpp::permissions) which are held in an uint64_t
+ * @brief Represents a permission bitmask (refer to enum dpp::permissions) which are hold in an uint64_t
  */
-struct DPP_EXPORT permission {
-
+class DPP_EXPORT permission {
+protected:
 	/**
 	 * @brief The permission bitmask value
 	 */
-	uint64_t value{0};
+	uint64_t value;
+
+public:
+	/**
+	 * @brief Construct a permission object
+	 * @param value A permission bitmask
+	 */
+	permission(const uint64_t& value);
 
 	/**
-	 * @brief Default constructor, initializes permission to 0
-	 */
-	constexpr permission() = default;
-
-	/**
-	 * @brief Bitmask constructor, initializes permission to the argument
-	 * @param value The bitmask to initialize the permission to
-	 */
-	constexpr permission(uint64_t value) noexcept : value{value} {}
+ 	 * @brief Construct a permission object
+ 	 */
+	permission();
 
 	/**
 	 * @brief For acting like an integer
 	 * @return The permission bitmask value
 	 */
-	constexpr operator uint64_t() const noexcept {
-		return value;
-	}
+	operator uint64_t() const;
 
 	/**
 	 * @brief For acting like an integer
 	 * @return A reference to the permission bitmask value
 	 */
-	constexpr operator uint64_t &() noexcept {
-		return value;
-	}
+	operator uint64_t &();
 
 	/**
 	 * @brief For building json
@@ -139,7 +136,7 @@ struct DPP_EXPORT permission {
 	 * @return bool True if it has all the given permissions
 	 */
 	template <typename... T>
-	constexpr bool has(T... values) const noexcept {
+	bool has(T... values) const {
 		return (value & (0 | ... | values)) == (0 | ... | values);
 	}
 
@@ -158,8 +155,8 @@ struct DPP_EXPORT permission {
 	 * @return permission& reference to self for chaining
 	 */
 	template <typename... T>
-	std::enable_if_t<(std::is_convertible_v<T, uint64_t> && ...), permission&>
-	constexpr add(T... values) noexcept {
+	typename std::enable_if<(std::is_convertible<T, uint64_t>::value && ...), permission&>::type
+	add(T... values) {
 		value |= (0 | ... | values);
 		return *this;
 	}
@@ -178,8 +175,8 @@ struct DPP_EXPORT permission {
 	 * @return permission& reference to self for chaining
 	 */
 	template <typename... T>
-	std::enable_if_t<(std::is_convertible_v<T, uint64_t> && ...), permission&>
-	constexpr set(T... values) noexcept {
+	typename std::enable_if<(std::is_convertible<T, uint64_t>::value && ...), permission&>::type
+	set(T... values) {
 		value = (0 | ... | values);
 		return *this;
 	}
@@ -199,8 +196,8 @@ struct DPP_EXPORT permission {
 	 * @return permission& reference to self for chaining
 	 */
 	template <typename... T>
-	std::enable_if_t<(std::is_convertible_v<T, uint64_t> && ...), permission&>
-	constexpr remove(T... values) noexcept {
+	typename std::enable_if<(std::is_convertible<T, uint64_t>::value && ...), permission&>::type
+	remove(T... values) {
 		value &= ~(0 | ... | values);
 		return *this;
 	}
