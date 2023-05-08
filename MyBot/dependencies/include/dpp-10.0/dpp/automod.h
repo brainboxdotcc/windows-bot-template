@@ -210,11 +210,6 @@ struct DPP_EXPORT automod_metadata : public json_interface<automod_metadata> {
 	uint8_t mention_total_limit;
 
 	/**
-	 * @brief Whether to automatically detect mention raids
-	 */
-	bool mention_raid_protection_enabled;
-
-	/**
 	 * @brief Construct a new automod metadata object
 	 */
 	automod_metadata();
