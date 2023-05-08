@@ -23,8 +23,8 @@
 #include <dpp/misc-enum.h>
 #include <string>
 #include <functional>
-#include <dpp/socket.h>
 #include <cstdint>
+#include <dpp/socket.h>
 
 namespace dpp {
 
