@@ -162,10 +162,8 @@ struct DPP_EXPORT command_option : public json_interface<command_option>  {
 	bool autocomplete;                           //!< True if this option supports auto completion
 	std::vector<command_option> options;         //!< Sub-commands
 	std::vector<channel_type> channel_types;     //!< Allowed channel types for channel snowflake id options
-	command_option_range min_value;              //!< Minimum value allowed, for co_number and co_integer types only
-	command_option_range max_value;              //!< Maximum value allowed, for co_number and co_integer types only
-	uint16_t min_length;              //!< Minimum allowed string length (0-6000), for co_string types only
-	uint16_t max_length;              //!< Maximum allowed string length (1-6000), for co_string types only
+	command_option_range min_value;              //!< Minimum value allowed, for co_number and co_integer types only. It's used for the min_length field for co_string types
+	command_option_range max_value;              //!< Maximum value allowed, for co_number and co_integer types only. It's used for the max_length field for co_string types
 	std::map<std::string, std::string> name_localizations; //!< Localisations of command name
 	std::map<std::string, std::string> description_localizations; //!< Localisations of command description
 
