@@ -408,7 +408,6 @@ public:
 	/**
 	 * @brief on voice state update event
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#voice-state-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type voice_state_update_t&, and returns void.
 	 */
@@ -459,7 +458,6 @@ public:
 	 * Interactions are created by discord when commands you have registered are issued
 	 * by a user. For an example of this in action please see \ref slashcommands
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#interaction-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type interaction_create_t&, and returns void.
 	 *
@@ -544,7 +542,6 @@ public:
 	 * explicitly with dpp::cluster::guild_delete, or via the guild being unavailable due to
 	 * an outage.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_delete_t&, and returns void.
 	 */
@@ -557,7 +554,6 @@ public:
 	 * channel should not be retained long-term as they will be deleted by the garbage
 	 * collector.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#channel-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type channel_delete_t&, and returns void.
 	 */
@@ -569,7 +565,6 @@ public:
 	 * The new channel details have already been applied to the guild when you
 	 * receive this event.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#channel-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type channel_update_t&, and returns void.
 	 */
@@ -580,7 +575,6 @@ public:
 	 * @brief Called when a shard is connected and ready.
 	 * A set of cluster::on_guild_create events will follow this event.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#ready
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type ready_t&, and returns void.
 	 */
@@ -592,7 +586,6 @@ public:
 	 * The message has already been deleted from Discord when you
 	 * receive this event.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_delete_t&, and returns void.
 	 */
@@ -602,7 +595,6 @@ public:
 	/**
 	 * @brief Called when a user leaves a guild (either through being kicked, or choosing to leave)
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-member-remove
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_member_remove_t&, and returns void.
 	 */
@@ -614,7 +606,6 @@ public:
 	 * A resumed session does not need to re-synchronise guilds, members, etc.
 	 * This is generally non-fatal and informational only.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#resumed
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type resumed_t&, and returns void.
 	 */
@@ -624,7 +615,6 @@ public:
 	/**
 	 * @brief Called when a new role is created on a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-role-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_role_create_t&, and returns void.
 	 */
@@ -634,7 +624,6 @@ public:
 	/**
 	 * @brief Called when a user is typing on a channel.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#typing-start
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type typing_start_t&, and returns void.
 	 */
@@ -644,7 +633,6 @@ public:
 	/**
 	 * @brief Called when a new reaction is added to a message.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-reaction-add
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_reaction_add_t&, and returns void.
 	 */
@@ -656,7 +644,6 @@ public:
 	 * D++ will request these for all new guilds if needed, after the cluster::on_guild_create
 	 * events.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-members-chunk
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_members_chunk_t&, and returns void.
 	 */
@@ -666,7 +653,6 @@ public:
 	/**
 	 * @brief Called when a single reaction is removed from a message.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-reaction-remove
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_reaction_remove_t&, and returns void.
 	 */
@@ -677,7 +663,6 @@ public:
 	 * @brief Called when a new guild is created.
 	 * D++ will request members for the guild for its cache using guild_members_chunk.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_create_t&, and returns void.
 	 */
@@ -687,7 +672,6 @@ public:
 	/**
 	 * @brief Called when a new channel is created on a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#channel-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type channel_create_t&, and returns void.
 	 */
@@ -697,7 +681,6 @@ public:
 	/**
 	 * @brief Called when all reactions for a particular emoji are removed from a message.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-reaction-remove-emoji
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_reaction_remove_emoji_t&, and returns void.
 	 */
@@ -707,7 +690,6 @@ public:
 	/**
 	 * @brief Called when multiple messages are deleted from a channel or DM.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-delete-bulk
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_delete_bulk_t&, and returns void.
 	 */
@@ -717,7 +699,6 @@ public:
 	/**
 	 * @brief Called when an existing role is updated on a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-role-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_role_update_t&, and returns void.
 	 */
@@ -727,7 +708,6 @@ public:
 	/**
 	 * @brief Called when a role is deleted in a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-role-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_role_delete_t&, and returns void.
 	 */
@@ -739,7 +719,6 @@ public:
 	 * Note that the pinned message is not returned to this event, just the timestamp
 	 * of the last pinned message.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#channel-pins-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type channel_pins_update_t&, and returns void.
 	 */
@@ -749,7 +728,6 @@ public:
 	/**
 	 * @brief Called when all reactions are removed from a message.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-reaction-remove-all
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_reaction_remove_all_t&, and returns void.
 	 */
@@ -771,7 +749,6 @@ public:
 	 * @brief Called when new emojis are added to a guild.
 	 * The complete set of emojis is sent every time.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-emojis-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_emojis_update_t&, and returns void.
 	 */
@@ -782,7 +759,6 @@ public:
 	 * @brief Called when new stickers are added to a guild.
 	 * The complete set of stickers is sent every time.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-stickers-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_stickers_update_t&, and returns void.
 	 */
@@ -796,7 +772,6 @@ public:
 	 * increase your bot's CPU usage. If you don't need them it is recommended to not ask
 	 * for them.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#presence-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type presence_update_t&, and returns void.
 	 */
@@ -806,7 +781,6 @@ public:
 	/**
 	 * @brief Called when the webhooks for a guild are updated.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#webhooks-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type webhooks_update_t&, and returns void.
 	 */
@@ -815,7 +789,6 @@ public:
 	/**
 	 * @brief Called when a new automod rule is created.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#auto-moderation-rule-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type automod_rule_create_t&, and returns void.
 	 */
@@ -825,7 +798,6 @@ public:
 	/**
 	 * @brief Called when an automod rule is updated.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#auto-moderation-rule-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type automod_rule_update_t&, and returns void.
 	 */
@@ -834,7 +806,6 @@ public:
 	/**
 	 * @brief Called when an automod rule is deleted.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#auto-moderation-rule-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type automod_rule_delete_t&, and returns void.
 	 */
@@ -843,7 +814,6 @@ public:
 	/**
 	 * @brief Called when an automod rule is triggered/executed.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#auto-moderation-action-execution
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type automod_rule_execute_t&, and returns void.
 	 */
@@ -852,7 +822,6 @@ public:
 	/**
 	 * @brief Called when a new member joins a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-member-add
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_member_add_t&, and returns void.
 	 */
@@ -862,7 +831,6 @@ public:
 	/**
 	 * @brief Called when an invite is deleted from a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#invite-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type invite_delete_t&, and returns void.
 	 */
@@ -872,7 +840,6 @@ public:
 	/**
 	 * @brief Called when details of a guild are updated.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_update_t&, and returns void.
 	 */
@@ -885,7 +852,6 @@ public:
 	 * An integration is a connection to a guild of a user's associated accounts,
 	 * e.g. youtube or twitch, for automatic assignment of roles etc.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-integrations-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_integrations_update_t&, and returns void.
 	 */
@@ -895,7 +861,6 @@ public:
 	/**
 	 * @brief Called when details of a guild member (e.g. their roles or nickname) are updated.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-member-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_member_update_t&, and returns void.
 	 */
@@ -905,7 +870,6 @@ public:
 	/**
 	 * @brief Called when a new invite is created for a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#invite-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type invite_create_t&, and returns void.
 	 */
@@ -915,7 +879,6 @@ public:
 	/**
 	 * @brief Called when a message is updated (edited).
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_update_t&, and returns void.
 	 */
@@ -927,7 +890,6 @@ public:
 	 * This is separate to cluster::on_guild_member_update and includes things such as an avatar change,
 	 * username change, discriminator change or change in subscription status for nitro.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#user-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type user_update_t&, and returns void.
 	 */
@@ -941,7 +903,6 @@ public:
 	 * the roadmap to be supported as it consumes excessive amounts of RAM.
 	 * For an example for caching of messages, please see \ref caching-messages
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#message-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type message_create_t&, and returns void.
 	 */
@@ -951,7 +912,6 @@ public:
 	/**
 	 * @brief Called when a ban is added to a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-ban-add
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_ban_add_t&, and returns void.
 	 */
@@ -961,7 +921,6 @@ public:
 	/**
 	 * @brief Called when a ban is removed from a guild.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-ban-remove
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_ban_remove_t&, and returns void.
 	 */
@@ -973,7 +932,6 @@ public:
 	 * An integration is a connection to a guild of a user's associated accounts,
 	 * e.g. youtube or twitch, for automatic assignment of roles etc.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#integration-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type integration_create_t&, and returns void.
 	 */
@@ -986,7 +944,6 @@ public:
 	 * An integration is a connection to a guild of a user's associated accounts,
 	 * e.g. youtube or twitch, for automatic assignment of roles etc.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#integration-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type integration_update_t&, and returns void.
 	 */
@@ -998,7 +955,6 @@ public:
 	 * An integration is a connection to a guild of a user's associated accounts,
 	 * e.g. youtube or twitch, for automatic assignment of roles etc.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#integration-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type integration_delete_t&, and returns void.
 	 */
@@ -1009,7 +965,6 @@ public:
 	 * @brief Called when a thread is created.
 	 * Note that threads are not cached by D++, but a list of thread IDs is accessible in a guild object
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#thread-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type thread_create_t&, and returns void.
 	 */
@@ -1019,7 +974,6 @@ public:
 	/**
 	 * @brief Called when a thread is updated
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#thread-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type thread_update_t&, and returns void.
 	 */
@@ -1029,7 +983,6 @@ public:
 	/**
 	 * @brief Called when a thread is deleted
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#thread-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type thread_delete_t&, and returns void.
 	 */
@@ -1040,7 +993,6 @@ public:
 	 * @brief Called when thread list is synced (upon gaining access to a channel).
 	 * Note that threads are not cached by D++, but a list of thread IDs is accessible in a guild object
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#thread-list-sync
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type thread_list_sync_t&, and returns void.
 	 */
@@ -1050,7 +1002,6 @@ public:
 	/**
 	 * @brief Called when current user's thread member object is updated
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#thread-member-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type thread_member_update_t&, and returns void.
 	 */
@@ -1060,7 +1011,6 @@ public:
 	/**
 	 * @brief Called when a thread's member list is updated (without GUILD_MEMBERS intent, is only called for current user)
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#thread-members-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type thread_members_update_t&, and returns void.
 	 */
@@ -1070,7 +1020,6 @@ public:
 	/**
 	 * @brief Called when a new scheduled event is created
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_scheduled_event_create_t&, and returns void.
 	 */
@@ -1080,7 +1029,6 @@ public:
 	/**
 	 * @brief Called when a new scheduled event is updated
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_scheduled_event_update_t&, and returns void.
 	 */
@@ -1090,7 +1038,6 @@ public:
 	/**
 	 * @brief Called when a new scheduled event is deleted
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_scheduled_event_delete_t&, and returns void.
 	 */
@@ -1100,7 +1047,6 @@ public:
 	/**
 	 * @brief Called when a user is added to a scheduled event
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-user-add
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_scheduled_event_user_add_t&, and returns void.
 	 */
@@ -1110,7 +1056,6 @@ public:
 	/**
 	 * @brief Called when a user is removed to a scheduled event
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-user-remove
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type guild_scheduled_event_user_remove_t&, and returns void.
 	 */
@@ -1189,9 +1134,8 @@ public:
 	/**
 	 * @brief Called when a new stage instance is created on a stage channel.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#stage-instance-create
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
-	 * The function signature for this event takes a single `const` reference of type stage_instance_create_t&, and returns void.
+	 * 
 	 */
 	event_router_t<stage_instance_create_t> on_stage_instance_create;
 
@@ -1199,7 +1143,6 @@ public:
 	/**
 	 * @brief Called when a stage instance is updated.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#stage-instance-update
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type stage_instance_update_t&, and returns void.
 	 */
@@ -1209,7 +1152,6 @@ public:
 	/**
 	 * @brief Called when an existing stage instance is deleted from a stage channel.
 	 *
-	 * @see https://discord.com/developers/docs/topics/gateway-events#stage-instance-delete
 	 * @note Use operator() to attach a lambda to this event, and the detach method to detach the listener using the returned ID.
 	 * The function signature for this event takes a single `const` reference of type stage_instance_delete_t&, and returns void.
 	 */
