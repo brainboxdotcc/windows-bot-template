@@ -64,7 +64,7 @@ auto inline co_global_command_create(const slashcommand &s) {
  * @return slashcommand returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_global_command_get(snowflake_t<slashcommand> id) {
+auto inline co_global_command_get(snowflake id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->global_command_get(id, cc); }); 
 }
 
@@ -77,7 +77,7 @@ auto inline co_global_command_get(snowflake_t<slashcommand> id) {
  * @return confirmation returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_global_command_delete(snowflake_t<slashcommand> id) {
+auto inline co_global_command_delete(snowflake id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->global_command_delete(id, cc); }); 
 }
 
@@ -118,7 +118,7 @@ auto inline co_global_commands_get() {
  * @return slashcommand_map returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_bulk_command_create(const std::vector<slashcommand> &commands, snowflake_t<guild> guild_id) {
+auto inline co_guild_bulk_command_create(const std::vector<slashcommand> &commands, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_bulk_command_create(commands, guild_id, cc); }); 
 }
 
@@ -131,7 +131,7 @@ auto inline co_guild_bulk_command_create(const std::vector<slashcommand> &comman
  * @return guild_command_permissions_map returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_commands_get_permissions(snowflake_t<guild> guild_id) {
+auto inline co_guild_commands_get_permissions(snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_commands_get_permissions(guild_id, cc); }); 
 }
 
@@ -149,7 +149,7 @@ auto inline co_guild_commands_get_permissions(snowflake_t<guild> guild_id) {
  * @deprecated This has been disabled with updates to Permissions v2. You can use guild_command_edit_permissions instead
  * \memberof dpp::cluster
  */
-auto inline co_guild_bulk_command_edit_permissions(const std::vector<slashcommand> &commands, snowflake_t<guild> guild_id) {
+auto inline co_guild_bulk_command_edit_permissions(const std::vector<slashcommand> &commands, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_bulk_command_edit_permissions(commands, guild_id, cc); }); 
 }
 
@@ -164,7 +164,7 @@ auto inline co_guild_bulk_command_edit_permissions(const std::vector<slashcomman
  * @return slashcommand returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_command_create(const slashcommand &s, snowflake_t<guild> guild_id) {
+auto inline co_guild_command_create(const slashcommand &s, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_command_create(s, guild_id, cc); }); 
 }
 
@@ -178,7 +178,7 @@ auto inline co_guild_command_create(const slashcommand &s, snowflake_t<guild> gu
  * @return confirmation returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_command_delete(snowflake_t<slashcommand> id, snowflake_t<guild> guild_id) {
+auto inline co_guild_command_delete(snowflake id, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_command_delete(id, guild_id, cc); }); 
 }
 
@@ -193,7 +193,7 @@ auto inline co_guild_command_delete(snowflake_t<slashcommand> id, snowflake_t<gu
  * @return confirmation returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_command_edit_permissions(const slashcommand &s, snowflake_t<guild> guild_id) {
+auto inline co_guild_command_edit_permissions(const slashcommand &s, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_command_edit_permissions(s, guild_id, cc); }); 
 }
 
@@ -208,7 +208,7 @@ auto inline co_guild_command_edit_permissions(const slashcommand &s, snowflake_t
  * @return slashcommand returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_command_get(snowflake_t<slashcommand> id, snowflake_t<guild> guild_id) {
+auto inline co_guild_command_get(snowflake id, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_command_get(id, guild_id, cc); }); 
 }
 
@@ -222,7 +222,7 @@ auto inline co_guild_command_get(snowflake_t<slashcommand> id, snowflake_t<guild
  * @return guild_command_permissions returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_command_get_permissions(snowflake_t<slashcommand> id, snowflake_t<guild> guild_id) {
+auto inline co_guild_command_get_permissions(snowflake id, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_command_get_permissions(id, guild_id, cc); }); 
 }
 
@@ -236,7 +236,7 @@ auto inline co_guild_command_get_permissions(snowflake_t<slashcommand> id, snowf
  * @return confirmation returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_command_edit(const slashcommand &s, snowflake_t<guild> guild_id) {
+auto inline co_guild_command_edit(const slashcommand &s, snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_command_edit(s, guild_id, cc); }); 
 }
 
@@ -250,7 +250,7 @@ auto inline co_guild_command_edit(const slashcommand &s, snowflake_t<guild> guil
  * @return slashcommand_map returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_commands_get(snowflake_t<guild> guild_id) {
+auto inline co_guild_commands_get(snowflake guild_id) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_commands_get(guild_id, cc); }); 
 }
 
@@ -355,22 +355,6 @@ auto inline co_interaction_followup_get(const std::string &token, snowflake mess
 }
 
 /**
-<<<<<<< Updated upstream
-=======
- * @brief Get the followup message to a slash command
- *
- * @see dpp::cluster::interaction_followup_get_original
- * @see https://discord.com/developers/docs/interactions/receiving-and-responding#get-followup-message
- * @param token Token for the interaction webhook
- * @return message returned object on completion
- * \memberof dpp::cluster
- */
-auto inline co_interaction_followup_get_original(const std::string &token) {
-	return dpp::awaitable(this, [&] (auto cc) { this->interaction_followup_get_original(token, cc); }); 
-}
-
-/**
->>>>>>> Stashed changes
  * @brief Get all auto moderation rules for a guild
  * 
  * @param guild_id Guild id of the auto moderation rule
@@ -477,6 +461,42 @@ auto inline co_channel_delete(snowflake channel_id) {
 }
 
 /**
+ * @brief Edit a channel's permissions
+ *
+ * @see dpp::cluster::channel_edit_permissions
+ * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
+ * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
+ * @param c Channel to set permissions for
+ * @param overwrite_id Overwrite to change (a user or role ID)
+ * @param allow allow permissions bitmask
+ * @param deny deny permissions bitmask
+ * @param member true if the overwrite_id is a user id, false if it is a channel id
+ * @return confirmation returned object on completion
+ * \memberof dpp::cluster
+ */
+auto inline co_channel_edit_permissions(const class channel &c, const snowflake overwrite_id, const uint64_t allow, const uint64_t deny, const bool member) {
+	return dpp::awaitable(this, [&] (auto cc) { this->channel_edit_permissions(c, overwrite_id, allow, deny, member, cc); }); 
+}
+
+/**
+ * @brief Edit a channel's permissions
+ *
+ * @see dpp::cluster::channel_edit_permissions
+ * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
+ * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
+ * @param channel_id ID of the channel to set permissions for
+ * @param overwrite_id Overwrite to change (a user or role ID)
+ * @param allow allow permissions bitmask
+ * @param deny deny permissions bitmask
+ * @param member true if the overwrite_id is a user id, false if it is a channel id
+ * @return confirmation returned object on completion
+ * \memberof dpp::cluster
+ */
+auto inline co_channel_edit_permissions(const snowflake channel_id, const snowflake overwrite_id, const uint64_t allow, const uint64_t deny, const bool member) {
+	return dpp::awaitable(this, [&] (auto cc) { this->channel_edit_permissions(channel_id, overwrite_id, allow, deny, member, cc); }); 
+}
+
+/**
  * @brief Edit multiple channels positions
  * 
  * Modify the positions of a set of channel objects for the guild.
@@ -557,6 +577,30 @@ auto inline co_channel_invite_create(const class channel &c, const class invite 
  */
 auto inline co_channel_invites_get(const class channel &c) {
 	return dpp::awaitable(this, [&] (auto cc) { this->channel_invites_get(c, cc); }); 
+}
+
+/**
+ * @brief Trigger channel typing indicator
+ * @see dpp::cluster::channel_typing
+ * @see https://discord.com/developers/docs/resources/channel#trigger-typing-indicator
+ * @param c Channel to set as typing on
+ * @return confirmation returned object on completion
+ * \memberof dpp::cluster
+ */
+auto inline co_channel_typing(const class channel &c) {
+	return dpp::awaitable(this, [&] (auto cc) { this->channel_typing(c, cc); }); 
+}
+
+/**
+ * @brief Trigger channel typing indicator
+ * @see dpp::cluster::channel_typing
+ * @see https://discord.com/developers/docs/resources/channel#trigger-typing-indicator
+ * @param cid Channel ID to set as typing on
+ * @return confirmation returned object on completion
+ * \memberof dpp::cluster
+ */
+auto inline co_channel_typing(snowflake cid) {
+	return dpp::awaitable(this, [&] (auto cc) { this->channel_typing(cid, cc); }); 
 }
 
 /**
@@ -755,7 +799,7 @@ auto inline co_guild_current_member_edit(snowflake guild_id, const std::string &
  * @return auditlog returned object on completion
  * \memberof dpp::cluster
  */
-auto inline co_guild_auditlog_get(snowflake_t<guild> guild_id, snowflake_t<user> user_id, uint32_t action_type, snowflake_t<user> before, snowflake_t<user> after, uint32_t limit) {
+auto inline co_guild_auditlog_get(snowflake guild_id, snowflake user_id, uint32_t action_type, snowflake before, snowflake after, uint32_t limit) {
 	return dpp::awaitable(this, [&] (auto cc) { this->guild_auditlog_get(guild_id, user_id, action_type, before, after, limit, cc); }); 
 }
 
@@ -1714,6 +1758,34 @@ auto inline co_roles_get(snowflake guild_id) {
 }
 
 /**
+ * @brief Get the application's role connection metadata records
+ *
+ * @see dpp::cluster::application_role_connection_get
+ * @see https://discord.com/developers/docs/resources/application-role-connection-metadata#get-application-role-connection-metadata-records
+ * @param application_id The application ID
+ * @return application_role_connection returned object on completion
+ * \memberof dpp::cluster
+ */
+auto inline co_application_role_connection_get(snowflake application_id) {
+	return dpp::awaitable(this, [&] (auto cc) { this->application_role_connection_get(application_id, cc); }); 
+}
+
+/**
+ * @brief Update the application's role connection metadata records
+ *
+ * @see dpp::cluster::application_role_connection_update
+ * @see https://discord.com/developers/docs/resources/application-role-connection-metadata#update-application-role-connection-metadata-records
+ * @param application_id The application ID
+ * @param connection_metadata The application role connection metadata to update
+ * @return application_role_connection returned object on completion
+ * @note An application can have a maximum of 5 metadata records.
+ * \memberof dpp::cluster
+ */
+auto inline co_application_role_connection_update(snowflake application_id, const std::vector<application_role_connection_metadata> &connection_metadata) {
+	return dpp::awaitable(this, [&] (auto cc) { this->application_role_connection_update(application_id, connection_metadata, cc); }); 
+}
+
+/**
  * @brief Get user application role connection
  *
  * @see dpp::cluster::user_application_role_connection_get
@@ -2166,20 +2238,6 @@ auto inline co_thread_create_in_forum(const std::string& thread_name, snowflake 
  */
 auto inline co_thread_create(const std::string& thread_name, snowflake channel_id, uint16_t auto_archive_duration, channel_type thread_type, bool invitable, uint16_t rate_limit_per_user) {
 	return dpp::awaitable(this, [&] (auto cc) { this->thread_create(thread_name, channel_id, auto_archive_duration, thread_type, invitable, rate_limit_per_user, cc); }); 
-}
-
-/**
- * @brief Edit a thread
- * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
- *
- * @see dpp::cluster::thread_edit
- * @see https://discord.com/developers/docs/topics/threads#editing-deleting-threads
- * @param t Thread to edit
- * @return thread returned object on completion
- * \memberof dpp::cluster
- */
-auto inline co_thread_edit(const thread &t) {
-	return dpp::awaitable(this, [&] (auto cc) { this->thread_edit(t, cc); }); 
 }
 
 /**
