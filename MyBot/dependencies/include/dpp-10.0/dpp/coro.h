@@ -521,6 +521,8 @@ namespace dpp {
 			 * @brief Function called by the awaitable when it is destroyed when it was never co_awaited, signals to the callback to abort.
 			 */
 			void set_dangling() {
+				if (!state) // moved-from object
+					return;
 				std::lock_guard lock{get_mutex()};
 
 				if (state->state == callback_state::waiting)
