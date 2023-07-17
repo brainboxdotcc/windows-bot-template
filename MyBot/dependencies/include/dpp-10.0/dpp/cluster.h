@@ -2642,6 +2642,31 @@ public:
 	void guild_get_vanity(snowflake guild_id, command_completion_event_t callback);
 
 	/**
+	 * @brief Get the guild's onboarding configuration
+	 *
+	 * @see https://discord.com/developers/docs/resources/guild#get-guild-onboarding
+	 * @param o The onboarding object
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::onboarding object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_get_onboarding(onboarding o, command_completion_event_t callback);
+
+	/**
+	 * @brief Edit the guild's onboarding configuration
+	 *
+	 * Requires the `MANAGE_GUILD` and `MANAGE_ROLES` permissions.
+	 *
+	 * @note Onboarding enforces constraints when enabled. These constraints are that there must be at least 7 Default Channels and at least 5 of them must allow sending messages to the \@everyone role. The `onboarding::mode` field modifies what is considered when enforcing these constraints.
+	 *
+	 * @see https://discord.com/developers/docs/resources/guild#modify-guild-onboarding
+	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
+	 * @param o The onboarding object
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::onboarding object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_edit_onboarding(onboarding o, command_completion_event_t callback);
+
+	/**
 	 * @brief Create a webhook
 	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
 	 * @see https://discord.com/developers/docs/resources/webhook#create-webhook
@@ -3143,7 +3168,7 @@ public:
 	 * @brief Get public archived threads in a channel (Sorted by archive_timestamp in descending order)
 	 * @see https://discord.com/developers/docs/resources/channel#list-public-archived-threads
 	 * @param channel_id Channel to get public archived threads for
-	 * @param before_timestamp Get threads before this timestamp
+	 * @param before_timestamp Get threads archived before this timestamp
 	 * @param limit Number of threads to get
 	 * @param callback Function to call when the API call completes
 	 * On success the callback will contain a dpp::thread_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
@@ -3154,7 +3179,7 @@ public:
 	 * @brief Get private archived threads in a channel (Sorted by archive_timestamp in descending order)
 	 * @see https://discord.com/developers/docs/resources/channel#list-private-archived-threads
 	 * @param channel_id Channel to get public archived threads for
-	 * @param before_timestamp Get threads before this timestamp
+	 * @param before_timestamp Get threads archived before this timestamp
 	 * @param limit Number of threads to get
 	 * @param callback Function to call when the API call completes
 	 * On success the callback will contain a dpp::thread_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
