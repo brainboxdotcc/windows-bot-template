@@ -2649,7 +2649,7 @@ public:
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::onboarding object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
-	void guild_get_onboarding(onboarding o, command_completion_event_t callback);
+	void guild_get_onboarding(snowflake guild_id, command_completion_event_t callback);
 
 	/**
 	 * @brief Edit the guild's onboarding configuration
@@ -2665,6 +2665,31 @@ public:
 	 * On success the callback will contain a dpp::onboarding object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void guild_edit_onboarding(onboarding o, command_completion_event_t callback);
+
+	/**
+	 * @brief Get the guild's welcome screen
+	 *
+	 * If the welcome screen is not enabled, the `MANAGE_GUILD` permission is required.
+	 *
+	 * @see https://discord.com/developers/docs/resources/guild#get-guild-welcome-screen
+	 * @param guild_id The guild ID to get the welcome screen from
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::guild_welcome_screen object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_get_welcome_screen(snowflake guild_id, command_completion_event_t callback);
+
+	/**
+	 * @brief Edit the guild's welcome screen
+	 *
+	 * Requires the `MANAGE_GUILD` permission. May fire a `Guild Update` Gateway event.
+	 *
+	 * @see https://discord.com/developers/docs/resources/guild#modify-guild-welcome-screen
+	 * @param guild_id The guild ID to edit the welcome screen for
+	 * @param welcome_screen The welcome screen
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::guild_welcome_screen object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_edit_welcome_screen(snowflake guild_id, guild_welcome_screen welcome_screen, command_completion_event_t callback);
 
 	/**
 	 * @brief Create a webhook
@@ -3168,7 +3193,7 @@ public:
 	 * @brief Get public archived threads in a channel (Sorted by archive_timestamp in descending order)
 	 * @see https://discord.com/developers/docs/resources/channel#list-public-archived-threads
 	 * @param channel_id Channel to get public archived threads for
-	 * @param before_timestamp Get threads archived before this timestamp
+	 * @param before_timestamp Get threads before this timestamp
 	 * @param limit Number of threads to get
 	 * @param callback Function to call when the API call completes
 	 * On success the callback will contain a dpp::thread_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
@@ -3179,7 +3204,7 @@ public:
 	 * @brief Get private archived threads in a channel (Sorted by archive_timestamp in descending order)
 	 * @see https://discord.com/developers/docs/resources/channel#list-private-archived-threads
 	 * @param channel_id Channel to get public archived threads for
-	 * @param before_timestamp Get threads archived before this timestamp
+	 * @param before_timestamp Get threads before this timestamp
 	 * @param limit Number of threads to get
 	 * @param callback Function to call when the API call completes
 	 * On success the callback will contain a dpp::thread_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
