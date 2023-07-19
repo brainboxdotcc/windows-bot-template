@@ -191,9 +191,7 @@ typedef std::variant<
 		event_member,
 		event_member_map,
 		automod_rule,
-		automod_rule_map,
-		onboarding,
-		guild_welcome_screen
+		automod_rule_map
 	> confirmable_t;
 
 /**

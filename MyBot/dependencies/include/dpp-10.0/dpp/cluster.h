@@ -348,6 +348,16 @@ public:
 	 */
 	bool stop_timer(timer t);
 
+#ifdef DPP_CORO
+	/**
+	 * @brief Start a one-time timer. Use the co_await keyword on its return value to suspend the coroutine until the timer ends
+	 * 
+	 * @param seconds How long to run the timer for
+	 * @return awaitable<timer> co_await-able object holding the timer_handle
+	 */
+	awaitable<timer> co_timer(uint64_t seconds);
+#endif
+
 	/**
 	 * @brief Get the dm channel for a user id
 	 *
@@ -2640,56 +2650,6 @@ public:
 	 * On success the callback will contain a dpp::invite object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void guild_get_vanity(snowflake guild_id, command_completion_event_t callback);
-
-	/**
-	 * @brief Get the guild's onboarding configuration
-	 *
-	 * @see https://discord.com/developers/docs/resources/guild#get-guild-onboarding
-	 * @param o The onboarding object
-	 * @param callback Function to call when the API call completes.
-	 * On success the callback will contain a dpp::onboarding object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
-	 */
-	void guild_get_onboarding(snowflake guild_id, command_completion_event_t callback);
-
-	/**
-	 * @brief Edit the guild's onboarding configuration
-	 *
-	 * Requires the `MANAGE_GUILD` and `MANAGE_ROLES` permissions.
-	 *
-	 * @note Onboarding enforces constraints when enabled. These constraints are that there must be at least 7 Default Channels and at least 5 of them must allow sending messages to the \@everyone role. The `onboarding::mode` field modifies what is considered when enforcing these constraints.
-	 *
-	 * @see https://discord.com/developers/docs/resources/guild#modify-guild-onboarding
-	 * @note This method supports audit log reasons set by the cluster::set_audit_reason() method.
-	 * @param o The onboarding object
-	 * @param callback Function to call when the API call completes.
-	 * On success the callback will contain a dpp::onboarding object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
-	 */
-	void guild_edit_onboarding(onboarding o, command_completion_event_t callback);
-
-	/**
-	 * @brief Get the guild's welcome screen
-	 *
-	 * If the welcome screen is not enabled, the `MANAGE_GUILD` permission is required.
-	 *
-	 * @see https://discord.com/developers/docs/resources/guild#get-guild-welcome-screen
-	 * @param guild_id The guild ID to get the welcome screen from
-	 * @param callback Function to call when the API call completes.
-	 * On success the callback will contain a dpp::guild_welcome_screen object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
-	 */
-	void guild_get_welcome_screen(snowflake guild_id, command_completion_event_t callback);
-
-	/**
-	 * @brief Edit the guild's welcome screen
-	 *
-	 * Requires the `MANAGE_GUILD` permission. May fire a `Guild Update` Gateway event.
-	 *
-	 * @see https://discord.com/developers/docs/resources/guild#modify-guild-welcome-screen
-	 * @param guild_id The guild ID to edit the welcome screen for
-	 * @param welcome_screen The welcome screen
-	 * @param callback Function to call when the API call completes.
-	 * On success the callback will contain a dpp::guild_welcome_screen object in confirmation_callback_t::value filled to match the vanity url. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
-	 */
-	void guild_edit_welcome_screen(snowflake guild_id, guild_welcome_screen welcome_screen, command_completion_event_t callback);
 
 	/**
 	 * @brief Create a webhook
