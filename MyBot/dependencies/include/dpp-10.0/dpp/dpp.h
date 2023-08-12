@@ -63,7 +63,6 @@
 #include <dpp/discordclient.h>
 #include <dpp/dispatcher.h>
 #include <dpp/cluster.h>
-#include <dpp/streams.h>
 #include <dpp/cache.h>
 #include <dpp/httpsclient.h>
 #include <dpp/queues.h>
