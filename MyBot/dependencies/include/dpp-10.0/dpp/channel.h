@@ -32,9 +32,11 @@
 #include <dpp/json_interface.h>
 #include <unordered_map>
 #include <variant>
+#include <string>
 
 namespace dpp {
 
+class channel_stream; //Forward declaration
 /** @brief Flag integers as received from and sent to discord */
 enum channel_type : uint8_t {
 	CHANNEL_TEXT		= 0,	//!< a text channel within a server
@@ -343,6 +345,12 @@ public:
 	/** Destructor */
 	virtual ~channel();
 
+	/**
+	 * @brief Returns a simple way to send messages
+	 * @param bot The bot that will send the message
+	 * @return The stream object used to send messages
+	 */
+	channel_stream stream(cluster& bot);
 	/**
 	* @brief Create a mentionable channel.
 	* @param id The ID of the channel.
@@ -862,6 +870,7 @@ struct active_thread_info {
  * @brief A map of threads alongside optionally the thread_member tied to the bot if it is in the thread. The map's key is the thread id. Returned from the cluster::threads_get_active method
  */
 using active_threads = std::map<snowflake, active_thread_info>;
+
 
 } // namespace dpp
 

@@ -25,9 +25,9 @@
 #include <dpp/managed.h>
 #include <dpp/utility.h>
 #include <dpp/json_interface.h>
-
 namespace dpp {
-
+class cluster; //Forward declaration
+class dm_stream; //Forward declaration
 /**
  * @brief Various bitmask flags used to represent information about a dpp::user
  */
@@ -103,7 +103,12 @@ public:
 	uint16_t discriminator;
 	/** Reference count of how many guilds this user is in */
 	uint8_t refcount;
-
+	/**
+	 * @brief Returns a simple way to send messages
+	 * @param bot The bot that will send the message
+	 * @return The stream object used to send messages
+	 */
+	dm_stream stream(cluster& bot);
 	/**
 	 * @brief Construct a new user object
 	 */
@@ -405,5 +410,6 @@ void from_json(const nlohmann::json& j, user_identified& u);
 
 /** A group of users */
 typedef std::unordered_map<snowflake, user> user_map;
+
 
 } // namespace dpp
