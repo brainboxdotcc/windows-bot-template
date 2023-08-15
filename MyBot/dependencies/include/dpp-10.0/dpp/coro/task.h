@@ -106,8 +106,8 @@ public:
 	/**
 	 * @brief Destructor.
 	 *
-	 * Destroys the handle if coroutine is done, otherwise detaches it from this thread.
-	 * In detached mode, the handle will destroy itself at the end of the coroutine.
+	 * Destroys the handle.
+	 * @warning The coroutine must be finished before this is called, otherwise it runs the risk of being resumed after it is destroyed, resuming in use-after-free undefined behavior.
 	 */
 	~task() {
 		if (handle) {
@@ -135,15 +135,18 @@ public:
 	 * @brief First function called by the standard library when the task is co_await-ed.
 	 *
 	 * @remark Do not call this manually, use the co_await keyword instead.
+	 * @throws invalid_operation_exception if the coroutine is empty or finished.
 	 * @return bool Whether not to suspend the caller or not
 	 */
-	bool await_ready() {
+	bool await_ready() const {
+		if (!handle)
+			throw dpp::invalid_operation_exception("cannot co_await an empty task");
 		if (handle.promise().is_sync)
 			return true;
 
 		std::lock_guard lock{handle.promise().mutex};
 
-		return (handle.promise().value.has_value());
+		return (handle.done());
 	}
 
 	/**
@@ -161,11 +164,9 @@ public:
 
 		std::lock_guard lock{my_promise.mutex};
 
-		if (handle.promise().value.has_value())
+		if (handle.done())
 			return (false);
 
-		if constexpr (requires (T t) { t.is_sync = false; })
-			caller.promise().is_sync = false;
 		my_promise.parent = caller;
 		return true;
 	}
@@ -243,6 +244,42 @@ struct task_promise_base {
 	 * Will only ever change on the calling thread while callback mutex guards the async thread
 	 */
 	bool is_sync = true;
+
+#ifdef DPP_CORO_TEST
+	task_promise_base() {
+		++coro_alloc_count<task_promise_base>;
+	}
+
+	~task_promise_base() {
+		--coro_alloc_count<task_promise_base>;
+	}
+#endif
+
+	/**
+	 * @brief First function called when the coroutine associated with this promise co_awaits an expression.
+	 *
+	 * Emulates the default behavior and sets is_sync to false if the awaited object is not ready.
+	 */
+	template <typename T>
+	T await_transform(T&& expr) {
+		if constexpr (requires { expr.operator co_await(); }) {
+			auto awaiter = expr.operator co_await();
+			if (!awaiter.await_ready())
+				is_sync = false;
+			return awaiter;
+		}
+		else if constexpr (requires { operator co_await(static_cast<T&&>(expr)); }) {
+			auto awaiter = operator co_await(static_cast<T&&>(expr));
+			if (!awaiter.await_ready())
+				is_sync = false;
+			return awaiter;
+		}
+		else {
+			if (!expr.await_ready())
+				is_sync = false;
+			return (expr);
+		}
+	}
 
 	/**
 	 * @brief Function called by the standard library when the coroutine is created.

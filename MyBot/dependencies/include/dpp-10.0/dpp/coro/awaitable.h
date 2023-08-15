@@ -112,8 +112,6 @@ struct awaitable {
 		 */
 		template <typename T>
 		void await_suspend(detail::std_coroutine::coroutine_handle<T> caller) noexcept(noexcept(std::invoke(fun, std::declval<std::function<void(R)>&&>()))) {
-			if constexpr (requires (T promise) {{promise.is_sync} -> std::same_as<bool&>;})
-				caller.promise().is_sync = false;
 			std::invoke(fun, [this, caller](auto &&api_result) {
 				result = api_result;
 				caller.resume();

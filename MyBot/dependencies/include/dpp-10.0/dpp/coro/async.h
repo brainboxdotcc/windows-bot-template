@@ -50,6 +50,8 @@ class async {
 	 * @brief Ref-counted callback, contains the callback logic and manages the lifetime of the callback data over multiple threads.
 	 */
 	struct shared_callback {
+		struct empty_tag_t{};
+
 		/**
 		 * @brief State of the async and its callback.
 		 */
@@ -114,6 +116,8 @@ class async {
 		 * @brief Main constructor, allocates a new callback_state object.
 		 */
 		shared_callback() : state{new callback_state{.ref_count = 1}} {}
+
+		shared_callback(empty_tag_t) noexcept : state{nullptr} {}
 
 		/**
 		 * @brief Destructor. Releases the held reference and destroys if no other references exist.
@@ -198,7 +202,7 @@ class async {
 	/**
 	 * @brief Shared state of the async and its callback, to be used across threads.
 	 */
-	shared_callback api_callback;
+	shared_callback api_callback{nullptr};
 
 public:
 	/**
@@ -238,6 +242,8 @@ public:
 	async(const awaitable<R> &awaitable) : api_callback{} {
 		std::invoke(awaitable.request, api_callback);
 	}
+
+	async() noexcept : api_callback{typename shared_callback::empty_tag_t{}} {}
 
 	/**
 	 * @brief Destructor. If any callback is pending it will be aborted.
@@ -304,8 +310,6 @@ public:
 
 		if (api_callback.get_result().has_value())
 			return false; // immediately resume the coroutine as we already have the result of the api call
-		if constexpr (requires (T t) { t.is_sync = false; })
-			caller.promise().is_sync = false;
 		api_callback.state->coro_handle = caller;
 		return true; // suspend the caller, the callback will resume it
 	}

@@ -46,11 +46,26 @@ struct job {};
 
 namespace detail {
 
+#ifdef DPP_CORO_TEST
+	struct job_promise_base{};
+#endif
+
 /**
  * @brief Coroutine promise type for a job
  */
 template <bool has_reference_params>
 struct job_promise {
+
+#ifdef DPP_CORO_TEST
+	job_promise() {
+		++coro_alloc_count<job_promise_base>;
+	}
+
+	~job_promise() {
+		--coro_alloc_count<job_promise_base>;
+	}
+#endif
+
 	/*
 	* @brief Function called when the job is done.
 	*
@@ -112,6 +127,14 @@ struct job_promise {
 } // namespace detail
 
 } // namespace dpp
+
+template <>
+struct dpp::detail::std_coroutine::coroutine_traits<dpp::job> {
+	/**
+	 * @brief Promise type for this coroutine signature.
+	 */
+	using promise_type = dpp::detail::job_promise<false>;
+};
 
 /**
  * @brief Specialization of std::coroutine_traits, helps the standard library figure out a promise type from a coroutine function.
