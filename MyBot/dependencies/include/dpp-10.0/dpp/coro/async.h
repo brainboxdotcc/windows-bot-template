@@ -243,6 +243,9 @@ public:
 		std::invoke(awaitable.request, api_callback);
 	}
 
+	/**
+	 * @brief Construct an empty async. Using `co_await` on an empty async is undefined behavior.
+	 */
 	async() noexcept : api_callback{typename shared_callback::empty_tag_t{}} {}
 
 	/**
