@@ -363,7 +363,7 @@ public:
 	 * @param seconds How long to wait for
 	 * @return awaitable<timer> Object that can be co_await-ed to suspend the function for a certain time
 	 */
-	awaitable<timer> co_sleep(uint64_t seconds);
+	[[nodiscard]] awaitable<timer> co_sleep(uint64_t seconds);
 #endif
 
 	/**

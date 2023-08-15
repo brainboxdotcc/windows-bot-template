@@ -216,7 +216,7 @@ public:
 #ifndef _DOXYGEN_
 	requires std::invocable<Fun, Obj, Args..., std::function<void(R)>>
 #endif
-	async(Obj &&obj, Fun &&fun, Args&&... args) : api_callback{} {
+	explicit async(Obj &&obj, Fun &&fun, Args&&... args) : api_callback{} {
 		std::invoke(std::forward<Fun>(fun), std::forward<Obj>(obj), std::forward<Args>(args)..., api_callback);
 	}
 
@@ -230,7 +230,7 @@ public:
 #ifndef _DOXYGEN_
 	requires std::invocable<Fun, Args..., std::function<void(R)>>
 #endif
-	async(Fun &&fun, Args&&... args) : api_callback{} {
+	explicit async(Fun &&fun, Args&&... args) : api_callback{} {
 		std::invoke(std::forward<Fun>(fun), std::forward<Args>(args)..., api_callback);
 	}
 

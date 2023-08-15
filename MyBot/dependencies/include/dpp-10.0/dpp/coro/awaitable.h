@@ -60,7 +60,7 @@ struct awaitable {
 	 *
 	 * @warning This callback is to be executed <b>later</b>, on co_await. <a href="/lambdas-and-locals.html">Be mindful of reference captures</a>.
 	 */
-	awaitable(std::invocable<std::function<void(R)>> auto &&fun) : request{fun} {}
+	explicit awaitable(std::invocable<std::function<void(R)>> auto &&fun) : request{fun} {}
 
 	/**
 	 * @brief Copy constructor.
@@ -112,8 +112,8 @@ struct awaitable {
 		 */
 		template <typename T>
 		void await_suspend(detail::std_coroutine::coroutine_handle<T> caller) noexcept(noexcept(std::invoke(fun, std::declval<std::function<void(R)>&&>()))) {
-			std::invoke(fun, [this, caller](auto &&api_result) {
-				result = api_result;
+			std::invoke(fun, [this, caller] <typename R_> (R_&& api_result) mutable {
+				result = std::forward<R_>(api_result);
 				caller.resume();
 			});
 		}
