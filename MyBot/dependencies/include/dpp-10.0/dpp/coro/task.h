@@ -261,7 +261,7 @@ struct task_promise_base {
 	 * Emulates the default behavior and sets is_sync to false if the awaited object is not ready.
 	 */
 	template <typename T>
-	T await_transform(T&& expr) {
+	decltype(auto) await_transform(T&& expr) {
 		if constexpr (requires { expr.operator co_await(); }) {
 			auto awaiter = expr.operator co_await();
 			if (!awaiter.await_ready())
@@ -277,7 +277,7 @@ struct task_promise_base {
 		else {
 			if (!expr.await_ready())
 				is_sync = false;
-			return (expr);
+			return static_cast<T&&>(expr);
 		}
 	}
 
