@@ -33,7 +33,7 @@
  * @see dpp::cluster::global_bulk_command_create
  * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
  * @param commands Vector of slash commands to create/update.
- * overwriting existing commands that are registered globally for this application. Updates will be available in all guilds after 1 hour.
+ * overwriting existing commands that are registered globally for this application.
  * Commands that do not already exist will count toward daily application command create limits.
  * @return slashcommand_map returned object on completion
  * \memberof dpp::cluster
@@ -42,6 +42,19 @@
  * Avoid direct use of this function inside an event handler.
  */
 slashcommand_map global_bulk_command_create_sync(const std::vector<slashcommand> &commands);
+
+/**
+ * @brief Delete all existing global slash commands.
+ * 
+ * @see dpp::cluster::global_bulk_command_delete
+ * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+ * @return slashcommand_map returned object on completion
+ * \memberof dpp::cluster
+ * @throw dpp::rest_exception upon failure to execute REST function
+ * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
+ * Avoid direct use of this function inside an event handler.
+ */
+slashcommand_map global_bulk_command_delete_sync();
 
 /**
  * @brief Create a global slash command (a bot can have a maximum of 100 of these).
@@ -128,6 +141,20 @@ slashcommand_map global_commands_get_sync();
  * Avoid direct use of this function inside an event handler.
  */
 slashcommand_map guild_bulk_command_create_sync(const std::vector<slashcommand> &commands, snowflake guild_id);
+
+/**
+ * @brief Delete all existing guild slash commands.
+ * 
+ * @see dpp::cluster::guild_bulk_command_delete
+ * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+ * @param guild_id Guild ID to delete the slash commands in.
+ * @return slashcommand_map returned object on completion
+ * \memberof dpp::cluster
+ * @throw dpp::rest_exception upon failure to execute REST function
+ * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
+ * Avoid direct use of this function inside an event handler.
+ */
+slashcommand_map guild_bulk_command_delete_sync(snowflake guild_id);
 
 /**
  * @brief Get all slash command permissions of a guild
@@ -2534,6 +2561,19 @@ confirmation thread_member_add_sync(snowflake thread_id, snowflake user_id);
  * Avoid direct use of this function inside an event handler.
  */
 confirmation thread_member_remove_sync(snowflake thread_id, snowflake user_id);
+
+/**
+ * @brief Get the thread specified by thread_id. This uses the same call as dpp::cluster::channel_get but returns a thread object.
+ * @see dpp::cluster::thread_get
+ * @see https://discord.com/developers/docs/resources/channel#get-channel
+ * @param thread_id The id of the thread to obtain.
+ * @return thread returned object on completion
+ * \memberof dpp::cluster
+ * @throw dpp::rest_exception upon failure to execute REST function
+ * @warning This function is a blocking (synchronous) call and should only be used from within a separate thread.
+ * Avoid direct use of this function inside an event handler.
+ */
+thread thread_get_sync(snowflake thread_id);
 
 /**
  * @brief Edit current (bot) user

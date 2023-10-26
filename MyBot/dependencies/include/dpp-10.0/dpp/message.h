@@ -81,9 +81,44 @@ enum component_style : uint8_t {
 };
 
 /**
+ * Represents the type of a dpp::component_default_value
+ *
+ * @note They're different to discord's value types
+ */
+enum component_default_value_type: uint8_t {
+	cdt_user = 0,
+	cdt_role = 1,
+	cdt_channel = 2,
+};
+
+/**
+ * @brief A Default value structure for components
+ */
+struct DPP_EXPORT component_default_value {
+	/**
+	 * @brief The type this default value represents
+	 */
+	component_default_value_type type;
+	/**
+	 * @brief Default value. ID of a user, role, or channel
+	 */
+	dpp::snowflake id;
+};
+
+/**
  * @brief An option for a select component
  */
 struct DPP_EXPORT select_option : public json_interface<select_option> {
+protected:
+	friend struct json_interface<select_option>;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	select_option& fill_from_json_impl(nlohmann::json* j);
+
+public:
 	/**
 	 * @brief User-facing name of the option
 	 */
@@ -198,12 +233,6 @@ struct DPP_EXPORT select_option : public json_interface<select_option> {
 	 * @return select_option& reference to self for chaining
 	 */
 	select_option& set_animated(bool anim);
-
-	/** Read class values from json object
-	 * @param j A json object to read from
-	 * @return A reference to self
-	 */
-	select_option& fill_from_json(nlohmann::json* j);
 };
 
 /**
@@ -219,6 +248,15 @@ struct DPP_EXPORT select_option : public json_interface<select_option> {
  * object is an action row and the child objects are buttons.
  */
 class DPP_EXPORT component : public json_interface<component> {
+protected:
+	friend struct json_interface<component>;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	component& fill_from_json_impl(nlohmann::json* j);
+
 public:
 	/** Component type, either a button or action row
 	 */
@@ -281,6 +319,13 @@ public:
 	/** List of channel types (dpp::channel_type) to include in the channel select component (dpp::cot_channel_selectmenu)
 	 */
 	std::vector<uint8_t> channel_types;
+
+	/**
+	 * List of default values for auto-populated select menu components. The amount of default values must be in the range defined by dpp::component::min_value and dpp::component::max_values.
+	 *
+	 * @note Only available for auto-populated select menu components, which include dpp::cot_user_selectmenu, dpp::cot_role_selectmenu, dpp::cot_mentionable_selectmenu, and dpp::cot_channel_selectmenu components.
+	 */
+	std::vector<component_default_value> default_values;
 
 	/** Disabled flag (for buttons)
 	 */
@@ -491,6 +536,14 @@ public:
 	component& add_component(const component& c);
 
 	/**
+ 	 * @brief Add a default value.
+ 	 *
+ 	 * @param id Default value. ID of a user, role, or channel
+ 	 * @param type The type this default value represents
+ 	 */
+	component& add_default_value(const snowflake id, const component_default_value_type type);
+
+	/**
 	 * @brief Set the emoji of the current sub-component.
 	 * Only valid for buttons. Adding an emoji to a component
 	 * will automatically set this components type to
@@ -508,13 +561,6 @@ public:
 	 * @return component& Reference to self
 	 */
 	component& set_emoji(const std::string& name, dpp::snowflake id = 0, bool animated = false);
-
-	/** Read class values from json object
-	 * @param j A json object to read from
-	 * @return A reference to self
-	 */
-	component& fill_from_json(nlohmann::json* j);
-
 };
 
 /**
@@ -875,6 +921,22 @@ enum sticker_format : uint8_t {
  * @brief Represents stickers received in messages
  */
 struct DPP_EXPORT sticker : public managed, public json_interface<sticker> {
+protected:
+	friend struct json_interface<sticker>;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	sticker& fill_from_json_impl(nlohmann::json* j);
+
+	/** Build JSON from this object.
+	 * @param with_id True if the ID is to be set in the JSON structure
+	 * @return The JSON of the invite
+	 */
+	virtual json to_json_impl(bool with_id = true) const;
+
+public:
 	/** Optional: for standard stickers, id of the pack the sticker is from
 	 */
 	snowflake	pack_id;
@@ -917,18 +979,6 @@ struct DPP_EXPORT sticker : public managed, public json_interface<sticker> {
 
 	virtual ~sticker() = default;
 
-	/** Read class values from json object
-	 * @param j A json object to read from
-	 * @return A reference to self
-	 */
-	sticker& fill_from_json(nlohmann::json* j);
-
-	/** Build JSON from this object.
-	 * @param with_id True if the ID is to be set in the JSON structure
-	 * @return The JSON text of the invite
-	 */
-	virtual std::string build_json(bool with_id = true) const;
-
 	/**
 	 * @brief Get the sticker url.
 	 *
@@ -958,6 +1008,22 @@ struct DPP_EXPORT sticker : public managed, public json_interface<sticker> {
  * @brief Represents a sticker pack (the built in groups of stickers that all nitro users get to use)
  */
 struct DPP_EXPORT sticker_pack : public managed, public json_interface<sticker_pack> {
+protected:
+	friend struct json_interface<sticker_pack>;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	sticker_pack& fill_from_json_impl(nlohmann::json* j);
+
+	/** Build JSON from this object.
+	 * @param with_id True if the ID is to be set in the JSON structure
+	 * @return The JSON of the invite
+	 */
+	virtual json to_json_impl(bool with_id = true) const;
+
+public:
 	/// the stickers in the pack
 	std::map<snowflake, sticker> stickers;
 	/// name of the sticker pack
@@ -977,19 +1043,6 @@ struct DPP_EXPORT sticker_pack : public managed, public json_interface<sticker_p
 	sticker_pack();
 
 	virtual ~sticker_pack() = default;
-
-	/** Read class values from json object
-	 * @param j A json object to read from
-	 * @return A reference to self
-	 */
-	sticker_pack& fill_from_json(nlohmann::json* j);
-
-	/** Build JSON from this object.
-	 * @param with_id True if the ID is to be set in the JSON structure
-	 * @return The JSON text of the invite
-	 */
-	virtual std::string build_json(bool with_id = true) const;
-
 };
 
 /**
@@ -1209,7 +1262,26 @@ namespace cache_policy {
 /**
  * @brief Represents messages sent and received on Discord
  */
-struct DPP_EXPORT message : public managed {
+struct DPP_EXPORT message : public managed, json_interface<message> {
+protected:
+	friend struct json_interface<message>;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
+	 */
+	inline message& fill_from_json_impl(nlohmann::json *j) {
+		return fill_from_json(j, {cp_aggressive, cp_aggressive, cp_aggressive});
+	}
+
+	/** Build a JSON from this object.
+	 * @param with_id True if an ID is to be included in the JSON
+	 * @return JSON
+	 */
+	inline json to_json_impl(bool with_id = false) const {
+		return to_json(with_id, false);
+	}
+public:
 	/** id of the channel the message was sent in */
 	snowflake	   channel_id;
 	/** Optional: id of the guild the message was sent in */
@@ -1398,12 +1470,15 @@ struct DPP_EXPORT message : public managed {
 	 */
 	message& set_allowed_mentions(bool _parse_users, bool _parse_roles, bool _parse_everyone, bool _replied_user, const std::vector<snowflake> &users, const std::vector<snowflake> &roles);
 
+	using json_interface<message>::fill_from_json;
+	using json_interface<message>::to_json;
+
 	/** Fill this object from json.
 	 * @param j JSON object to fill from
 	 * @param cp Cache policy for user records, whether or not we cache users when a message is received
 	 * @return A reference to self
 	 */
-	message& fill_from_json(nlohmann::json* j, cache_policy_t cp = {cp_aggressive, cp_aggressive, cp_aggressive});
+	message& fill_from_json(nlohmann::json* j, cache_policy_t cp);
 
 	/** Build JSON from this object.
 	 * @param with_id True if the ID is to be included in the built JSON
@@ -1411,7 +1486,7 @@ struct DPP_EXPORT message : public managed {
 	 * This will exclude some fields that are not valid in interactions at this time.
 	 * @return The JSON text of the message
 	 */
-	virtual std::string build_json(bool with_id = false, bool is_interaction_response = false) const;
+	virtual json to_json(bool with_id, bool is_interaction_response) const;
 
 	/**
 	 * @brief Returns true if the message was crossposted to other servers

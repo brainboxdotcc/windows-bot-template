@@ -77,7 +77,7 @@ public:
 	 * @throw dpp::logic_exception on assigning a negative value. The function is noexcept if the type given is unsigned
 	 * @param snowflake_val snowflake value as an integer type
 	 */
-	template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+	template <typename T, typename = std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool>>>
 	constexpr snowflake(T snowflake_val) noexcept(std::is_unsigned_v<T>) : value(static_cast<std::make_unsigned_t<T>>(snowflake_val)) {
 		/**
 		 * we cast to the unsigned version of the type given - this maintains "possible loss of data" warnings for sizeof(T) > sizeof(value)
@@ -250,6 +250,18 @@ public:
 	 */
 	constexpr uint16_t get_increment() const noexcept {
 		return static_cast<uint16_t>(value & 0xFFF);
+	}
+
+	/**
+	 * @brief Helper function for libfmt so that a snowflake can be directly formatted as a uint64_t.
+	 *
+	 * @see https://fmt.dev/latest/api.html#formatting-user-defined-types
+	 * @return uint64_t snowflake ID
+	 */
+	friend constexpr uint64_t format_as(snowflake s) noexcept {
+		/* note: this function must stay as "friend" - this declares it as a free function but makes it invisible unless the argument is snowflake
+		 * this effectively means no implicit conversions are performed to snowflake, for example format_as(0) doesn't call this function */
+		return s.value;
 	}
 };
 

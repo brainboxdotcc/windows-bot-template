@@ -1325,8 +1325,9 @@ public:
 	 * @param filename Filename to post for POST requests (for uploading files)
 	 * @param filecontent File content to post for POST requests (for uploading files)
 	 * @param filemimetype File content to post for POST requests (for uploading files)
+	 * @param protocol HTTP protocol to use (1.0 and 1.1 are supported)
 	 */
-	void post_rest(const std::string &endpoint, const std::string &major_parameters, const std::string &parameters, http_method method, const std::string &postdata, json_encode_t callback, const std::string &filename = "", const std::string &filecontent = "", const std::string &filemimetype = "");
+	void post_rest(const std::string &endpoint, const std::string &major_parameters, const std::string &parameters, http_method method, const std::string &postdata, json_encode_t callback, const std::string &filename = "", const std::string &filecontent = "", const std::string &filemimetype = "", const std::string& protocol = "1.1");
 
 	/**
 	 * @brief Post a multipart REST request. Where possible use a helper method instead like message_create
@@ -1352,8 +1353,9 @@ public:
 	 * @param postdata POST data
 	 * @param mimetype MIME type of POST data
 	 * @param headers Headers to send with the request
+	 * @param protocol HTTP protocol to use (1.1 and 1.0 are supported)
 	 */
-	void request(const std::string &url, http_method method, http_completion_event callback, const std::string &postdata = "", const std::string &mimetype = "text/plain", const std::multimap<std::string, std::string> &headers = {});
+	void request(const std::string &url, http_method method, http_completion_event callback, const std::string &postdata = "", const std::string &mimetype = "text/plain", const std::multimap<std::string, std::string> &headers = {}, const std::string &protocol = "1.1");
 
 	/**
 	 * @brief Respond to a slash command
@@ -1502,7 +1504,6 @@ public:
 	 */
 	void guild_command_create(const slashcommand &s, snowflake guild_id, command_completion_event_t callback = utility::log_error());
 
-
 	/**
 	 * @brief Create/overwrite guild slash commands.
 	 * Any existing guild slash commands on this guild will be deleted and replaced with these.
@@ -1517,17 +1518,36 @@ public:
 	void guild_bulk_command_create(const std::vector<slashcommand> &commands, snowflake guild_id, command_completion_event_t callback = utility::log_error());
 
 	/**
+	 * @brief Delete all existing guild slash commands.
+	 * 
+	 * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+	 * @param guild_id Guild ID to delete the slash commands in.
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::slashcommand_map object in confirmation_callback_t::value **which will be empty, meaning there are no commands**. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void guild_bulk_command_delete(snowflake guild_id, command_completion_event_t callback = utility::log_error());
+
+	/**
 	 * @brief Create/overwrite global slash commands.
 	 * Any existing global slash commands will be deleted and replaced with these.
 	 *
 	 * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
 	 * @param commands Vector of slash commands to create/update.
-	 * overwriting existing commands that are registered globally for this application. Updates will be available in all guilds after 1 hour.
+	 * overwriting existing commands that are registered globally for this application.
 	 * Commands that do not already exist will count toward daily application command create limits.
 	 * @param callback Function to call when the API call completes.
 	 * On success the callback will contain a dpp::slashcommand_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void global_bulk_command_create(const std::vector<slashcommand> &commands, command_completion_event_t callback = utility::log_error());
+
+	/**
+	 * @brief Delete all existing global slash commands.
+	 * 
+	 * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+	 * @param callback Function to call when the API call completes.
+	 * On success the callback will contain a dpp::slashcommand_map object in confirmation_callback_t::value **which will be empty, meaning there are no commands**. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void global_bulk_command_delete(command_completion_event_t callback = utility::log_error());
 
 	/**
 	 * @brief Edit a global slash command (a bot can have a maximum of 100 of these)
@@ -3311,6 +3331,15 @@ public:
 	 * On success the callback will contain a dpp::thread_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 	 */
 	void threads_get_joined_private_archived(snowflake channel_id, snowflake before_id, uint16_t limit, command_completion_event_t callback);
+
+	/**
+	 * @brief Get the thread specified by thread_id. This uses the same call as dpp::cluster::channel_get but returns a thread object.
+	 * @see https://discord.com/developers/docs/resources/channel#get-channel
+	 * @param thread_id The id of the thread to obtain.
+	 * @param callback Function to call when the API call completes
+	 * On success the callback will contain a dpp::thread object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
+	 */
+	void thread_get(snowflake thread_id, command_completion_event_t callback);
 
 	/**
 	 * @brief Create a sticker in a guild
