@@ -51,22 +51,18 @@ struct DPP_EXPORT timer_t {
 	 * @brief Timer handle
 	 */
 	timer handle;
-
 	/**
 	 * @brief Next timer tick as unix epoch
 	 */
 	time_t next_tick;
-
 	/**
 	 * @brief Frequency between ticks
 	 */
 	uint64_t frequency;
-
 	/**
 	 * @brief Lambda to call on tick
 	 */
 	timer_callback_t on_tick;
-
 	/**
 	 * @brief Lambda to call on stop (optional)
 	 */
@@ -91,14 +87,9 @@ typedef std::unordered_map<timer, timer_t*> timer_reg_t;
 class DPP_EXPORT oneshot_timer
 {
 private:
-	/**
-	 * @brief Owning cluster.
-	 */
+	/// Owning cluster
 	class cluster* owner;
-
-	/**
-	 * @brief Timer handle.
-	 */
+	/// Timer handle
 	timer th;
 public:
 	/**
@@ -128,5 +119,7 @@ public:
 	 */
 	~oneshot_timer();
 };
+
+
 
 } // namespace dpp

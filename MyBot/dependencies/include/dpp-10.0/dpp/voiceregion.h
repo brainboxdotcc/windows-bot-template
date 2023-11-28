@@ -31,20 +31,10 @@ namespace dpp {
  * @brief Flags related to a voice region
  */
 enum voiceregion_flags {
-    	/**
-	 * @brief The closest (optimal) voice region.
-	 */
-	v_optimal = 0x00000001,
-
-	/**
-	 * @brief A Deprecated voice region (avoid switching to these).
-	 */
-	v_deprecated = 0x00000010,
-
-	/**
-	 * @brief A custom voice region (used for events/etc).
-	 */
-	v_custom = 0x00000100
+	v_optimal	= 0x00000001,
+	v_deprecated	= 0x00000010,
+	v_custom	= 0x00000100,
+	v_vip		= 0x00001000
 };
 
 /**
@@ -116,6 +106,13 @@ public:
 	 * @return true if custom
 	 */
 	bool is_custom() const;
+
+	/**
+	 * @brief True if is a VIP voice server
+	 * 
+	 * @return true if VIP 
+	 */
+	bool is_vip() const;
 };
 
 /**

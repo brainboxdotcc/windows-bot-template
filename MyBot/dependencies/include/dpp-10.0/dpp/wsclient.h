@@ -64,7 +64,8 @@ enum ws_state : uint8_t {
 /**
  * @brief Low-level websocket opcodes for frames
  */
-enum ws_opcode : uint8_t {
+enum ws_opcode : uint8_t
+{
 	/**
 	 * @brief Continuation.
 	 */
@@ -99,7 +100,8 @@ enum ws_opcode : uint8_t {
 /**
  * @brief Implements a websocket client based on the SSL client
  */
-class DPP_EXPORT websocket_client : public ssl_client {
+class DPP_EXPORT websocket_client : public ssl_client
+{
 	/**
 	 * @brief Connection key used in the HTTP headers
 	 */

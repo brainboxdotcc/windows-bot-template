@@ -47,6 +47,7 @@ enum image_type {
 	/**
 	 * @brief Webp.
 	 */
+	/// WebP
 	i_webp,
 };
 
