@@ -79,10 +79,7 @@ namespace dpp {
 		}
 
 	protected:
-		/**
-		 * @brief Array for storing the values to be loaded/stored.
-		 */
-		alignas(64) float values[byte_blocks_per_register]{};
+		alignas(64) float values[byte_blocks_per_register]{};///< Array for storing the values to be loaded/stored.
 
 		/**
 		 * @brief Stores values from a 512-bit AVX512 vector to a storage location.

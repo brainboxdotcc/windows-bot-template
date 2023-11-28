@@ -33,14 +33,9 @@ namespace dpp {
  * @brief Represents the privacy of a stage instance
  */
 enum stage_privacy_level : uint8_t {
-	/**
-	 * @brief The Stage instance is visible publicly, such as on Stage Discovery.
-	 */
+	/// The Stage instance is visible publicly, such as on Stage Discovery.
 	sp_public = 1,
-
-	/**
-	 * @brief The Stage instance is visible to only guild members.
-	 */
+	/// The Stage instance is visible to only guild members.
 	sp_guild_only = 2
 };
 
@@ -68,29 +63,15 @@ protected:
 	virtual json to_json_impl(bool with_id = false) const;
 
 public:
-	/**
-	 * @brief The guild ID of the associated Stage channel.
-	 */
+	/// The guild id of the associated Stage channel
 	snowflake guild_id;
-
-	/**
-	 * @brief The ID of the associated Stage channel.
-	 */
+	/// The id of the associated Stage channel
 	snowflake channel_id;
-
-	/**
-	 * @brief The topic of the Stage instance (1-120 characters).
-	 */
+	/// The topic of the Stage instance (1-120 characters)
 	std::string topic;
-
-	/**
-	 * @brief The privacy level of the Stage instance.
-	 */
+	/// The privacy level of the Stage instance
 	stage_privacy_level privacy_level;
-
-	/**
-	 * @brief Whether or not Stage Discovery is disabled.
-	 */
+	/// Whether or not Stage Discovery is disabled
 	bool discoverable_disabled;
 
 	/**
@@ -104,9 +85,7 @@ public:
 	~stage_instance() = default;
 };
 
-/**
- * @brief A group of stage instances
- */
+/** A group of stage instances */
 typedef std::unordered_map<snowflake, stage_instance> stage_instance_map;
 
 } // namespace dpp
