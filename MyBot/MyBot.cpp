@@ -35,6 +35,7 @@ int main()
 		if (event.command.get_command_name() == "ping") {
 			co_await event.co_reply("Pong!");
 		}
+		co_return;
 	});
 
 	/* Start the bot */
