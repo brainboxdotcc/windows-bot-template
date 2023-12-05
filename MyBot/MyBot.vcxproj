@@ -92,11 +92,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;DPP_CORO;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,13 +114,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;DPP_CORO;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;DPP_CORO;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,13 +162,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DPP_WIN_TEMPLATE;DPP_CORO;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/wd4251 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -182,41 +190,86 @@
     <ClCompile Include="MyBot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\appcommand.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\application.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\auditlog.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\automod.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\ban.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\cache.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\channel.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster_coro_calls.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster_sync_calls.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\collector.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\colors.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\command.hpp" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\commandhandler.h" />
-    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discord.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\async.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\awaitable.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\coro.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\coroutine.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\job.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\task.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\when_any.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordclient.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordevents.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordvoiceclient.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\dispatcher.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dns.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\dpp.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\dtemplate.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\emoji.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\entitlement.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\etf.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\event.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\event_router.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\exception.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\export.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\fmt-minimal.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\guild.h" />
-    <ClInclude Include="dependencies\include\dpp-10.0\dpp\httplib.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\httpsclient.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\integration.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\intents.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\invite.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\avx.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\avx2.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\avx512.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\fallback.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa_detection.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_fwd.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_fwd.hpp" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_interface.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\managed.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\message.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\misc-enum.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\nlohmann\json.hpp" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\once.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\permissions.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\presence.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\prune.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\queues.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\restrequest.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\restresults.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\role.h" />
-    <ClInclude Include="dependencies\include\dpp-10.0\dpp\slashcommand.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\scheduled_event.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sku.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\snowflake.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\socket.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\sslclient.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\stage_instance.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\streams.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\stringops.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sync.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\sysdep.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\timed_listener.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\timer.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\unicode_emoji.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\unordered_set.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\user.h" />
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\utility.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\version.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\voiceregion.h" />
     <ClInclude Include="dependencies\include\dpp-10.0\dpp\voicestate.h" />
