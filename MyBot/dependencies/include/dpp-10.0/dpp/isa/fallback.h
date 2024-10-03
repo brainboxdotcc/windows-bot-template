@@ -21,7 +21,6 @@
 #pragma once
 
 #include <numeric>
-#include <cstdint>
 
 namespace dpp {
 

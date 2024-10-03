@@ -24,7 +24,6 @@
 
 #include <arm_neon.h>
 #include <numeric>
-#include <cstdint>
 
 namespace dpp {
 
