@@ -62,7 +62,7 @@ set_target_properties(dpp::dpp PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "DPP_CORO"
   INTERFACE_COMPILE_FEATURES "cxx_std_17;cxx_std_20"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include/dpp-10.0"
-  INTERFACE_LINK_LIBRARIES "D:/a/DPP/DPP/main/win32/32/lib/libssl.lib;D:/a/DPP/DPP/main/win32/32/lib/libcrypto.lib;D:/a/DPP/DPP/main/win32/32/lib/zlib.lib;D:/a/DPP/DPP/main/win32/32/lib/libsodium.lib;D:/a/DPP/DPP/main/win32/32/lib/opus.lib;D:/a/DPP/DPP/main/win32/32/lib/libssl.lib;D:/a/DPP/DPP/main/win32/32/lib/libcrypto.lib;D:/a/DPP/DPP/main/win32/32/lib/zlib.lib;D:/a/DPP/DPP/main/win32/32/lib/libsodium.lib;D:/a/DPP/DPP/main/win32/32/lib/opus.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/libssl.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/libcrypto.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/libsodium.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/opus.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/zlib.lib;D:/a/DPP/DPP/main/win32/32/lib/libsodium.lib;D:/a/DPP/DPP/main/win32/32/lib/opus.lib"
+  INTERFACE_LINK_LIBRARIES "D:/a/DPP/DPP/main/win32/32/lib/libssl.lib;D:/a/DPP/DPP/main/win32/32/lib/libcrypto.lib;D:/a/DPP/DPP/main/win32/32/lib/zlib.lib;D:/a/DPP/DPP/main/win32/32/lib/opus.lib;D:/a/DPP/DPP/main/win32/32/lib/libssl.lib;D:/a/DPP/DPP/main/win32/32/lib/libcrypto.lib;D:/a/DPP/DPP/main/win32/32/lib/zlib.lib;D:/a/DPP/DPP/main/win32/32/lib/opus.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/libssl.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/libcrypto.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/opus.lib;D:/a/DPP/DPP/main/library/../win32/32/lib/zlib.lib;D:/a/DPP/DPP/main/win32/32/lib/opus.lib"
 )
 
 # Load information for each installed configuration.
