@@ -1,0 +1,26 @@
+name: Library Binaries Update
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  updater:
+    name: Update latest D++
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false # Don't fail everything if one fails. We want to test each OS/Compiler individually
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Install apt packages
+        run: sudo sed -i 's/azure\.//' /etc/apt/sources.list && sudo apt update && sudo apt install unzip dos2unix && git config --global user.email "updatebot@dpp.dev" && git config --global user.name "D++ Update Bot"
+            
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run updater
+        run: pwd && ./updatedpp.sh
+

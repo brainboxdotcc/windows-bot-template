@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DPP">
+      <UniqueIdentifier>{0c7369e9-66c5-45ca-8a7d-8891f46001be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DPP\isa">
+      <UniqueIdentifier>{d381212d-56e7-4675-8e2e-2a05dde294d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DPP\coro">
+      <UniqueIdentifier>{8d15e415-f801-4628-a6bd-4e3d81a6075d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DPP\nlohmann">
+      <UniqueIdentifier>{4e785253-c8f4-4617-bf4a-f3e8a739dc05}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MyBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MyBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\appcommand.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\application.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\auditlog.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\automod.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\ban.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cache.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\channel.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster_coro_calls.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\cluster_sync_calls.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\collector.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\colors.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\command.hpp">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\commandhandler.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordclient.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordevents.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\discordvoiceclient.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dispatcher.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dns.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dpp.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\dtemplate.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\emoji.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\entitlement.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\etf.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\event.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\event_router.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\exception.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\export.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\fmt-minimal.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\guild.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\httpsclient.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\integration.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\intents.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\invite.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa_detection.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_fwd.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_fwd.hpp">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\json_interface.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\managed.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\message.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\misc-enum.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\once.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\permissions.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\presence.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\prune.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\queues.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\restrequest.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\restresults.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\role.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\scheduled_event.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sku.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\snowflake.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\socket.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sslclient.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\stage_instance.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\streams.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\stringops.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sync.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\sysdep.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\timed_listener.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\timer.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\unicode_emoji.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\unordered_set.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\user.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\utility.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\version.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\voiceregion.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\voicestate.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\webhook.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\win32_safe_warnings.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\wsclient.h">
+      <Filter>DPP</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\avx.h">
+      <Filter>DPP\isa</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\avx2.h">
+      <Filter>DPP\isa</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\avx512.h">
+      <Filter>DPP\isa</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\isa\fallback.h">
+      <Filter>DPP\isa</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\async.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\awaitable.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\coro.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\coroutine.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\job.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\task.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\coro\when_any.h">
+      <Filter>DPP\coro</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\nlohmann\json.hpp">
+      <Filter>DPP\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\dpp-10.0\dpp\nlohmann\json_fwd.hpp">
+      <Filter>DPP\nlohmann</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
